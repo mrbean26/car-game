@@ -11,7 +11,7 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Savefiles {
+public class ClassicMiniSavefiles {
     public static List<String> readLines(int resourceId){
         List<String> returned = new ArrayList<>();
 

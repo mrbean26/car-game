@@ -1,6 +1,6 @@
 package com.bean.classicmini;
 
-import com.bean.classicmini.utilities.Savefiles;
+import com.bean.classicmini.utilities.ClassicMiniSavefiles;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
@@ -26,7 +26,7 @@ When changing fields include package in component name
 
 public class Scene {
     public Scene(int resourceId){
-        List<String> sceneInfo = Savefiles.readLines(resourceId);
+        List<String> sceneInfo = ClassicMiniSavefiles.readLines(resourceId);
         int lineCount = sceneInfo.size();
 
         for(int l = 0; l < lineCount; l++){

@@ -29,7 +29,5 @@ public class MainActivity extends AppCompatActivity {
 
         mainView = new surfaceView(this);
         setContentView(mainView);
-
-        output(String.valueOf(Math.sin(90)));
     }
 }
