@@ -27,8 +27,9 @@ public class Bean {
         if(!hasComponents(component.name)){
             components.add(component);
 
-            int componentLength = components.size();
-            ((T) components.get(componentLength - 1)).begin();
+            int componentLength = components.size() - 1;
+            ((T) components.get(componentLength)).begin();
+            ((T) components.get(componentLength)).objectName = objectName;
         }
     }
 

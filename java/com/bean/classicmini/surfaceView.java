@@ -3,14 +3,12 @@ package com.bean.classicmini;
 import android.content.Context;
 import android.opengl.GLES20;
 import android.opengl.GLSurfaceView;
-import android.util.Log;
-
 
 import javax.microedition.khronos.opengles.GL10;
 import javax.microedition.khronos.egl.EGLConfig;
 
 public class surfaceView extends GLSurfaceView implements GLSurfaceView.Renderer {
-    public Scene currentScene;
+    public static Scene currentScene;
 
     public surfaceView(Context ctx){
         super(ctx);

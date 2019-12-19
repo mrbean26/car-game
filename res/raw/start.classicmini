@@ -1,0 +1,3 @@
+Bean adam
+component adam com.bean.classicmini.components.Transform
+field adam Transform position_x float 5.0
