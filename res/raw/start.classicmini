@@ -1,3 +1,6 @@
 Bean adam
 component adam com.bean.classicmini.components.Transform
-field adam Transform position_x float 5.0
+field adam com.bean.classicmini.components.Transform xPosition float 5.0
+Bean toby
+component toby com.bean.classicmini.components.Transform
+field toby com.bean.classicmini.components.Transform xPosition float 54.0

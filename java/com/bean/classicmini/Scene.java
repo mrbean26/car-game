@@ -1,11 +1,14 @@
 package com.bean.classicmini;
 
+import com.bean.classicmini.components.Transform;
 import com.bean.classicmini.utilities.ClassicMiniSavefiles;
+import com.bean.components.Components;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
-import java.util.ArrayList;
+
+import java.util.HashMap;
 import java.util.List;
 
 /*
@@ -25,7 +28,7 @@ When changing fields include package in component name
  */
 
 public class Scene {
-    public Scene(int resourceId){
+    public <T extends Components> Scene(int resourceId){
         List<String> sceneInfo = ClassicMiniSavefiles.readLines(resourceId);
         int lineCount = sceneInfo.size();
 
@@ -34,16 +37,14 @@ public class Scene {
             String[] data = current.split(" ");
 
             if(data[0].equals("Bean")){
-                allBeans.add(new Bean(data[1]));
+                allBeans.put(data[1], new Bean(data[1]));
             }
             if(data[0].equals("component")){
-                int wantedIndex = findBean(data[1]);
-
                 try{
                     Class<?> newClass = Class.forName(data[2]);
                     Constructor<?> constructor = newClass.getConstructor();
                     Object newComponent = constructor.newInstance();
-                    allBeans.get(wantedIndex).addComponent(newComponent);
+                    allBeans.get(data[1]).addComponents((T) newComponent);
                 } catch(ClassNotFoundException e){
                     MainActivity.error("ClassNotFoundException");
                 } catch(NoSuchMethodException e){
@@ -58,13 +59,8 @@ public class Scene {
             }
             if(data[0].equals("field")){
                 try{
-                    int wantedIndex = findBean(data[1]);
-                    int componentIndex = allBeans.get(wantedIndex).getComponent(data[2]);
-
-                    Bean selectedBean = allBeans.get(wantedIndex);
-                    Object selectedComponent = selectedBean.components.get(componentIndex);
-
-                    Field selectedField = selectedComponent.getClass().getField(data[3]);
+                    Class<?> newClass = Class.forName(data[2]);
+                    Field selectedField = newClass.getField(data[3]);
                     Object dataToSet = new Object();
 
                     if(data[4].equals("string")){
@@ -85,36 +81,23 @@ public class Scene {
                         }
                     }
 
-                    selectedField.set(selectedComponent, dataToSet);
-                    selectedBean.components.set(wantedIndex, selectedComponent);
-                    allBeans.set(wantedIndex, selectedBean);
+                    selectedField.set(allBeans.get(data[1]).getComponents(newClass), dataToSet);
 
                 } catch (NoSuchFieldException e){
                     MainActivity.error("NoSuchFieldException" + e.toString());
                 } catch (IllegalAccessException e){
                     MainActivity.error("IllegalAccessException");
+                } catch(ClassNotFoundException e){
+                    MainActivity.error("ClassNotFoundException");
                 }
             }
         }
     }
 
-    public List<Bean> allBeans = new ArrayList<>();
+    public HashMap<String, Bean> allBeans = new HashMap<>();
     public void mainloop(){
-        int beanCount = allBeans.size();
-        for(int b = 0; b < beanCount; b++){
-            allBeans.get(b).mainloop();
+        for(Bean bean : allBeans.values()){
+            bean.mainloop();
         }
-    }
-
-    public int findBean(String name){
-        int beanCount = allBeans.size();
-        for(int b = 0; b < beanCount; b++){
-            String currentName = allBeans.get(b).objectName;
-            if(currentName.equals(name)){
-                return b;
-            }
-        }
-        MainActivity.error("Couldn't find bean: " + name);
-        return -1;
     }
 }

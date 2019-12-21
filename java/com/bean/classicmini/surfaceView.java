@@ -14,13 +14,11 @@ public class surfaceView extends GLSurfaceView implements GLSurfaceView.Renderer
         super(ctx);
         setEGLContextClientVersion(2);
 
-        rendererContext = ctx;
         setRenderer(this);
         setRenderMode(GLSurfaceView.RENDERMODE_WHEN_DIRTY);
     }
 
     // renderer
-    public Context rendererContext;
     public void onSurfaceCreated(GL10 unused, EGLConfig config){
         currentScene = new Scene(R.raw.start);
     }

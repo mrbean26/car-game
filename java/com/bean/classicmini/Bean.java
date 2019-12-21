@@ -4,66 +4,49 @@ import android.util.Log;
 
 import com.bean.components.Components;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
+import java.util.UUID;
 
 public class Bean {
     public String objectName;
+    public UUID id;
+
     public Bean(String name){
         objectName = name;
+        id = UUID.randomUUID();
     }
-    List<Object> components = new ArrayList<>();
+    public HashMap<Class, HashMap<UUID, ? extends Components>> components = new HashMap<>();
 
-    public <T extends Components> void mainloop(){
-        int compCount = components.size();
-        for(int c = 0; c < compCount; c++){
-            T currentComponent = (T) components.get(c);
-            currentComponent.mainloop();
+    public void mainloop(){
+        for(HashMap<UUID, ? extends Components> currentHashmap : components.values()){
+            currentHashmap.get(id).mainloop();
         }
     }
 
-    public <T extends Components> void addComponent(Object object){
-        T component = (T) object;
-        if(!hasComponents(component.name)){
-            components.add(component);
-
-            int componentLength = components.size() - 1;
-            ((T) components.get(componentLength)).begin();
-            ((T) components.get(componentLength)).objectName = objectName;
-        }
-    }
-
-    public <T extends Components> boolean hasComponents(String name){
-        int compCount = components.size();
-        for(int c = 0; c < compCount; c++){
-            T component = (T) components.get(c);
-            if(component.name.equals(name)){
-                return true;
+    public <T extends Components> void addComponents(T component){
+        synchronized(components){
+            HashMap<UUID, ? extends Components> store = components.get(component);
+            if(store == null){
+                store = new HashMap<UUID, T>();
+                components.put(component.getClass(), store);
             }
+            component.objectName = objectName;
+            ((HashMap<UUID, T>) store).put(this.id, component);
         }
-        return false;
     }
 
-    public <T extends Components> int getComponent(String name){
-        int compCount = components.size();
-        for(int c = 0; c < compCount; c++){
-            T currentComponent = (T) components.get(c);
-            if(name.equals(currentComponent.name)){
-                return c;
-            }
-        }
-        Log.d("Bean:Output", "Component not found.");
-        return -1;
+    public <T> T getComponents( Class<T> component) {
+        HashMap<UUID, ? extends Components> store = components.get(component);
+        T results = (T) store.get(this.id);
+        if(results == null)
+            throw new IllegalArgumentException("Get Fail: " + objectName + " does not posses Component of Class " + component);
+        return results;
     }
 
-    public <T extends Components> void listComponents(){
-        String total = "This item contains components: ";
-        int compCount = components.size();
-        for(int c = 0; c < compCount; c++){
-            T component = (T) components.get(c);
-            total = total + component.name + ", ";
-        }
-
-        Log.d("Bean:Output", total);
+    public <T> boolean hasComponents( Class<T> component) {
+        HashMap<UUID, ? extends Components> store = components.get(component);
+        if((T) store.get(id) == null)
+            return false;
+        return true;
     }
 }

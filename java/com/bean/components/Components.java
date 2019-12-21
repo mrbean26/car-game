@@ -1,5 +1,6 @@
 package com.bean.components;
 
+import com.bean.classicmini.Bean;
 import com.bean.classicmini.surfaceView;
 
 public class Components implements ComponentsInterface {
@@ -10,11 +11,7 @@ public class Components implements ComponentsInterface {
 
     }
 
-    public void begin(){
-
-    }
-
-    public int getBean(){
-        return surfaceView.currentScene.findBean(objectName);
+    public Bean getBean(){
+        return surfaceView.currentScene.allBeans.get(objectName);
     }
 }

@@ -33,4 +33,24 @@ public class ClassicMiniSavefiles {
 
         return returned;
     }
+
+    public static String readLinesString(int resourceId){
+        String returned = "";
+        try {
+            InputStream inputStream = MainActivity.getAppContext().getResources().openRawResource(resourceId);
+            InputStreamReader inputStreamReader = new InputStreamReader(inputStream);
+            BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
+
+            String currentLine = null;
+            while((currentLine = bufferedReader.readLine()) != null){
+                returned = returned + currentLine + "\n";
+            }
+
+            return returned;
+        }
+        catch(IOException e) {
+            Log.d("Bean:Error", "IOException when opening file");
+        }
+        return returned;
+    }
 }
