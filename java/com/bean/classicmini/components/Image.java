@@ -23,6 +23,8 @@ public class Image extends Components {
     public int textureNum, vertexCount, textureResourcePath = R.drawable.notextureimage;
     public static int imageShader = -1;
 
+    public int imageWidth, imageHeight;
+
     private void loadTexture(int resourcePath){
         int[] textureId = new int[1];
         GLES20.glActiveTexture(GLES20.GL_TEXTURE0);
@@ -34,6 +36,9 @@ public class Image extends Components {
             options.inScaled = false;
 
             Bitmap image = BitmapFactory.decodeResource(MainActivity.getAppContext().getResources(), resourcePath, options);
+            imageWidth = image.getWidth();
+            imageHeight = image.getHeight();
+
             GLUtils.texImage2D(GLES20.GL_TEXTURE_2D, 0, image, 0);
             image.recycle();
 
@@ -62,7 +67,6 @@ public class Image extends Components {
 
         // matrix
         Mat4 currentMatrix = ClassicMiniMath.getOrtho(); // ortho then transform bit
-
         if(getBean().hasComponents(Transform.class)){
             Transform objectTransform = getBean().getComponents(Transform.class);
             currentMatrix.scale(objectTransform.scale());
@@ -73,19 +77,14 @@ public class Image extends Components {
             currentMatrix.rotate(objectTransform.zRotation, new Vec3(0.0f, 0.0f, 1.0f));
         }
 
-        float[] totalMat = currentMatrix.toFa_();
-
         GLES20.glUseProgram(imageShader);
-        int modelMatLocation = GLES20.glGetUniformLocation(imageShader, "model");
-        GLES20.glUniformMatrix4fv(modelMatLocation, 1, false, totalMat, 0);
+        ClassicMiniShaders.setMatrix4(currentMatrix, "model", imageShader);
+        ClassicMiniShaders.setInt(0, "sampler", imageShader);
 
         GLES20.glActiveTexture(GLES20.GL_TEXTURE0);
         GLES20.glBindTexture(GLES20.GL_TEXTURE_2D, textureNum);
 
-        int textureLocation = GLES20.glGetUniformLocation(imageShader, "sampler");
-        GLES20.glUniform1i(textureLocation, 0);
         GLES20.glDrawArrays(GLES20.GL_TRIANGLES, 0, vertexCount);
-
         GLES20.glDisable(GLES20.GL_BLEND);
     }
 
@@ -96,23 +95,25 @@ public class Image extends Components {
 
     @Override
     public void begin(){
-        float[] vertices = new float[]{
-                -1.0f, -1.0f, 0.0f, 0.0f, 1.0f,
-                1.0f,  -1.0f, 0.0f, 1.0f, 1.0f,
-                -1.0f, 1.0f, 0.0f, 0.0f, 0.0f,
+        if(vertexBuffer == null){
+            float[] vertices = new float[]{
+                    -1.0f, -1.0f, 0.0f, 0.0f, 1.0f,
+                    1.0f,  -1.0f, 0.0f, 1.0f, 1.0f,
+                    -1.0f, 1.0f, 0.0f, 0.0f, 0.0f,
 
-                -1.0f, 1.0f, 0.0f, 0.0f, 0.0f,
-                1.0f, 1.0f, 0.0f, 1.0f, 0.0f,
-                1.0f, -1.0f, 0.0f, 1.0f, 1.0f,
-        };
-        vertexCount = vertices.length / 5;
+                    -1.0f, 1.0f, 0.0f, 0.0f, 0.0f,
+                    1.0f, 1.0f, 0.0f, 1.0f, 0.0f,
+                    1.0f, -1.0f, 0.0f, 1.0f, 1.0f,
+            };
+            vertexCount = vertices.length / 5;
 
-        ByteBuffer byteBuffer = ByteBuffer.allocateDirect(vertices.length * 4);
-        byteBuffer.order(ByteOrder.nativeOrder());
+            ByteBuffer byteBuffer = ByteBuffer.allocateDirect(vertices.length * 4);
+            byteBuffer.order(ByteOrder.nativeOrder());
 
-        vertexBuffer = byteBuffer.asFloatBuffer();
-        vertexBuffer.put(vertices);
-        vertexBuffer.position(0);
+            vertexBuffer = byteBuffer.asFloatBuffer();
+            vertexBuffer.put(vertices);
+            vertexBuffer.position(0);
+        }
 
         loadTexture(textureResourcePath);
 

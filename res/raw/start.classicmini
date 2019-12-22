@@ -1,3 +1,6 @@
 Bean toby
 component toby com.bean.classicmini.components.Image
-field toby com.bean.classicmini.components.Image textureResourcePath int 2131099745
+component toby com.bean.classicmini.components.Transform
+field toby com.bean.classicmini.components.Transform xScale float 0.1
+field toby com.bean.classicmini.components.Transform yScale float 0.1
+field toby com.bean.classicmini.components.Transform zScale float 0.1
