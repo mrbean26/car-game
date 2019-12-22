@@ -1,7 +1,5 @@
 package com.bean.classicmini;
 
-import android.util.Log;
-
 import com.bean.components.Components;
 
 import java.util.HashMap;
@@ -44,9 +42,6 @@ public class Bean {
     }
 
     public <T> boolean hasComponents( Class<T> component) {
-        HashMap<UUID, ? extends Components> store = components.get(component);
-        if((T) store.get(id) == null)
-            return false;
-        return true;
+        return components.containsKey(component);
     }
 }

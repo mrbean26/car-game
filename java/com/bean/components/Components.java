@@ -11,6 +11,10 @@ public class Components implements ComponentsInterface {
 
     }
 
+    public void begin(){
+
+    }
+
     public Bean getBean(){
         return surfaceView.currentScene.allBeans.get(objectName);
     }

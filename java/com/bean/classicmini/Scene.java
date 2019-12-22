@@ -10,6 +10,7 @@ import java.lang.reflect.InvocationTargetException;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.UUID;
 
 /*
 WHEN CREATING A SCENE FILE:
@@ -90,6 +91,12 @@ public class Scene {
                 } catch(ClassNotFoundException e){
                     MainActivity.error("ClassNotFoundException");
                 }
+            }
+        }
+
+        for(Bean bean : allBeans.values()){
+            for(HashMap<UUID, ? extends Components> component : bean.components.values()){
+                component.get(bean.id).begin();
             }
         }
     }

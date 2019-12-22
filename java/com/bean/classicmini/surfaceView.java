@@ -4,11 +4,14 @@ import android.content.Context;
 import android.opengl.GLES20;
 import android.opengl.GLSurfaceView;
 
+import com.bean.classicmini.components.Image;
+
 import javax.microedition.khronos.opengles.GL10;
 import javax.microedition.khronos.egl.EGLConfig;
 
 public class surfaceView extends GLSurfaceView implements GLSurfaceView.Renderer {
     public static Scene currentScene;
+    public static int displayWidth, displayHeight;
 
     public surfaceView(Context ctx){
         super(ctx);
@@ -30,5 +33,7 @@ public class surfaceView extends GLSurfaceView implements GLSurfaceView.Renderer
 
     public void onSurfaceChanged(GL10 gl, int width, int height){
         GLES20.glViewport(0, 0, width, height);
+        displayWidth = width;
+        displayHeight = height;
     }
 }
