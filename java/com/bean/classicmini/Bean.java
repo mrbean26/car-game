@@ -1,5 +1,6 @@
 package com.bean.classicmini;
 
+import com.bean.classicmini.components.Transform;
 import com.bean.components.Components;
 
 import java.util.HashMap;
@@ -12,6 +13,7 @@ public class Bean {
     public Bean(String name){
         objectName = name;
         id = UUID.randomUUID();
+        addComponents(new Transform());
     }
     public HashMap<Class, HashMap<UUID, ? extends Components>> components = new HashMap<>();
 

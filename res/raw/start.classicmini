@@ -1,6 +1,10 @@
 Bean toby
-component toby com.bean.classicmini.components.Image
-component toby com.bean.classicmini.components.Transform
-field toby com.bean.classicmini.components.Transform xScale float 0.1
-field toby com.bean.classicmini.components.Transform yScale float 0.1
-field toby com.bean.classicmini.components.Transform zScale float 0.1
+component toby com.bean.classicmini.components.Camera
+field toby com.bean.classicmini.components.Transform zPosition float 80.0
+field toby com.bean.classicmini.components.Transform yRotation float 90.0
+field toby com.bean.classicmini.components.Transform xPosition float 15.0
+
+Bean adam
+component adam com.bean.classicmini.components.Sprite
+field adam com.bean.classicmini.components.Sprite textureResourcePath intResource drawable image
+

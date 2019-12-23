@@ -1,5 +1,6 @@
 package com.bean.classicmini;
 
+import com.bean.classicmini.components.Camera;
 import com.bean.classicmini.components.Transform;
 import com.bean.classicmini.utilities.ClassicMiniSavefiles;
 import com.bean.components.Components;
@@ -19,6 +20,11 @@ Follow this format.
 Bean adam
 component adam Transform
 field adam com.bean.classicmini.Transform position_x float 5.0
+
+TO LOAD RESOURCE
+field name componentNameAndPackage fieldName intResource fileUnderResName fileName
+EXAMPLE
+field toby com.bean.classicmini.components.Image textureResourcePath intResource drawable image
 
 Make sure fields are public
 Make sure component extends from components
@@ -46,6 +52,12 @@ public class Scene {
                     Constructor<?> constructor = newClass.getConstructor();
                     Object newComponent = constructor.newInstance();
                     allBeans.get(data[1]).addComponents((T) newComponent);
+
+                    if(newClass.getName().equals("com.bean.classicmini.components.Camera")){
+                        if(surfaceView.mainCamera == null){
+                            surfaceView.mainCamera = allBeans.get(data[1]).getComponents(Camera.class);
+                        }
+                    }
                 } catch(ClassNotFoundException e){
                     MainActivity.error("ClassNotFoundException");
                 } catch(NoSuchMethodException e){
@@ -80,6 +92,9 @@ public class Scene {
                         if(data[5].equals("false")){
                             dataToSet = false;
                         }
+                    }
+                    if(data[4].equals("intResource")){
+                        dataToSet = MainActivity.getAppContext().getResources().getIdentifier(data[6], data[5], MainActivity.getAppContext().getPackageName());
                     }
 
                     selectedField.set(allBeans.get(data[1]).getComponents(newClass), dataToSet);

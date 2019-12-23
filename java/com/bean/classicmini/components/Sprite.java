@@ -3,7 +3,6 @@ package com.bean.classicmini.components;
 import android.opengl.GLES20;
 
 import com.bean.classicmini.R;
-import com.bean.classicmini.utilities.ClassicMiniMath;
 import com.bean.classicmini.utilities.ClassicMiniShaders;
 import com.bean.classicmini.utilities.ClassicMiniTexture;
 import com.bean.components.Components;
@@ -13,12 +12,12 @@ import java.nio.ByteOrder;
 import java.nio.FloatBuffer;
 
 import glm.mat._4.Mat4;
-import glm.vec._3.Vec3;
 
-public class Image extends Components {
+
+public class Sprite extends Components {
     public static FloatBuffer vertexBuffer;
     public int textureNum, vertexCount, textureResourcePath = R.drawable.no_texture_image;
-    public static int imageShader = -1;
+    public static int spriteShader = -1;
     public int imageWidth, imageHeight;
 
     public void draw(){
@@ -26,25 +25,21 @@ public class Image extends Components {
         GLES20.glBlendFunc(GLES20.GL_SRC_ALPHA, GLES20.GL_ONE_MINUS_SRC_ALPHA);
 
         vertexBuffer.position(0);
-        int positionHandle = GLES20.glGetAttribLocation(imageShader, "in_position");
+        int positionHandle = GLES20.glGetAttribLocation(spriteShader, "in_position");
         GLES20.glEnableVertexAttribArray(positionHandle);
         GLES20.glVertexAttribPointer(positionHandle, 3, GLES20.GL_FLOAT, false, 20, vertexBuffer);
 
         vertexBuffer.position(3);
-        int texHandle = GLES20.glGetAttribLocation(imageShader, "in_texCoord");
+        int texHandle = GLES20.glGetAttribLocation(spriteShader, "in_texCoord");
         GLES20.glEnableVertexAttribArray(texHandle);
         GLES20.glVertexAttribPointer(texHandle, 2, GLES20.GL_FLOAT, false, 20, vertexBuffer);
 
-        // matrix
-        Mat4 currentMatrix = ClassicMiniMath.getOrtho(); // ortho then transform bit
-        Transform objectTransform = getBean().getComponents(Transform.class);
-        currentMatrix.translate(objectTransform.position());
-        currentMatrix.rotate((float) Math.toRadians(objectTransform.zRotation), new Vec3(0.0f, 0.0f, 1.0f));
-        currentMatrix.scale(objectTransform.scale());
+        GLES20.glUseProgram(spriteShader);
 
-        GLES20.glUseProgram(imageShader);
-        ClassicMiniShaders.setMatrix4(currentMatrix, "model", imageShader);
-        ClassicMiniShaders.setInt(0, "sampler", imageShader);
+        ClassicMiniShaders.setInt(0, "sampler", spriteShader);
+        ClassicMiniShaders.setMatrix4(Camera.perspectiveMatrix(), "projection", spriteShader);
+        ClassicMiniShaders.setMatrix4(Camera.viewMatrix(), "view", spriteShader);
+        ClassicMiniShaders.setMatrix4(new Mat4(1.0f), "model", spriteShader);
 
         GLES20.glActiveTexture(GLES20.GL_TEXTURE0);
         GLES20.glBindTexture(GLES20.GL_TEXTURE_2D, textureNum);
@@ -85,12 +80,12 @@ public class Image extends Components {
         imageHeight = newTexture.imageHeight;
         textureNum = newTexture.textureNum;
 
-        if(imageShader == -1){
-            int fragmentShader = ClassicMiniShaders.createShader(R.raw.imagefragment, GLES20.GL_FRAGMENT_SHADER);
-            int vertexShader = ClassicMiniShaders.createShader(R.raw.imagevertex, GLES20.GL_VERTEX_SHADER);
+        if(spriteShader == -1){
+            int fragmentShader = ClassicMiniShaders.createShader(R.raw.spritefragment, GLES20.GL_FRAGMENT_SHADER);
+            int vertexShader = ClassicMiniShaders.createShader(R.raw.spritevertex, GLES20.GL_VERTEX_SHADER);
 
             int[] programs = {vertexShader, fragmentShader};
-            imageShader = ClassicMiniShaders.createProgram(programs);
+            spriteShader = ClassicMiniShaders.createProgram(programs);
         }
     }
 }

@@ -5,11 +5,16 @@ import android.opengl.GLES20;
 import android.opengl.GLSurfaceView;
 import android.view.MotionEvent;
 
+import com.bean.classicmini.components.Camera;
+import com.bean.classicmini.components.Transform;
+import com.bean.classicmini.utilities.ClassicMiniMath;
+
 import javax.microedition.khronos.opengles.GL10;
 import javax.microedition.khronos.egl.EGLConfig;
 
 public class surfaceView extends GLSurfaceView implements GLSurfaceView.Renderer {
     public static Scene currentScene;
+    public static Camera mainCamera;
     public static int displayWidth, displayHeight;
     public static float xTouch = -1.0f, yTouch = -1.0f;
 
@@ -18,7 +23,6 @@ public class surfaceView extends GLSurfaceView implements GLSurfaceView.Renderer
         setEGLContextClientVersion(2);
 
         setRenderer(this);
-        setRenderMode(GLSurfaceView.RENDERMODE_WHEN_DIRTY);
     }
 
     // renderer
