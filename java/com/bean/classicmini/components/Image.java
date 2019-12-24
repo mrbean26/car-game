@@ -16,7 +16,7 @@ import glm.mat._4.Mat4;
 import glm.vec._3.Vec3;
 
 public class Image extends Components {
-    public static FloatBuffer vertexBuffer;
+    public FloatBuffer vertexBuffer;
     public int textureNum, vertexCount, textureResourcePath = R.drawable.no_texture_image;
     public static int imageShader = -1;
     public int imageWidth, imageHeight;
@@ -60,25 +60,23 @@ public class Image extends Components {
 
     @Override
     public void begin(){
-        if(vertexBuffer == null){
-            float[] vertices = new float[]{
-                    -1.0f, -1.0f, 0.0f, 0.0f, 1.0f,
-                    1.0f,  -1.0f, 0.0f, 1.0f, 1.0f,
-                    -1.0f, 1.0f, 0.0f, 0.0f, 0.0f,
+        float[] vertices = new float[]{
+                -1.0f, -1.0f, 0.0f, 0.0f, 1.0f,
+                1.0f,  -1.0f, 0.0f, 1.0f, 1.0f,
+                -1.0f, 1.0f, 0.0f, 0.0f, 0.0f,
 
-                    -1.0f, 1.0f, 0.0f, 0.0f, 0.0f,
-                    1.0f, 1.0f, 0.0f, 1.0f, 0.0f,
-                    1.0f, -1.0f, 0.0f, 1.0f, 1.0f,
-            };
-            vertexCount = vertices.length / 5;
+                -1.0f, 1.0f, 0.0f, 0.0f, 0.0f,
+                1.0f, 1.0f, 0.0f, 1.0f, 0.0f,
+                1.0f, -1.0f, 0.0f, 1.0f, 1.0f,
+        };
+        vertexCount = vertices.length / 5;
 
-            ByteBuffer byteBuffer = ByteBuffer.allocateDirect(vertices.length * 4);
-            byteBuffer.order(ByteOrder.nativeOrder());
+        ByteBuffer byteBuffer = ByteBuffer.allocateDirect(vertices.length * 4);
+        byteBuffer.order(ByteOrder.nativeOrder());
 
-            vertexBuffer = byteBuffer.asFloatBuffer();
-            vertexBuffer.put(vertices);
-            vertexBuffer.position(0);
-        }
+        vertexBuffer = byteBuffer.asFloatBuffer();
+        vertexBuffer.put(vertices);
+        vertexBuffer.position(0);
 
         ClassicMiniTexture newTexture = new ClassicMiniTexture(textureResourcePath);
         imageWidth = newTexture.imageWidth;

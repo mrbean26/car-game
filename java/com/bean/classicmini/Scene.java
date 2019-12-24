@@ -26,6 +26,10 @@ field name componentNameAndPackage fieldName intResource fileUnderResName fileNa
 EXAMPLE
 field toby com.bean.classicmini.components.Image textureResourcePath intResource drawable image
 
+PARENTS
+Bean toby
+Bean adam toby (create a bean for child under toby)
+
 Make sure fields are public
 Make sure component extends from components
 Make sure name is specified in default constructor of component
@@ -44,9 +48,17 @@ public class Scene {
             String[] data = current.split(" ");
 
             if(data[0].equals("Bean")){
-                allBeans.put(data[1], new Bean(data[1]));
+                Bean newBean = new Bean(data[1]);
+                int dataLength = data.length;
+
+                allBeans.put(newBean.objectName, newBean);
+                if(dataLength > 2){
+                    newBean.getComponents(Transform.class).parent = allBeans.get(data[2]);
+                    allBeans.get(data[2]).getComponents(Transform.class).children.put(data[1], newBean);
+                }
             }
             if(data[0].equals("component")){
+                data[2] = "com.bean." + data[2];
                 try{
                     Class<?> newClass = Class.forName(data[2]);
                     Constructor<?> constructor = newClass.getConstructor();
@@ -71,6 +83,7 @@ public class Scene {
                 }
             }
             if(data[0].equals("field")){
+                data[2] = "com.bean." + data[2];
                 try{
                     Class<?> newClass = Class.forName(data[2]);
                     Field selectedField = newClass.getField(data[3]);

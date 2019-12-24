@@ -2,6 +2,7 @@ package com.bean.classicmini.components;
 
 import android.opengl.GLES20;
 
+import com.bean.classicmini.MainActivity;
 import com.bean.classicmini.R;
 import com.bean.classicmini.utilities.ClassicMiniShaders;
 import com.bean.classicmini.utilities.ClassicMiniTexture;
@@ -15,7 +16,7 @@ import glm.mat._4.Mat4;
 
 
 public class Sprite extends Components {
-    public static FloatBuffer vertexBuffer;
+    public FloatBuffer vertexBuffer;
     public int textureNum, vertexCount, textureResourcePath = R.drawable.no_texture_image;
     public static int spriteShader = -1;
     public int imageWidth, imageHeight;
@@ -39,7 +40,7 @@ public class Sprite extends Components {
         ClassicMiniShaders.setInt(0, "sampler", spriteShader);
         ClassicMiniShaders.setMatrix4(Camera.perspectiveMatrix(), "projection", spriteShader);
         ClassicMiniShaders.setMatrix4(Camera.viewMatrix(), "view", spriteShader);
-        ClassicMiniShaders.setMatrix4(new Mat4(1.0f), "model", spriteShader);
+        ClassicMiniShaders.setMatrix4(getBean().getComponents(Transform.class).toMatrix4(false), "model", spriteShader);
 
         GLES20.glActiveTexture(GLES20.GL_TEXTURE0);
         GLES20.glBindTexture(GLES20.GL_TEXTURE_2D, textureNum);
@@ -55,25 +56,23 @@ public class Sprite extends Components {
 
     @Override
     public void begin(){
-        if(vertexBuffer == null){
-            float[] vertices = new float[]{
-                    -1.0f, -1.0f, 0.0f, 0.0f, 1.0f,
-                    1.0f,  -1.0f, 0.0f, 1.0f, 1.0f,
-                    -1.0f, 1.0f, 0.0f, 0.0f, 0.0f,
+        float[] vertices = new float[]{
+                -1.0f, -1.0f, 0.0f, 0.0f, 1.0f,
+                1.0f,  -1.0f, 0.0f, 1.0f, 1.0f,
+                -1.0f, 1.0f, 0.0f, 0.0f, 0.0f,
 
-                    -1.0f, 1.0f, 0.0f, 0.0f, 0.0f,
-                    1.0f, 1.0f, 0.0f, 1.0f, 0.0f,
-                    1.0f, -1.0f, 0.0f, 1.0f, 1.0f,
-            };
-            vertexCount = vertices.length / 5;
+                -1.0f, 1.0f, 0.0f, 0.0f, 0.0f,
+                1.0f, 1.0f, 0.0f, 1.0f, 0.0f,
+                1.0f, -1.0f, 0.0f, 1.0f, 1.0f,
+        };
+        vertexCount = vertices.length / 5;
 
-            ByteBuffer byteBuffer = ByteBuffer.allocateDirect(vertices.length * 4);
-            byteBuffer.order(ByteOrder.nativeOrder());
+        ByteBuffer byteBuffer = ByteBuffer.allocateDirect(vertices.length * 4);
+        byteBuffer.order(ByteOrder.nativeOrder());
 
-            vertexBuffer = byteBuffer.asFloatBuffer();
-            vertexBuffer.put(vertices);
-            vertexBuffer.position(0);
-        }
+        vertexBuffer = byteBuffer.asFloatBuffer();
+        vertexBuffer.put(vertices);
+        vertexBuffer.position(0);
 
         ClassicMiniTexture newTexture = new ClassicMiniTexture(textureResourcePath);
         imageWidth = newTexture.imageWidth;
