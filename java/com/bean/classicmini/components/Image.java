@@ -37,10 +37,7 @@ public class Image extends Components {
 
         // matrix
         Mat4 currentMatrix = ClassicMiniMath.getOrtho(); // ortho then transform bit
-        Transform objectTransform = getBean().getComponents(Transform.class);
-        currentMatrix.translate(objectTransform.position());
-        currentMatrix.rotate((float) Math.toRadians(objectTransform.zRotation), new Vec3(0.0f, 0.0f, 1.0f));
-        currentMatrix.scale(objectTransform.scale());
+        currentMatrix = currentMatrix.mul(getBean().getComponents(Transform.class).toMatrix4(false));
 
         GLES20.glUseProgram(imageShader);
         ClassicMiniShaders.setMatrix4(currentMatrix, "model", imageShader);

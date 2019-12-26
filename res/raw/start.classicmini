@@ -1,13 +1,13 @@
 Bean toby
 component toby classicmini.components.Camera
-field toby classicmini.components.Transform zPosition float -25.0
+field toby classicmini.components.Transform zPosition float -95.0
 field toby classicmini.components.Transform yRotation float 270.0
 
 Bean adam
-component adam classicmini.components.Sprite
-field adam classicmini.components.Sprite textureResourcePath intResource drawable image
+component adam classicmini.components.Image
+field adam classicmini.components.Image textureResourcePath intResource drawable image
+field adam classicmini.components.Transform xPosition float 1.0
 
-Bean tracy adam
+Bean tracy
 component tracy classicmini.components.Sprite
 field tracy classicmini.components.Sprite textureResourcePath intResource drawable bean
-field tracy classicmini.components.Transform xPosition float 4.0

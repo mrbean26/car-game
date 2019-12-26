@@ -30,6 +30,10 @@ PARENTS
 Bean toby
 Bean adam toby (create a bean for child under toby)
 
+SUBCLASS FIELDS
+field componentName top-bottom-bottom int 44
+field com.bean.classicmini.components.Image usedTexture-id 44
+
 Make sure fields are public
 Make sure component extends from components
 Make sure name is specified in default constructor of component
@@ -85,9 +89,28 @@ public class Scene {
             if(data[0].equals("field")){
                 data[2] = "com.bean." + data[2];
                 try{
-                    Class<?> newClass = Class.forName(data[2]);
-                    Field selectedField = newClass.getField(data[3]);
+                    Class<?> selectedComponent = Class.forName(data[2]);
+
                     Object dataToSet = new Object();
+                    Object dataToSetTo = allBeans.get(data[1]).getComponents(selectedComponent);
+
+                    Field selectedField = selectedComponent.getField("objectName"); // just for initialisaton
+                    if(!data[3].contains("-")){
+                        selectedField = selectedComponent.getField(data[3]);
+                    }
+                    if(data[3].contains("-")){
+                        String[] secondaryData = data[3].split("-");
+                        int length = secondaryData.length;
+
+                        for(int i = 0; i < length; i++){
+                            Class<?> currentClass = dataToSetTo.getClass();
+                            selectedField = currentClass.getField(secondaryData[i]);
+
+                            if(i != length - 1){
+                                dataToSetTo = selectedField.get(dataToSetTo);
+                            }
+                        }
+                    }
 
                     if(data[4].equals("string")){
                         dataToSet = data[5];
@@ -110,7 +133,7 @@ public class Scene {
                         dataToSet = MainActivity.getAppContext().getResources().getIdentifier(data[6], data[5], MainActivity.getAppContext().getPackageName());
                     }
 
-                    selectedField.set(allBeans.get(data[1]).getComponents(newClass), dataToSet);
+                    selectedField.set(dataToSetTo, dataToSet);
 
                 } catch (NoSuchFieldException e){
                     MainActivity.error("NoSuchFieldException" + e.toString());
