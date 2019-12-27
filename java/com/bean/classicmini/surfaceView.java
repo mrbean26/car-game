@@ -39,7 +39,6 @@ public class surfaceView extends GLSurfaceView implements GLSurfaceView.Renderer
 
         deltaTime = ((System.nanoTime() / 1000000000.0f) - startTime) - currentTime;
         currentTime = (System.nanoTime() / 1000000000.0f) - startTime;
-        currentScene.allBeans.get("toby").getComponents(Transform.class).zPosition += deltaTime * 10.0f;
     }
 
     public void onSurfaceChanged(GL10 gl, int width, int height){

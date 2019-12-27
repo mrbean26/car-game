@@ -3,9 +3,9 @@ package com.bean.classicmini.components;
 import android.opengl.GLES20;
 
 import com.bean.classicmini.R;
+import com.bean.classicmini.utilities.ClassicMiniMaterial;
 import com.bean.classicmini.utilities.ClassicMiniMath;
 import com.bean.classicmini.utilities.ClassicMiniShaders;
-import com.bean.classicmini.utilities.ClassicMiniTexture;
 import com.bean.components.Components;
 
 import java.nio.ByteBuffer;
@@ -17,9 +17,9 @@ import glm.vec._3.Vec3;
 
 public class Image extends Components {
     public FloatBuffer vertexBuffer;
-    public int textureNum, vertexCount, textureResourcePath = R.drawable.no_texture_image;
+    public int vertexCount;
     public static int imageShader = -1;
-    public int imageWidth, imageHeight;
+    public ClassicMiniMaterial material = new ClassicMiniMaterial();
 
     public void draw(){
         GLES20.glEnable(GLES20.GL_BLEND);
@@ -43,8 +43,7 @@ public class Image extends Components {
         ClassicMiniShaders.setMatrix4(currentMatrix, "model", imageShader);
         ClassicMiniShaders.setInt(0, "sampler", imageShader);
 
-        GLES20.glActiveTexture(GLES20.GL_TEXTURE0);
-        GLES20.glBindTexture(GLES20.GL_TEXTURE_2D, textureNum);
+        material.bind();
 
         GLES20.glDrawArrays(GLES20.GL_TRIANGLES, 0, vertexCount);
         GLES20.glDisable(GLES20.GL_BLEND);
@@ -75,11 +74,6 @@ public class Image extends Components {
         vertexBuffer.put(vertices);
         vertexBuffer.position(0);
 
-        ClassicMiniTexture newTexture = new ClassicMiniTexture(textureResourcePath);
-        imageWidth = newTexture.imageWidth;
-        imageHeight = newTexture.imageHeight;
-        textureNum = newTexture.textureNum;
-
         if(imageShader == -1){
             int fragmentShader = ClassicMiniShaders.createShader(R.raw.imagefragment, GLES20.GL_FRAGMENT_SHADER);
             int vertexShader = ClassicMiniShaders.createShader(R.raw.imagevertex, GLES20.GL_VERTEX_SHADER);
@@ -87,5 +81,6 @@ public class Image extends Components {
             int[] programs = {vertexShader, fragmentShader};
             imageShader = ClassicMiniShaders.createProgram(programs);
         }
+        material.begin();
     }
 }
