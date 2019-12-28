@@ -26,12 +26,12 @@ public class Image extends Components {
         GLES20.glBlendFunc(GLES20.GL_SRC_ALPHA, GLES20.GL_ONE_MINUS_SRC_ALPHA);
 
         vertexBuffer.position(0);
-        int positionHandle = GLES20.glGetAttribLocation(imageShader, "in_position");
+        int positionHandle = GLES20.glGetAttribLocation(imageShader, "inPosition");
         GLES20.glEnableVertexAttribArray(positionHandle);
         GLES20.glVertexAttribPointer(positionHandle, 3, GLES20.GL_FLOAT, false, 20, vertexBuffer);
 
         vertexBuffer.position(3);
-        int texHandle = GLES20.glGetAttribLocation(imageShader, "in_texCoord");
+        int texHandle = GLES20.glGetAttribLocation(imageShader, "inTexCoord");
         GLES20.glEnableVertexAttribArray(texHandle);
         GLES20.glVertexAttribPointer(texHandle, 2, GLES20.GL_FLOAT, false, 20, vertexBuffer);
 

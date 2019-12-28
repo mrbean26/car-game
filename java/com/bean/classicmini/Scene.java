@@ -1,14 +1,19 @@
 package com.bean.classicmini;
 
+import androidx.core.content.res.TypedArrayUtils;
+
 import com.bean.classicmini.components.Camera;
 import com.bean.classicmini.components.Transform;
 import com.bean.classicmini.utilities.ClassicMiniSavefiles;
 import com.bean.components.Components;
 
+import java.io.ObjectInputStream;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 
+import java.nio.IntBuffer;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.UUID;
@@ -91,7 +96,8 @@ public class Scene {
                 try{
                     Class<?> selectedComponent = Class.forName(data[2]);
 
-                    Object dataToSet = new Object();
+                    Object dataToSet = null;
+                    Object[] dataArrayToSet = new Object[0];
                     Object dataToSetTo = allBeans.get(data[1]).getComponents(selectedComponent);
 
                     Field selectedField = selectedComponent.getField("objectName"); // just for initialisaton
@@ -132,8 +138,33 @@ public class Scene {
                     if(data[4].equals("intResource")){
                         dataToSet = MainActivity.getAppContext().getResources().getIdentifier(data[6], data[5], MainActivity.getAppContext().getPackageName());
                     }
+                    if(data[4].equals("floatArray")){
+                        String[] allItems = data[5].split(",");
+                        int length = allItems.length;
+                        float[] setData = new float[length];
 
-                    selectedField.set(dataToSetTo, dataToSet);
+                        for(int i = 0; i < length; i++){
+                            setData[i] = Float.parseFloat(allItems[i]);
+                        }
+                        selectedField.set(dataToSetTo, setData);
+                    }
+                    if(data[4].equals("intArray")){
+                        String[] allItems = data[5].split(",");
+                        int length = allItems.length;
+                        int[] setData = new int[length];
+
+                        for(int i = 0; i < length; i++){
+                            setData[i] = Integer.parseInt(allItems[i]);
+                        }
+                        selectedField.set(dataToSetTo, setData);
+                    }
+                    if(data[4].equals("stringArray")){
+                        dataToSet = data[5].split(",");
+                    }
+                    // set
+                    if(dataToSet != null){
+                        selectedField.set(dataToSetTo, dataToSet);
+                    }
 
                 } catch (NoSuchFieldException e){
                     MainActivity.error("NoSuchFieldException" + e.toString());

@@ -6,6 +6,7 @@ import android.opengl.GLSurfaceView;
 import android.view.MotionEvent;
 
 import com.bean.classicmini.components.Camera;
+import com.bean.classicmini.components.Mesh;
 import com.bean.classicmini.components.Transform;
 
 import javax.microedition.khronos.opengles.GL10;
