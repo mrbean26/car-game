@@ -2,7 +2,9 @@ package com.bean.classicmini.components;
 
 import android.opengl.GLES20;
 
+import com.bean.classicmini.MainActivity;
 import com.bean.classicmini.R;
+import com.bean.classicmini.surfaceView;
 import com.bean.classicmini.utilities.ClassicMiniMaterial;
 import com.bean.classicmini.utilities.ClassicMiniShaders;
 import com.bean.components.Components;
@@ -11,10 +13,14 @@ import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.nio.FloatBuffer;
 
+import glm.mat._4.Mat4;
+
 public class Sprite extends Components {
     public FloatBuffer vertexBuffer;
     public int vertexCount;
+
     public static int spriteShader = -1;
+    public boolean useLight = false;
     public ClassicMiniMaterial material = new ClassicMiniMaterial();
 
     public void draw(){
@@ -24,19 +30,33 @@ public class Sprite extends Components {
         vertexBuffer.position(0);
         int positionHandle = GLES20.glGetAttribLocation(spriteShader, "inPosition");
         GLES20.glEnableVertexAttribArray(positionHandle);
-        GLES20.glVertexAttribPointer(positionHandle, 3, GLES20.GL_FLOAT, false, 20, vertexBuffer);
+        GLES20.glVertexAttribPointer(positionHandle, 3, GLES20.GL_FLOAT, false, 32, vertexBuffer);
 
         vertexBuffer.position(3);
+        int normalHandle = GLES20.glGetAttribLocation(spriteShader, "inNormal");
+        GLES20.glEnableVertexAttribArray(normalHandle);
+        GLES20.glVertexAttribPointer(normalHandle, 3, GLES20.GL_FLOAT, false, 32, vertexBuffer);
+
+        vertexBuffer.position(6);
         int texHandle = GLES20.glGetAttribLocation(spriteShader, "inTexCoord");
         GLES20.glEnableVertexAttribArray(texHandle);
-        GLES20.glVertexAttribPointer(texHandle, 2, GLES20.GL_FLOAT, false, 20, vertexBuffer);
+        GLES20.glVertexAttribPointer(texHandle, 2, GLES20.GL_FLOAT, false, 32, vertexBuffer);
 
         GLES20.glUseProgram(spriteShader);
 
         ClassicMiniShaders.setInt(0, "sampler", spriteShader);
         ClassicMiniShaders.setMatrix4(Camera.perspectiveMatrix(), "projection", spriteShader);
         ClassicMiniShaders.setMatrix4(Camera.viewMatrix(), "view", spriteShader);
-        ClassicMiniShaders.setMatrix4(getBean().getComponents(Transform.class).toMatrix4(false), "model", spriteShader);
+
+        Mat4 model = getBean().getComponents(Transform.class).toMatrix4(false);
+        ClassicMiniShaders.setMatrix4(model, "model", spriteShader);
+        model = model.inverse();
+        model = model.transpose();
+        ClassicMiniShaders.setMatrix4(model, "transposedInversedModel", spriteShader);
+
+        ClassicMiniShaders.setVector3(surfaceView.mainCamera.getBean().getComponents(Transform.class).position(), "viewPos", spriteShader);
+        ClassicMiniShaders.setFloatArray(Light.getLightInfo(), "lightInfoArray", spriteShader);
+        ClassicMiniShaders.setInt(useLight? 1 : 0, "useLight", spriteShader);
 
         material.bind();
 
@@ -52,15 +72,15 @@ public class Sprite extends Components {
     @Override
     public void begin(){
         float[] vertices = new float[]{
-                -1.0f, -1.0f, 0.0f, 0.0f, 1.0f,
-                1.0f,  -1.0f, 0.0f, 1.0f, 1.0f,
-                -1.0f, 1.0f, 0.0f, 0.0f, 0.0f,
+                -1.0f, -1.0f, 0.0f, 0.0f, 0.0f, -1.0f, 1.0f, 1.0f,
+                1.0f, 1.0f, 0.0f, 0.0f, 0.0f, -1.0f, 0.0f, 0.0f,
+                1.0f, -1.0f, 0.0f, 0.0f, 0.0f, -1.0f, 0.0f, 1.0f,
 
-                -1.0f, 1.0f, 0.0f, 0.0f, 0.0f,
-                1.0f, 1.0f, 0.0f, 1.0f, 0.0f,
-                1.0f, -1.0f, 0.0f, 1.0f, 1.0f,
+                -1.0f, -1.0f, 0.0f, 0.0f, 0.0f, -1.0f, 1.0f, 1.0f,
+                -1.0f, 1.0f, 0.0f, 0.0f, 0.0f, -1.0f, 1.0f, 0.0f,
+                1.0f, 1.0f, 0.0f, 0.0f, 0.0f, -1.0f, 0.0f, 0.0f
         };
-        vertexCount = vertices.length / 5;
+        vertexCount = vertices.length / 8;
 
         ByteBuffer byteBuffer = ByteBuffer.allocateDirect(vertices.length * 4);
         byteBuffer.order(ByteOrder.nativeOrder());

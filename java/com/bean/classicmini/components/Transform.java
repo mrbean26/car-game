@@ -2,6 +2,7 @@ package com.bean.classicmini.components;
 
 import com.bean.classicmini.Bean;
 import com.bean.classicmini.MainActivity;
+import com.bean.classicmini.surfaceView;
 import com.bean.classicmini.utilities.ClassicMiniMath;
 import com.bean.components.Components;
 
@@ -14,15 +15,20 @@ import glm.mat._4.Mat4;
 import glm.vec._3.Vec3;
 
 public class Transform extends Components {
-    public Transform(){
-        name = "Transform";
-    }
-
     @Override
     public void mainloop(){
-        xPosition = xPosition + xVelocity;
-        yPosition = yPosition + yVelocity;
-        zPosition = zPosition + zVelocity;
+        updateVelocity();
+    }
+
+    public void updateVelocity(){
+        Vec3 start = position();
+        start = start.add(forwardVector().mul(xVelocity * surfaceView.deltaTime));
+        start = start.add(upVector().mul(yVelocity * surfaceView.deltaTime));
+        start = start.add(rightVector().mul(zVelocity * surfaceView.deltaTime));
+
+        xPosition = start.x;
+        yPosition = start.y;
+        zPosition = start.z;
     }
 
     public float xPosition = 0.0f;
@@ -53,7 +59,7 @@ public class Transform extends Components {
     public float yVelocity = 0.0f;
     public float zVelocity = 0.0f;
 
-    public Vec3 up(){
+    public Vec3 upVector(){
         Vec3 returned = new Vec3(0.0f);
         returned.x = ClassicMiniMath.classicMiniCos(yRotation) * ClassicMiniMath.classicMiniSin(xRotation);
         returned.y = ClassicMiniMath.classicMiniCos(xRotation);
@@ -61,7 +67,7 @@ public class Transform extends Components {
         return returned;
     }
 
-    public Vec3 forward(){
+    public Vec3 forwardVector(){
         Vec3 returned = new Vec3(0.0f);
         returned.x = ClassicMiniMath.classicMiniCos(yRotation) * ClassicMiniMath.classicMiniCos(xRotation);
         returned.y = ClassicMiniMath.classicMiniSin(xRotation);
@@ -69,7 +75,7 @@ public class Transform extends Components {
         return returned;
     }
 
-    public Vec3 right(){
+    public Vec3 rightVector(){
         Vec3 returned = new Vec3(0.0f);
         returned.x = ClassicMiniMath.classicMiniCos(yRotation + 90.0f) * ClassicMiniMath.classicMiniCos(xRotation);
         returned.y = ClassicMiniMath.classicMiniSin(xRotation);

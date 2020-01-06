@@ -1,8 +1,12 @@
 package com.bean.classicmini;
 
+import android.opengl.GLES20;
+import android.opengl.GLES31Ext;
+
 import androidx.core.content.res.TypedArrayUtils;
 
 import com.bean.classicmini.components.Camera;
+import com.bean.classicmini.components.Light;
 import com.bean.classicmini.components.Transform;
 import com.bean.classicmini.utilities.ClassicMiniSavefiles;
 import com.bean.components.Components;
@@ -12,6 +16,7 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 
+import java.nio.FloatBuffer;
 import java.nio.IntBuffer;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -54,8 +59,14 @@ public class Scene {
 
         for(int l = 0; l < lineCount; l++){
             String current = sceneInfo.get(l);
-            String[] data = current.split(" ");
+            if(current.length() > 2){
+                String firstTwo = current.substring(0, 2);
+                if(firstTwo.equals("//")){ // comment
+                    continue;
+                }
+            }
 
+            String[] data = current.split(" ");
             if(data[0].equals("Bean")){
                 Bean newBean = new Bean(data[1]);
                 int dataLength = data.length;
@@ -189,4 +200,7 @@ public class Scene {
             bean.mainloop();
         }
     }
+
+    // shadows require android OPEN GL 3.1+, maybe roll out an update when all other updates are finished with shadows so compatible devices can use
+    // or when OPEN GL 3.1 + is standard
 }

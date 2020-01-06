@@ -4,6 +4,7 @@ import android.opengl.GLES20;
 
 import com.bean.classicmini.MainActivity;
 import com.bean.classicmini.R;
+import com.bean.classicmini.surfaceView;
 import com.bean.classicmini.utilities.ClassicMiniMaterial;
 import com.bean.classicmini.utilities.ClassicMiniMath;
 import com.bean.classicmini.utilities.ClassicMiniSavefiles;
@@ -16,6 +17,7 @@ import java.nio.FloatBuffer;
 import java.util.ArrayList;
 import java.util.List;
 
+import glm.mat._4.Mat4;
 import glm.vec._2.Vec2;
 import glm.vec._3.Vec3;
 import glm.vec._3.i.Vec3i;
@@ -26,6 +28,7 @@ public class Mesh extends Components {
     public FloatBuffer vertexBuffer;
 
     public ClassicMiniMaterial material = new ClassicMiniMaterial();
+    public boolean useLight = false;
     public static int meshShader = -1;
 
     public void render(){
@@ -35,17 +38,17 @@ public class Mesh extends Components {
         vertexBuffer.position(0);
         int positionHandle = GLES20.glGetAttribLocation(meshShader, "inPosition");
         GLES20.glEnableVertexAttribArray(positionHandle);
-        GLES20.glVertexAttribPointer(positionHandle, 3, GLES20.GL_FLOAT, false, 20, vertexBuffer);
+        GLES20.glVertexAttribPointer(positionHandle, 3, GLES20.GL_FLOAT, false, 32, vertexBuffer);
 
         vertexBuffer.position(3);
         int normalHandle = GLES20.glGetAttribLocation(meshShader, "inNormal");
         GLES20.glEnableVertexAttribArray(normalHandle);
-        GLES20.glVertexAttribPointer(normalHandle, 3, GLES20.GL_FLOAT, false, 20, vertexBuffer);
+        GLES20.glVertexAttribPointer(normalHandle, 3, GLES20.GL_FLOAT, false, 32, vertexBuffer);
 
-        vertexBuffer.position(5);
+        vertexBuffer.position(6);
         int texHandle = GLES20.glGetAttribLocation(meshShader, "inTexCoord");
         GLES20.glEnableVertexAttribArray(texHandle);
-        GLES20.glVertexAttribPointer(texHandle, 2, GLES20.GL_FLOAT, false, 20, vertexBuffer);
+        GLES20.glVertexAttribPointer(texHandle, 2, GLES20.GL_FLOAT, false, 32, vertexBuffer);
 
         GLES20.glUseProgram(meshShader);
 
@@ -53,6 +56,15 @@ public class Mesh extends Components {
         ClassicMiniShaders.setMatrix4(Camera.perspectiveMatrix(), "projection", meshShader);
         ClassicMiniShaders.setMatrix4(Camera.viewMatrix(), "view", meshShader);
         ClassicMiniShaders.setMatrix4(getBean().getComponents(Transform.class).toMatrix4(false), "model", meshShader);
+
+        Mat4 newMatrix = getBean().getComponents(Transform.class).toMatrix4(false);
+        newMatrix = newMatrix.inverse();
+        newMatrix = newMatrix.transpose();
+        ClassicMiniShaders.setMatrix4(newMatrix, "transposedInversedModel", meshShader);
+
+        ClassicMiniShaders.setVector3(surfaceView.mainCamera.getBean().getComponents(Transform.class).position(), "viewPos", meshShader);
+        ClassicMiniShaders.setFloatArray(Light.getLightInfo(), "lightInfoArray", meshShader);
+        ClassicMiniShaders.setInt(useLight? 1 : 0, "useLight", meshShader);
 
         material.bind();
         GLES20.glDrawArrays(GLES20.GL_TRIANGLES, 0, vertexCount);
@@ -73,7 +85,7 @@ public class Mesh extends Components {
 
         if(meshShader == -1){
             int fragmentShader = ClassicMiniShaders.createShader(R.raw.meshfragment, GLES20.GL_FRAGMENT_SHADER);
-            int vertexShader = ClassicMiniShaders.createShader(R.raw.meshfragment, GLES20.GL_VERTEX_SHADER);
+            int vertexShader = ClassicMiniShaders.createShader(R.raw.meshvertex, GLES20.GL_VERTEX_SHADER);
 
             int[] programs = {vertexShader, fragmentShader};
             meshShader = ClassicMiniShaders.createProgram(programs);
@@ -117,9 +129,9 @@ public class Mesh extends Components {
                     String[] data = line.split(" ");
 
                     Vec3 newNormal = new Vec3(
-                            Float.valueOf(data[0]) - 1,
-                            Float.valueOf(data[1]) - 1,
-                            Float.valueOf(data[2]) - 1
+                            Float.valueOf(data[0]),
+                            Float.valueOf(data[1]),
+                            Float.valueOf(data[2])
                     );
                     normals.add(newNormal);
                 }
@@ -128,8 +140,8 @@ public class Mesh extends Components {
                     String[] data = line.split(" ");
 
                     Vec2 newTexcoord = new Vec2(
-                            Float.valueOf(data[0]) - 1,
-                            Float.valueOf(data[1]) - 1
+                            Float.valueOf(data[0]),
+                            Float.valueOf(data[1])
                     );
                     texCoords.add(newTexcoord);
                 }

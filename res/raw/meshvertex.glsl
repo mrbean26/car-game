@@ -2,18 +2,19 @@ attribute vec3 inPosition;
 attribute vec3 inNormal;
 attribute vec2 inTexCoord;
 
-varying vec2 texCoord;
-varying vec3 outNormal;
-varying vec3 fragPos;
+varying vec3 FragPos;
+varying vec3 Normal;
+varying vec2 TexCoords;
 
 uniform mat4 model;
 uniform mat4 projection;
 uniform mat4 view;
+uniform mat4 transposedInversedModel;
 
 void main(){
     gl_Position = projection * view * model * vec4(inPosition, 1);
 
-    texCoord = inTexCoord;
-    outNormal = inNormal;
-    fragPos = vec3(model * vec4(inPosition, 1.0));
+    Normal = mat3(transposedInversedModel) * inNormal;
+    TexCoords = inTexCoord;
+    FragPos = vec3(model * vec4(inPosition, 1.0));
 }
