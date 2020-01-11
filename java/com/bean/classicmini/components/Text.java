@@ -13,17 +13,36 @@ import java.nio.ByteOrder;
 import java.nio.FloatBuffer;
 
 import glm.mat._4.Mat4;
-import glm.vec._3.Vec3;
 import glm.vec._4.Vec4;
 
-public class Image extends Components {
+import static com.bean.classicmini.components.Image.imageShader;
+
+public class Text extends Components {
+    public ClassicMiniMaterial material = new ClassicMiniMaterial();
+
     public FloatBuffer vertexBuffer;
     public int vertexCount;
-
-    public static int imageShader = -1;
-
-    public ClassicMiniMaterial material = new ClassicMiniMaterial();
     public Vec4 colour = new Vec4(1.0f);
+
+    public void setText(String newText){
+        material.displayedText = newText;
+        material.begin();
+    }
+
+    public void setTextSize(int newSize){
+        material.textSize = newSize;
+        material.begin();
+    }
+
+    public void setTextCentered(boolean as){
+        material.textCentered = as;
+        material.begin();
+    }
+
+    public void setTextFont(int newFont){
+        material.fontPath = newFont;
+        material.begin();
+    }
 
     public void draw(){
         GLES20.glEnable(GLES20.GL_BLEND);
@@ -61,6 +80,9 @@ public class Image extends Components {
 
     @Override
     public void begin(){
+        material.type = "text";
+        material.begin();
+
         float[] vertices = new float[]{
                 -1.0f, -1.0f, 0.0f, 0.0f, 1.0f,
                 1.0f,  -1.0f, 0.0f, 1.0f, 1.0f,
@@ -86,6 +108,5 @@ public class Image extends Components {
             int[] programs = {vertexShader, fragmentShader};
             imageShader = ClassicMiniShaders.createProgram(programs);
         }
-        material.begin();
     }
 }

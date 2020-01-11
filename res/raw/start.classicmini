@@ -4,6 +4,4 @@ field toby classicmini.components.Transform zPosition float -5.0
 field toby classicmini.components.Transform yRotation float 270.0
 
 Bean tracy
-component tracy classicmini.components.Sprite
-field tracy classicmini.components.Sprite material-imagePath intResource drawable image
-
+component tracy classicmini.components.Text

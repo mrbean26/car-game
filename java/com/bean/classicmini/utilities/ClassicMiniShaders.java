@@ -9,6 +9,7 @@ import java.nio.IntBuffer;
 
 import glm.mat._4.Mat4;
 import glm.vec._3.Vec3;
+import glm.vec._4.Vec4;
 
 public class ClassicMiniShaders { // OpenGL ES GLSL ES 3.00
     public static int createShader(int codePath, int shaderType){
@@ -55,5 +56,10 @@ public class ClassicMiniShaders { // OpenGL ES GLSL ES 3.00
     public static void setFloatArray(FloatBuffer used, String name, int shader){
         int location = GLES20.glGetUniformLocation(shader, name);
         GLES20.glUniform1fv(location, used.array().length, used);
+    }
+
+    public static void setVector4(Vec4 used, String name, int shader){
+        int location = GLES20.glGetUniformLocation(shader, name);
+        GLES20.glUniform4f(location, used.x, used.y, used.z, used.w);
     }
 }
