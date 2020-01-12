@@ -76,6 +76,8 @@ public class Text extends Components {
     @Override
     public void mainloop(){
         draw();
+        getBean().getComponents(Transform.class).xScale = material.getXTextMultiplier() * 0.05f;
+        getBean().getComponents(Transform.class).yScale = 0.05f;
     }
 
     @Override

@@ -4,6 +4,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.Matrix;
 import android.graphics.Paint;
 
 import android.graphics.Typeface;
@@ -27,6 +28,11 @@ public class ClassicMiniMaterial {
     public int textSize = 80;
     public boolean textCentered = true;
     public int fontPath = R.font.default_font;
+
+    private float xTextMultiplier = 1.0f;
+    public float getXTextMultiplier(){
+        return xTextMultiplier; // read only variable from outside class
+    }
 
     public int imagePath = R.drawable.no_texture_image;
 
@@ -78,7 +84,7 @@ public class ClassicMiniMaterial {
     public void loadText(int size, String text, boolean centered){
         GLES20.glBindTexture(GLES20.GL_TEXTURE_2D, textureNum);
 
-        Bitmap texture = Bitmap.createBitmap(256, 256, Bitmap.Config.ARGB_8888);
+        Bitmap texture = Bitmap.createBitmap(512, 512, Bitmap.Config.ARGB_8888);
         Canvas canvas = new Canvas(texture);
         texture.eraseColor(0);
 
@@ -89,6 +95,11 @@ public class ClassicMiniMaterial {
         textPaint.setAntiAlias(true);
         textPaint.setARGB(255, 255, 255, 255);
         textPaint.setTypeface(font);
+
+        // resize to image (not outside)
+        float scale = 512f / textPaint.measureText(text);
+        xTextMultiplier = textPaint.measureText(text) / 512f;
+        textPaint.setTextScaleX(scale);
 
         int xPosition = (canvas.getWidth() / 2);
         int yPosition = (int) ((canvas.getHeight() / 2) - ((textPaint.descent() + textPaint.ascent()) / 2));
