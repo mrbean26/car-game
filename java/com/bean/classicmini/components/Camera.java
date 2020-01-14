@@ -44,10 +44,10 @@ public class Camera extends Components {
             Camera mainCamera = surfaceView.mainCamera;
             Transform objectTransform = mainCamera.getBean().getComponents(Transform.class);
 
-            Vec3 lookAt = objectTransform.position();
+            Vec3 lookAt = objectTransform.position;
             lookAt = lookAt.add(objectTransform.forwardVector());
 
-            newMatrix.lookAt(objectTransform.position(), lookAt,
+            newMatrix.lookAt(objectTransform.position, lookAt,
                     new Vec3(0.0f, 1.0f, 0.0f));
         } catch (NullPointerException e){
             MainActivity.error("No Camera available");

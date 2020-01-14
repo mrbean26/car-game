@@ -23,6 +23,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.UUID;
 
+import glm.vec._3.Vec3;
+
 /*
 WHEN CREATING A SCENE FILE:
 Follow this format.
@@ -171,6 +173,16 @@ public class Scene {
                     }
                     if(data[4].equals("stringArray")){
                         dataToSet = data[5].split(",");
+                    }
+                    if(data[4].equals("vec3")){
+                        String[] info = data[5].split(",");
+
+                        Vec3 newVector = new Vec3();
+                        newVector.x = Float.parseFloat(info[0]);
+                        newVector.y = Float.parseFloat(info[1]);
+                        newVector.z = Float.parseFloat(info[2]);
+
+                        dataToSet = newVector;
                     }
                     // set
                     if(dataToSet != null){

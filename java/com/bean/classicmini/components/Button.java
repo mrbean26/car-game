@@ -15,13 +15,13 @@ public class Button extends Components {
 
     public boolean isClicked(){
         Transform buttonTransform = getBean().getComponents(Transform.class);
-        float xCenter = (surfaceView.displayWidth / 2.0f) + (buttonTransform.xPosition * (surfaceView.displayWidth / 2.0f));
-        float yCenter = surfaceView.displayHeight - ((surfaceView.displayHeight / 2.0f) + (buttonTransform.yPosition * (surfaceView.displayWidth / 2.0f)));
+        float xCenter = (surfaceView.displayWidth / 2.0f) + (buttonTransform.position.x * (surfaceView.displayWidth / 2.0f));
+        float yCenter = surfaceView.displayHeight - ((surfaceView.displayHeight / 2.0f) + (buttonTransform.position.y * (surfaceView.displayWidth / 2.0f)));
 
         Vec2 center = new Vec2(xCenter, yCenter);
         Vec2 touchPoint = new Vec2(surfaceView.xTouch, surfaceView.yTouch);
 
-        float angleRadians = (float) Math.toRadians(-buttonTransform.zRotation);
+        float angleRadians = (float) Math.toRadians(-buttonTransform.rotation.z);
         touchPoint.x = touchPoint.x - center.x;
         touchPoint.y = touchPoint.y - center.y;
 
@@ -31,11 +31,11 @@ public class Button extends Components {
         touchPoint.x = xNew + center.x;
         touchPoint.y = yNew + center.y;
 
-        float xRight = xCenter + ((surfaceView.displayWidth / 2.0f) * buttonTransform.xScale);
-        float xLeft = xCenter - ((surfaceView.displayWidth / 2.0f) * buttonTransform.xScale);
+        float xRight = xCenter + ((surfaceView.displayWidth / 2.0f) * buttonTransform.scale.x);
+        float xLeft = xCenter - ((surfaceView.displayWidth / 2.0f) * buttonTransform.scale.x);
 
-        float yTop = yCenter + ((surfaceView.displayWidth / 2.0f) * buttonTransform.yScale);
-        float yBottom = yCenter - ((surfaceView.displayWidth / 2.0f) * buttonTransform.yScale);
+        float yTop = yCenter + ((surfaceView.displayWidth / 2.0f) * buttonTransform.scale.y);
+        float yBottom = yCenter - ((surfaceView.displayWidth / 2.0f) * buttonTransform.scale.y);
 
         if(touchPoint.x > xLeft && touchPoint.x < xRight){
             if(touchPoint.y < yTop && touchPoint.y > yBottom){

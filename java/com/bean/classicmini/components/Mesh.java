@@ -62,7 +62,7 @@ public class Mesh extends Components {
         newMatrix = newMatrix.transpose();
         ClassicMiniShaders.setMatrix4(newMatrix, "transposedInversedModel", meshShader);
 
-        ClassicMiniShaders.setVector3(surfaceView.mainCamera.getBean().getComponents(Transform.class).position(), "viewPos", meshShader);
+        ClassicMiniShaders.setVector3(surfaceView.mainCamera.getBean().getComponents(Transform.class).position, "viewPos", meshShader);
         ClassicMiniShaders.setFloatArray(Light.getLightInfo(), "lightInfoArray", meshShader);
         ClassicMiniShaders.setInt(useLight? 1 : 0, "useLight", meshShader);
 

@@ -2,6 +2,7 @@ package com.bean.classicmini.components;
 
 import android.opengl.GLES20;
 
+import com.bean.classicmini.MainActivity;
 import com.bean.classicmini.R;
 import com.bean.classicmini.utilities.ClassicMiniMaterial;
 import com.bean.classicmini.utilities.ClassicMiniMath;
@@ -23,6 +24,7 @@ public class Text extends Components {
     public FloatBuffer vertexBuffer;
     public int vertexCount;
     public Vec4 colour = new Vec4(1.0f);
+    public boolean realTextScale = false;
 
     public void setText(String newText){
         material.displayedText = newText;
@@ -59,8 +61,13 @@ public class Text extends Components {
         GLES20.glVertexAttribPointer(texHandle, 2, GLES20.GL_FLOAT, false, 20, vertexBuffer);
 
         // matrix
+        float xTempScale = getBean().getComponents(Transform.class).scale.x;
+        if(realTextScale){
+            getBean().getComponents(Transform.class).scale.x = getBean().getComponents(Transform.class).scale.x * material.getXTextMultiplier();
+        }
         Mat4 currentMatrix = ClassicMiniMath.getOrtho(); // ortho then transform bit
         currentMatrix = currentMatrix.mul(getBean().getComponents(Transform.class).toMatrix4(false));
+        getBean().getComponents(Transform.class).scale.x = xTempScale;
 
         GLES20.glUseProgram(imageShader);
         ClassicMiniShaders.setMatrix4(currentMatrix, "model", imageShader);
@@ -76,8 +83,6 @@ public class Text extends Components {
     @Override
     public void mainloop(){
         draw();
-        getBean().getComponents(Transform.class).xScale = material.getXTextMultiplier() * 0.05f;
-        getBean().getComponents(Transform.class).yScale = 0.05f;
     }
 
     @Override

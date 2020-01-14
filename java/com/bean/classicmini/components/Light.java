@@ -39,9 +39,9 @@ public class Light extends Components {
                 array[currentLightCount * 13 + 9] = component.zColour;
 
                 Transform position = current.getComponents(Transform.class);
-                array[currentLightCount * 13 + 10] = position.xPosition;
-                array[currentLightCount * 13 + 11] = position.yPosition;
-                array[currentLightCount * 13 + 12] = position.zPosition;
+                array[currentLightCount * 13 + 10] = position.position.x;
+                array[currentLightCount * 13 + 11] = position.position.y;
+                array[currentLightCount * 13 + 12] = position.position.z;
 
                 currentLightCount = currentLightCount + 1;
                 if(currentLightCount == 10){

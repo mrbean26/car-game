@@ -21,65 +21,43 @@ public class Transform extends Components {
     }
 
     public void updateVelocity(){
-        Vec3 start = position();
-        start = start.add(forwardVector().mul(xVelocity * surfaceView.deltaTime));
-        start = start.add(upVector().mul(yVelocity * surfaceView.deltaTime));
-        start = start.add(rightVector().mul(zVelocity * surfaceView.deltaTime));
+        Vec3 start = position;
+        start = start.add(forwardVector().mul(velocity.x * surfaceView.deltaTime));
+        start = start.add(upVector().mul(velocity.y * surfaceView.deltaTime));
+        start = start.add(rightVector().mul(velocity.z * surfaceView.deltaTime));
 
-        xPosition = start.x;
-        yPosition = start.y;
-        zPosition = start.z;
+        position.x = start.x;
+        position.y = start.y;
+        position.z = start.z;
     }
 
-    public float xPosition = 0.0f;
-    public float yPosition = 0.0f;
-    public float zPosition = 0.0f;
+    public Vec3 position = new Vec3();
+    public Vec3 rotation = new Vec3();
+    public Vec3 scale = new Vec3(1.0f);
 
-    public Vec3 position(){
-        return new Vec3(xPosition, yPosition, zPosition);
-    }
-
-    public float xRotation = 0.0f;
-    public float yRotation = 0.0f;
-    public float zRotation = 0.0f;
-
-    public Vec3 rotation(){
-        return new Vec3(xRotation, yRotation, zRotation);
-    }
-
-    public float xScale = 1.0f;
-    public float yScale = 1.0f;
-    public float zScale = 1.0f;
-
-    public Vec3 scale(){
-        return new Vec3(xScale, yScale, zScale);
-    }
-
-    public float xVelocity = 0.0f;
-    public float yVelocity = 0.0f;
-    public float zVelocity = 0.0f;
+    public Vec3 velocity = new Vec3();
 
     public Vec3 upVector(){
         Vec3 returned = new Vec3(0.0f);
-        returned.x = ClassicMiniMath.classicMiniCos(yRotation) * ClassicMiniMath.classicMiniSin(xRotation);
-        returned.y = ClassicMiniMath.classicMiniCos(xRotation);
-        returned.z = ClassicMiniMath.classicMiniSin(yRotation) * ClassicMiniMath.classicMiniSin(xRotation);
+        returned.x = ClassicMiniMath.classicMiniCos(rotation.y) * ClassicMiniMath.classicMiniSin(rotation.x);
+        returned.y = ClassicMiniMath.classicMiniCos(rotation.x);
+        returned.z = ClassicMiniMath.classicMiniSin(rotation.y) * ClassicMiniMath.classicMiniSin(rotation.x);
         return returned;
     }
 
     public Vec3 forwardVector(){
         Vec3 returned = new Vec3(0.0f);
-        returned.x = ClassicMiniMath.classicMiniCos(yRotation) * ClassicMiniMath.classicMiniCos(xRotation);
-        returned.y = ClassicMiniMath.classicMiniSin(xRotation);
-        returned.z = ClassicMiniMath.classicMiniSin(yRotation) * ClassicMiniMath.classicMiniCos(xRotation);
+        returned.x = ClassicMiniMath.classicMiniCos(rotation.y) * ClassicMiniMath.classicMiniCos(rotation.x);
+        returned.y = ClassicMiniMath.classicMiniSin(rotation.x);
+        returned.z = ClassicMiniMath.classicMiniSin(rotation.y) * ClassicMiniMath.classicMiniCos(rotation.x);
         return returned;
     }
 
     public Vec3 rightVector(){
         Vec3 returned = new Vec3(0.0f);
-        returned.x = ClassicMiniMath.classicMiniCos(yRotation + 90.0f) * ClassicMiniMath.classicMiniCos(xRotation);
-        returned.y = ClassicMiniMath.classicMiniSin(xRotation);
-        returned.z = ClassicMiniMath.classicMiniSin(yRotation + 90.0f) * ClassicMiniMath.classicMiniCos(xRotation);
+        returned.x = ClassicMiniMath.classicMiniCos(rotation.y + 90.0f) * ClassicMiniMath.classicMiniCos(rotation.x);
+        returned.y = ClassicMiniMath.classicMiniSin(rotation.x);
+        returned.z = ClassicMiniMath.classicMiniSin(rotation.y + 90.0f) * ClassicMiniMath.classicMiniCos(rotation.x);
         return returned;
     }
 
@@ -110,13 +88,13 @@ public class Transform extends Components {
         }
         // get local matrix
         Mat4 newMatrix = new Mat4(1.0f);
-        newMatrix.translate(position());
+        newMatrix.translate(position);
 
-        newMatrix.rotate((float) Math.toRadians(xRotation), new Vec3(1.0f, 0.0f, 0.0f));
-        newMatrix.rotate((float) Math.toRadians(yRotation), new Vec3(0.0f, 1.0f, 0.0f));
-        newMatrix.rotate((float) Math.toRadians(zRotation), new Vec3(0.0f, 0.0f, 1.0f));
+        newMatrix.rotate((float) Math.toRadians(rotation.x), new Vec3(1.0f, 0.0f, 0.0f));
+        newMatrix.rotate((float) Math.toRadians(rotation.y), new Vec3(0.0f, 1.0f, 0.0f));
+        newMatrix.rotate((float) Math.toRadians(rotation.z), new Vec3(0.0f, 0.0f, 1.0f));
 
-        newMatrix.scale(scale());
+        newMatrix.scale(scale);
         return parentMatrix.mul(newMatrix);
     }
 

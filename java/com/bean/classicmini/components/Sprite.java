@@ -54,7 +54,7 @@ public class Sprite extends Components {
         model = model.transpose();
         ClassicMiniShaders.setMatrix4(model, "transposedInversedModel", spriteShader);
 
-        ClassicMiniShaders.setVector3(surfaceView.mainCamera.getBean().getComponents(Transform.class).position(), "viewPos", spriteShader);
+        ClassicMiniShaders.setVector3(surfaceView.mainCamera.getBean().getComponents(Transform.class).position, "viewPos", spriteShader);
         ClassicMiniShaders.setFloatArray(Light.getLightInfo(), "lightInfoArray", spriteShader);
         ClassicMiniShaders.setInt(useLight? 1 : 0, "useLight", spriteShader);
 

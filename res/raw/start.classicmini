@@ -1,7 +1,7 @@
 Bean toby
 component toby classicmini.components.Camera
-field toby classicmini.components.Transform zPosition float -5.0
-field toby classicmini.components.Transform yRotation float 270.0
+field toby classicmini.components.Transform position vec3 0.0,0.0,-5.0
+field toby classicmini.components.Transform rotation vec3 0.0,270.0,0.0
 
 Bean tracy
 component tracy classicmini.components.Text
