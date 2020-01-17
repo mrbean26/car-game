@@ -8,7 +8,6 @@ import android.opengl.GLSurfaceView;
 import android.view.MotionEvent;
 
 import com.bean.classicmini.components.Camera;
-import com.bean.classicmini.components.Transform;
 import com.bean.classicmini.utilities.ClassicMiniAudio;
 
 import javax.microedition.khronos.opengles.GL10;
@@ -37,10 +36,11 @@ public class surfaceView extends GLSurfaceView implements GLSurfaceView.Renderer
         GLES20.glEnable(GLES20.GL_DEPTH_TEST);
     }
 
-    public void onDrawFrame(GL10 unused){
+    public void onDrawFrame(GL10 unused) {
         GLES20.glClear(GLES20.GL_COLOR_BUFFER_BIT | GLES20.GL_DEPTH_BUFFER_BIT);
         currentScene.mainloop();
-        xTouch = -1.0f; yTouch = -1.0f; // after all touch events
+        xTouch = -1.0f;
+        yTouch = -1.0f; // after all touch events
 
         deltaTime = ((System.nanoTime() / 1000000000.0f) - startTime) - currentTime;
         currentTime = (System.nanoTime() / 1000000000.0f) - startTime;

@@ -13,19 +13,15 @@ import glm.vec._4.Vec4;
 public class Camera extends Components {
     public float nearPlane = 0.1f, farPlane = 100.0f;
 
-    public float xBackground = 0.0f, yBackground = 0.0f, zBackground = 0.0f, wBackground = 0.0f;
+    public Vec4 backgroundColour = new Vec4(0.0f);
     @Override
     public void begin(){
-        GLES20.glClearColor(xBackground, yBackground, zBackground, wBackground);
+        GLES20.glClearColor(backgroundColour.x, backgroundColour.y, backgroundColour.z, backgroundColour.z);
     }
 
     public void setBackgroundColour(Vec4 usedColour){
-        xBackground = usedColour.x;
-        yBackground = usedColour.y;
-        zBackground = usedColour.z;
-        wBackground = usedColour.w;
-
-        GLES20.glClearColor(xBackground, yBackground, zBackground, wBackground);
+        backgroundColour = usedColour;
+        GLES20.glClearColor(backgroundColour.x, backgroundColour.y, backgroundColour.z, backgroundColour.z);
     }
 
     public static Mat4 perspectiveMatrix(){
@@ -44,11 +40,10 @@ public class Camera extends Components {
             Camera mainCamera = surfaceView.mainCamera;
             Transform objectTransform = mainCamera.getBean().getComponents(Transform.class);
 
-            Vec3 lookAt = objectTransform.position;
-            lookAt = lookAt.add(objectTransform.forwardVector());
-
-            newMatrix.lookAt(objectTransform.position, lookAt,
-                    new Vec3(0.0f, 1.0f, 0.0f));
+            newMatrix = newMatrix.rotateX(Math.toRadians(objectTransform.rotation.x));
+            newMatrix = newMatrix.rotateY(Math.toRadians(objectTransform.rotation.y));
+            newMatrix = newMatrix.rotateZ(Math.toRadians(objectTransform.rotation.z));
+            newMatrix = newMatrix.translate(objectTransform.position);
         } catch (NullPointerException e){
             MainActivity.error("No Camera available");
         }

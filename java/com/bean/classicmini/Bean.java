@@ -19,7 +19,9 @@ public class Bean {
 
     public void mainloop(){
         for(HashMap<UUID, ? extends Components> currentHashmap : components.values()){
-            currentHashmap.get(id).mainloop();
+            if(currentHashmap.get(id).enabled){
+                currentHashmap.get(id).mainloop();
+            }
         }
     }
 

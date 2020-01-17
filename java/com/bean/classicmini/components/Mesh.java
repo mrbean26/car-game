@@ -30,6 +30,12 @@ public class Mesh extends Components {
     public ClassicMiniMaterial material = new ClassicMiniMaterial();
     public boolean useLight = false;
     public static int meshShader = -1;
+    public Vec3 colour = new Vec3(1.0f);
+
+    private List<Vec3[]> allPoints = new ArrayList<>();
+    public List<Vec3[]> getAllPoints(){
+        return allPoints;
+    }
 
     public void render(){
         GLES20.glEnable(GLES20.GL_BLEND);
@@ -67,6 +73,8 @@ public class Mesh extends Components {
         ClassicMiniShaders.setInt(useLight? 1 : 0, "useLight", meshShader);
 
         material.bind();
+        ClassicMiniShaders.setVector3(colour, "multiplyColour", meshShader);
+
         GLES20.glDrawArrays(GLES20.GL_TRIANGLES, 0, vertexCount);
         GLES20.glDisable(GLES20.GL_BLEND);
 
@@ -76,6 +84,23 @@ public class Mesh extends Components {
     @Override
     public void begin(){
         vertexCount = vertices.length / 8;
+        // triangle information (used for collisions)
+        Vec3[] current = {new Vec3(), new Vec3(), new Vec3()};
+        for(int i = 0; i < vertexCount; i++){
+            if(i % 3 == 0 && i != 0){
+                current = new Vec3[]{new Vec3(), new Vec3(), new Vec3()};
+            }
+
+            current[i % 3].x = vertices[i * 8];
+            current[i % 3].y = vertices[i * 8 + 1];
+            current[i % 3].z = vertices[i * 8 + 2];
+
+            if(i % 3 == 2){
+                allPoints.add(current);
+            }
+        }
+
+        // buffer data
         ByteBuffer byteBuffer = ByteBuffer.allocateDirect(vertices.length * 4);
         byteBuffer.order(ByteOrder.nativeOrder());
 

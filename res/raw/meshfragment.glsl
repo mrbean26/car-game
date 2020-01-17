@@ -4,6 +4,8 @@ varying vec3 FragPos;
 varying vec3 Normal;
 varying vec2 TexCoords;
 
+uniform vec3 multiplyColour;
+
 uniform sampler2D sampler;
 uniform vec3 viewPos;
 uniform bool useLight;
@@ -81,5 +83,5 @@ void main(){
         result = start;
     }
 
-    gl_FragColor = result;
+    gl_FragColor = result * vec4(multiplyColour, 1.0);
 }

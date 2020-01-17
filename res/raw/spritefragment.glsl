@@ -4,6 +4,8 @@ varying vec2 texCoord;
 varying vec3 Normal;
 varying vec3 FragPos;
 
+uniform vec3 multiplyColour;
+
 uniform sampler2D sampler;
 uniform bool useLight;
 uniform float lightInfoArray[130];
@@ -80,5 +82,5 @@ void main(){
         result = start;
     }
 
-    gl_FragColor = result;
+    gl_FragColor = result * vec4(multiplyColour, 1.0);
 }

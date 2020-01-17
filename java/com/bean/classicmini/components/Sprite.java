@@ -14,6 +14,7 @@ import java.nio.ByteOrder;
 import java.nio.FloatBuffer;
 
 import glm.mat._4.Mat4;
+import glm.vec._3.Vec3;
 
 public class Sprite extends Components {
     public FloatBuffer vertexBuffer;
@@ -22,6 +23,7 @@ public class Sprite extends Components {
     public static int spriteShader = -1;
     public boolean useLight = false;
     public ClassicMiniMaterial material = new ClassicMiniMaterial();
+    public Vec3 colour = new Vec3(1.0f);
 
     public void draw(){
         GLES20.glEnable(GLES20.GL_BLEND);
@@ -58,6 +60,7 @@ public class Sprite extends Components {
         ClassicMiniShaders.setFloatArray(Light.getLightInfo(), "lightInfoArray", spriteShader);
         ClassicMiniShaders.setInt(useLight? 1 : 0, "useLight", spriteShader);
 
+        ClassicMiniShaders.setVector3(colour, "multiplyColour", spriteShader);
         material.bind();
 
         GLES20.glDrawArrays(GLES20.GL_TRIANGLES, 0, vertexCount);

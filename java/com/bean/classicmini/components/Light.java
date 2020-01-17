@@ -7,6 +7,8 @@ import com.bean.components.Components;
 
 import java.nio.FloatBuffer;
 
+import glm.vec._3.Vec3;
+
 public class Light extends Components {
     public float constant = 1.0f;
     public float linear = 0.09f;
@@ -15,9 +17,7 @@ public class Light extends Components {
     public float diffuse = 0.8f;
     public float specular = 1.0f;
 
-    public float xColour = 1.0f;
-    public float yColour = 1.0f;
-    public float zColour = 1.0f;
+    public Vec3 lightColour = new Vec3(1.0f);
 
     // 1 - enabled, 2 - constant, 3 - linear, 4 - quadratic, 5 - ambient, 6 - diffuse, 7 - specular, 8 - xColour, 9 - yColour, 10 - zColour,
     // 11 - xPosition, 12 - yPosition, 13 - zPosition
@@ -34,9 +34,9 @@ public class Light extends Components {
                 array[currentLightCount * 13 + 4] = component.ambient;
                 array[currentLightCount * 13 + 5] = component.diffuse;
                 array[currentLightCount * 13 + 6] = component.specular;
-                array[currentLightCount * 13 + 7] = component.xColour;
-                array[currentLightCount * 13 + 8] = component.yColour;
-                array[currentLightCount * 13 + 9] = component.zColour;
+                array[currentLightCount * 13 + 7] = component.lightColour.x;
+                array[currentLightCount * 13 + 8] = component.lightColour.y;
+                array[currentLightCount * 13 + 9] = component.lightColour.z;
 
                 Transform position = current.getComponents(Transform.class);
                 array[currentLightCount * 13 + 10] = position.position.x;

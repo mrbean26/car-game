@@ -18,12 +18,14 @@ import java.lang.reflect.InvocationTargetException;
 
 import java.nio.FloatBuffer;
 import java.nio.IntBuffer;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.UUID;
 
 import glm.vec._3.Vec3;
+import glm.vec._4.Vec4;
 
 /*
 WHEN CREATING A SCENE FILE:
@@ -184,6 +186,17 @@ public class Scene {
 
                         dataToSet = newVector;
                     }
+                    if(data[4].equals("vec4")){
+                        String[] info = data[5].split(",");
+
+                        Vec4 newVector = new Vec4();
+                        newVector.x = Float.parseFloat(info[0]);
+                        newVector.y = Float.parseFloat(info[1]);
+                        newVector.z = Float.parseFloat(info[2]);
+                        newVector.w = Float.parseFloat(info[3]);
+
+                        dataToSet = newVector;
+                    }
                     // set
                     if(dataToSet != null){
                         selectedField.set(dataToSetTo, dataToSet);
@@ -201,7 +214,9 @@ public class Scene {
 
         for(Bean bean : allBeans.values()){
             for(HashMap<UUID, ? extends Components> component : bean.components.values()){
-                component.get(bean.id).begin();
+                if(component.get(bean.id).enabled){
+                    component.get(bean.id).begin();
+                }
             }
         }
     }
@@ -211,6 +226,16 @@ public class Scene {
         for(Bean bean : allBeans.values()){
             bean.mainloop();
         }
+    }
+
+    public <T extends Components> Bean[] findBeansWithComponent(Class<T> component){
+        List<Bean> returnedList = new ArrayList<>();
+        for(Bean current : allBeans.values()){
+            if(current.hasComponents(component)){
+                returnedList.add(current);
+            }
+        }
+        return (Bean[]) returnedList.toArray();
     }
 
     // shadows require android OPEN GL 3.1+, maybe roll out an update when all other updates are finished with shadows so compatible devices can use
