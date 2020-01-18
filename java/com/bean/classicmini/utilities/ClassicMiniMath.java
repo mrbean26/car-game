@@ -39,4 +39,12 @@ public class  ClassicMiniMath {
         }
         return 1;
     }
+
+    public static float roundDecimal(float decimal, int places){
+        decimal = decimal * (100.0f * places);
+        decimal = Math.round(decimal);
+        decimal = decimal / (100.0f * places);
+
+        return decimal;
+    }
 }

@@ -4,14 +4,18 @@ import com.bean.classicmini.Bean;
 import com.bean.classicmini.surfaceView;
 
 public class Components implements ComponentsInterface {
-    public String name = "New Component";
     public String objectName = "Unassigned Object";
+    public boolean enabled = true;
 
     public void mainloop(){
 
     }
 
     public void begin(){
+
+    }
+
+    public void onClick(){
 
     }
 
