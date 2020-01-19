@@ -1,5 +1,6 @@
 package com.bean.classicmini;
 
+import com.bean.classicmini.components.Collider;
 import com.bean.classicmini.components.Transform;
 import com.bean.components.Components;
 
@@ -34,6 +35,16 @@ public class Bean {
             }
             component.objectName = objectName;
             ((HashMap<UUID, T>) store).put(this.id, component);
+        }
+    }
+
+    public <T> void removeComponents(Class<T> component){
+        HashMap<UUID, ? extends Components> result = components.get(component);
+        if(result != null){
+            components.remove(component);
+        }
+        else{
+            MainActivity.error("Cannot remove component as it does not exist on this bean.");
         }
     }
 

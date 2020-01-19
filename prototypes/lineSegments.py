@@ -8,6 +8,7 @@ lineTwo = [pointThreeXY, pointFourXY]
 
 def direction(pointOne, pointTwo, pointThree):
     value = (pointTwo[1] - pointOne[1]) * (pointThree[0] - pointTwo[0]) - (pointTwo[0] - pointOne[0]) * (pointThree[1]-pointTwo[1])
+    print(value)
     if value == 0:
         return 0 # colinear
     if value < 0:
@@ -25,15 +26,22 @@ def isIntersect(lineOne, lineTwo):
     dirThree = direction(pointThreeXY, pointFourXY, pointOneXY)
     dirFour = direction(pointThreeXY, pointFourXY, pointTwoXY)
 
+    print(str(dirOne) + " " + str(dirTwo) + " " + str(dirThree) + " " + str(dirFour))
+
     if dirOne != dirTwo and dirThree != dirFour:
+        print("HI")
         return True
     if dirOne == 0 and onLine(lineOne, pointThreeXY):
+        print("HI1")
         return True
     if dirTwo == 0 and onLine(lineOne, pointFourXY):
+        print("HI2")
         return True
     if dirThree == 0 and onLine(lineTwo, pointOneXY):
+        print("HI3")
         return True
     if dirFour == 0 and onLine(lineTwo, pointTwoXY):
+        print("HI4")
         return True
     return False
 

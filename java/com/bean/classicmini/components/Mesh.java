@@ -21,6 +21,7 @@ import glm.mat._4.Mat4;
 import glm.vec._2.Vec2;
 import glm.vec._3.Vec3;
 import glm.vec._3.i.Vec3i;
+import glm.vec._4.Vec4;
 
 public class Mesh extends Components {
     public float[] vertices = new float[0];
@@ -32,9 +33,22 @@ public class Mesh extends Components {
     public static int meshShader = -1;
     public Vec3 colour = new Vec3(1.0f);
 
-    private List<Vec3[]> allPoints = new ArrayList<>();
-    public List<Vec3[]> getAllPoints(){
-        return allPoints;
+    public Vec2 xData = null;
+    public Vec2 yData = null;
+    public Vec2 zData = null;
+
+    public Vec3[] getCollisionInfo(){ // one min vec3, one max vec3
+        if(xData == null || yData == null || zData == null){
+            return new Vec3[]{new Vec3(0.0f), new Vec3(0.0f)};
+        }
+
+        Vec3 minimum = new Vec3(xData.x, yData.x, zData.x);
+        Vec3 maximum = new Vec3(xData.y, yData.y, zData.y);
+
+        minimum = new Vec3(new Vec4(minimum, 1.0f).mul(getBean().getComponents(Transform.class).toMatrix4(false)));
+        maximum = new Vec3(new Vec4(maximum, 1.0f).mul(getBean().getComponents(Transform.class).toMatrix4(false)));
+
+        return new Vec3[]{minimum, maximum};
     }
 
     public void render(){
@@ -84,20 +98,34 @@ public class Mesh extends Components {
     @Override
     public void begin(){
         vertexCount = vertices.length / 8;
-        // triangle information (used for collisions)
-        Vec3[] current = {new Vec3(), new Vec3(), new Vec3()};
-        for(int i = 0; i < vertexCount; i++){
-            if(i % 3 == 0 && i != 0){
-                current = new Vec3[]{new Vec3(), new Vec3(), new Vec3()};
+
+        // get highest and lowest xyz (for collisions)
+        for(int v = 0; v < vertexCount; v++){
+            float x = vertices[v * 8];
+            float y = vertices[v * 8 + 1];
+            float z = vertices[v * 8 + 2];
+
+            if(xData == null){
+                xData = new Vec2(x);
+                yData = new Vec2(y);
+                zData = new Vec2(z);
+                continue;
             }
 
-            current[i % 3].x = vertices[i * 8];
-            current[i % 3].y = vertices[i * 8 + 1];
-            current[i % 3].z = vertices[i * 8 + 2];
+            xData.x = x < xData.x ? x : xData.x;
+            xData.y = x > xData.y ? x : xData.y;
 
-            if(i % 3 == 2){
-                allPoints.add(current);
-            }
+            yData.x = y < yData.x ? y : yData.x;
+            yData.y = y > yData.y ? y : yData.y;
+
+            zData.x = z < zData.x ? z : zData.x;
+            zData.y = z > zData.y ? z : zData.y;
+        }
+
+        if(xData == null){
+            xData = new Vec2(0.0f);
+            yData = new Vec2(0.0f);
+            zData = new Vec2(0.0f);
         }
 
         // buffer data

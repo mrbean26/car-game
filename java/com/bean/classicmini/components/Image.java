@@ -2,6 +2,7 @@ package com.bean.classicmini.components;
 
 import android.opengl.GLES20;
 
+import com.bean.classicmini.MainActivity;
 import com.bean.classicmini.R;
 import com.bean.classicmini.utilities.ClassicMiniMaterial;
 import com.bean.classicmini.utilities.ClassicMiniMath;

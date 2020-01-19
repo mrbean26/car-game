@@ -7,6 +7,8 @@ import androidx.core.content.res.TypedArrayUtils;
 
 import com.bean.classicmini.components.Camera;
 import com.bean.classicmini.components.Light;
+import com.bean.classicmini.components.Mesh;
+import com.bean.classicmini.components.Sprite;
 import com.bean.classicmini.components.Transform;
 import com.bean.classicmini.utilities.ClassicMiniSavefiles;
 import com.bean.components.Components;
@@ -57,6 +59,7 @@ When changing fields include package in component name
  */
 
 public class Scene {
+    public HashMap<String, Bean> allBeans = new HashMap<>();
     public <T extends Components> Scene(int resourceId){
         List<String> sceneInfo = ClassicMiniSavefiles.readLines(resourceId);
         int lineCount = sceneInfo.size();
@@ -86,10 +89,25 @@ public class Scene {
                 try{
                     Class<?> newClass = Class.forName(data[2]);
                     Constructor<?> constructor = newClass.getConstructor();
+
+                    if(newClass == Mesh.class){
+                        if(allBeans.get(data[1]).hasComponents(Sprite.class)){
+                            MainActivity.error("You can only attach one type of renderer to a bean.");
+                            return;
+                        }
+                    }
+
+                    if(newClass == Sprite.class){
+                        if(allBeans.get(data[1]).hasComponents(Mesh.class)){
+                            MainActivity.error("You can only attach one type of renderer to a bean.");
+                            return;
+                        }
+                    }
+
                     Object newComponent = constructor.newInstance();
                     allBeans.get(data[1]).addComponents((T) newComponent);
 
-                    if(newClass.getName().equals("com.bean.classicmini.components.Camera")){
+                    if(newClass == Camera.class){
                         if(surfaceView.mainCamera == null){
                             surfaceView.mainCamera = allBeans.get(data[1]).getComponents(Camera.class);
                         }
@@ -211,19 +229,17 @@ public class Scene {
                 }
             }
         }
-
-        for(Bean bean : allBeans.values()){
-            for(HashMap<UUID, ? extends Components> component : bean.components.values()){
-                if(component.get(bean.id).enabled){
-                    component.get(bean.id).begin();
-                }
-            }
-        }
     }
 
-    public HashMap<String, Bean> allBeans = new HashMap<>();
     public void mainloop(){
         for(Bean bean : allBeans.values()){
+            if(surfaceView.framesThrough == 0){
+                for(HashMap<UUID, ? extends Components> component : bean.components.values()){
+                    if(component.get(bean.id).enabled){
+                        component.get(bean.id).begin();
+                    }
+                }
+            }
             bean.mainloop();
         }
     }
@@ -235,7 +251,13 @@ public class Scene {
                 returnedList.add(current);
             }
         }
-        return (Bean[]) returnedList.toArray();
+        Bean[] array = new Bean[returnedList.size()];
+        int count = returnedList.size();
+        for(int i = 0; i < count; i++){
+            array[i] = returnedList.get(i);
+        }
+
+        return array;
     }
 
     // shadows require android OPEN GL 3.1+, maybe roll out an update when all other updates are finished with shadows so compatible devices can use

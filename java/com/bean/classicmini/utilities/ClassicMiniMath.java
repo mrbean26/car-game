@@ -1,11 +1,13 @@
 package com.bean.classicmini.utilities;
 
+import com.bean.classicmini.MainActivity;
 import com.bean.classicmini.surfaceView;
 
 import glm.Glm;
 import glm.mat._4.Mat4;
+import glm.vec._3.Vec3;
 
-public class  ClassicMiniMath {
+public class ClassicMiniMath {
     public static Mat4 getOrtho(){
         float height = (float) surfaceView.displayHeight / (float) surfaceView.displayWidth;
         Mat4 newMat = new Mat4(1.0f);
@@ -46,5 +48,25 @@ public class  ClassicMiniMath {
         decimal = decimal / (100.0f * places);
 
         return decimal;
+    }
+
+    public static boolean vectorThreeEquals(Vec3 one, Vec3 two){
+        if(one.x == two.x){
+            if(one.y == two.y){
+                if(one.z == two.z){
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    public static float vectorThreeDistance(Vec3 one, Vec3 two){
+        Vec3 newOne = new Vec3();
+        newOne.x = one.x - two.x;
+        newOne.y = one.y - two.y;
+        newOne.z = one.z - two.z;
+
+        return (float) Math.sqrt(newOne.x * newOne.x + newOne.y * newOne.y + newOne.z * newOne.z);
     }
 }
