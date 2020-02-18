@@ -60,13 +60,13 @@ public class Text extends Components {
         GLES20.glVertexAttribPointer(texHandle, 2, GLES20.GL_FLOAT, false, 20, vertexBuffer);
 
         // matrix
-        float xTempScale = getBean().getComponents(Transform.class).scale.x;
+        float xTempScale = getBeansComponent(Transform.class).scale.x;
         if(realTextScale){
-            getBean().getComponents(Transform.class).scale.x = getBean().getComponents(Transform.class).scale.x * material.getXTextMultiplier();
+            getBeansComponent(Transform.class).scale.x = getBeansComponent(Transform.class).scale.x * material.getXTextMultiplier();
         }
         Mat4 currentMatrix = ClassicMiniMath.getOrtho(); // ortho then transform bit
-        currentMatrix = currentMatrix.mul(getBean().getComponents(Transform.class).toMatrix4(false));
-        getBean().getComponents(Transform.class).scale.x = xTempScale;
+        currentMatrix = currentMatrix.mul(getBeansComponent(Transform.class).toMatrix4(false));
+        getBeansComponent(Transform.class).scale.x = xTempScale;
 
         GLES20.glUseProgram(imageShader);
         ClassicMiniShaders.setMatrix4(currentMatrix, "model", imageShader);

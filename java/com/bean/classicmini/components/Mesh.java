@@ -45,8 +45,8 @@ public class Mesh extends Components {
         Vec3 minimum = new Vec3(xData.x, yData.x, zData.x);
         Vec3 maximum = new Vec3(xData.y, yData.y, zData.y);
 
-        minimum = new Vec3(new Vec4(minimum, 1.0f).mul(getBean().getComponents(Transform.class).toMatrix4(false)));
-        maximum = new Vec3(new Vec4(maximum, 1.0f).mul(getBean().getComponents(Transform.class).toMatrix4(false)));
+        minimum = new Vec3(new Vec4(minimum, 1.0f).mul(getBeansComponent(Transform.class).toMatrix4(false)));
+        maximum = new Vec3(new Vec4(maximum, 1.0f).mul(getBeansComponent(Transform.class).toMatrix4(false)));
 
         return new Vec3[]{minimum, maximum};
     }
@@ -75,14 +75,14 @@ public class Mesh extends Components {
         ClassicMiniShaders.setInt(0, "sampler", meshShader);
         ClassicMiniShaders.setMatrix4(Camera.perspectiveMatrix(), "projection", meshShader);
         ClassicMiniShaders.setMatrix4(Camera.viewMatrix(), "view", meshShader);
-        ClassicMiniShaders.setMatrix4(getBean().getComponents(Transform.class).toMatrix4(false), "model", meshShader);
+        ClassicMiniShaders.setMatrix4(getBeansComponent(Transform.class).toMatrix4(false), "model", meshShader);
 
-        Mat4 newMatrix = getBean().getComponents(Transform.class).toMatrix4(false);
+        Mat4 newMatrix = getBeansComponent(Transform.class).toMatrix4(false);
         newMatrix = newMatrix.inverse();
         newMatrix = newMatrix.transpose();
         ClassicMiniShaders.setMatrix4(newMatrix, "transposedInversedModel", meshShader);
 
-        ClassicMiniShaders.setVector3(surfaceView.mainCamera.getBean().getComponents(Transform.class).position, "viewPos", meshShader);
+        ClassicMiniShaders.setVector3(surfaceView.mainCamera.getBeansComponent(Transform.class).position, "viewPos", meshShader);
         ClassicMiniShaders.setFloatArray(Light.getLightInfo(), "lightInfoArray", meshShader);
         ClassicMiniShaders.setInt(useLight? 1 : 0, "useLight", meshShader);
 

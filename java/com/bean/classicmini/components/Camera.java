@@ -38,7 +38,7 @@ public class Camera extends Components {
         Mat4 newMatrix = new Mat4(1.0f);
         try{
             Camera mainCamera = surfaceView.mainCamera;
-            Transform objectTransform = mainCamera.getBean().getComponents(Transform.class);
+            Transform objectTransform = mainCamera.getBeansComponent(Transform.class);
             Vec3 oppositePosition = new Vec3(-objectTransform.position.x, -objectTransform.position.y, -objectTransform.position.z);
 
             newMatrix = newMatrix.translate(oppositePosition);

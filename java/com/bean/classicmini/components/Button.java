@@ -14,7 +14,7 @@ public class Button extends Components {
     }
 
     public boolean isClicked(){
-        Transform buttonTransform = getBean().getComponents(Transform.class);
+        Transform buttonTransform = getBeansComponent(Transform.class);
         float xCenter = (surfaceView.displayWidth / 2.0f) + (buttonTransform.position.x * (surfaceView.displayWidth / 2.0f));
         float yCenter = surfaceView.displayHeight - ((surfaceView.displayHeight / 2.0f) + (buttonTransform.position.y * (surfaceView.displayWidth / 2.0f)));
 

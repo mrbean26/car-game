@@ -2,12 +2,17 @@ package com.bean.classicmini.utilities;
 
 import com.bean.classicmini.surfaceView;
 
+import java.util.Random;
+
 import glm.Glm;
 import glm.mat._4.Mat4;
 import glm.vec._2.Vec2;
 import glm.vec._3.Vec3;
+import glm.vec._4.Vec4;
 
 public class ClassicMiniMath {
+    private static Random classicMiniRandom = new Random();
+
     public static Mat4 getOrtho(){
         float height = (float) surfaceView.displayHeight / (float) surfaceView.displayWidth;
         Mat4 newMat = new Mat4(1.0f);
@@ -70,11 +75,38 @@ public class ClassicMiniMath {
         return (float) Math.sqrt(newOne.x * newOne.x + newOne.y * newOne.y + newOne.z * newOne.z);
     }
 
+    public static boolean vectorThreeLessThan(Vec3 one, Vec3 two){
+        if(one.x < two.x){
+            if(one.y < two.y){
+                if(one.z < two.z){
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    public static Vec4 copyVectorFour(Vec4 used){
+        return new Vec4(used.x, used.y, used.z, used.w);
+    }
+
+    public static Vec3 copyVectorThree(Vec3 used){
+        return new Vec3(used.x, used.y, used.z);
+    }
+
+    public static Vec2 copyVectorTwo(Vec2 used){
+        return new Vec2(used.x, used.y);
+    }
+
     public static float bearing(Vec2 pointOne, Vec2 pointTwo){
         double angle = Math.atan2(pointTwo.x - pointOne.x, pointTwo.y - pointOne.y);
         if(angle < 0.0f){
             angle = angle + Math.PI * 2;
         }
         return (float) Math.toDegrees(angle);
+    }
+
+    public static int randomInteger(int lowInclusive, int maxInclusive){
+        return classicMiniRandom.nextInt(maxInclusive + 1) + lowInclusive;
     }
 }

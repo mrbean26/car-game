@@ -59,7 +59,7 @@ public class SimpleMesh extends Components {
 
         ClassicMiniShaders.setMatrix4(Camera.perspectiveMatrix(), "projection", simpleMeshShader);
         ClassicMiniShaders.setMatrix4(Camera.viewMatrix(), "view", simpleMeshShader);
-        ClassicMiniShaders.setMatrix4(getBean().getComponents(Transform.class).toMatrix4(false), "model", simpleMeshShader);
+        ClassicMiniShaders.setMatrix4(getBeansComponent(Transform.class).toMatrix4(false), "model", simpleMeshShader);
 
         ClassicMiniShaders.setVector4(colour, "colour", simpleMeshShader);
         GLES20.glDrawArrays(GLES20.GL_TRIANGLES, 0, vertexCount);

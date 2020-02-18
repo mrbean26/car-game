@@ -38,8 +38,8 @@ public class Sprite extends Components {
         Vec3 minimum = new Vec3(xData.x, yData.x, zData.x);
         Vec3 maximum = new Vec3(xData.y, yData.y, zData.y);
 
-        minimum = new Vec3(new Vec4(minimum, 1.0f).mul(getBean().getComponents(Transform.class).toMatrix4(false)));
-        maximum = new Vec3(new Vec4(maximum, 1.0f).mul(getBean().getComponents(Transform.class).toMatrix4(false)));
+        minimum = new Vec3(new Vec4(minimum, 1.0f).mul(getBeansComponent(Transform.class).toMatrix4(false)));
+        maximum = new Vec3(new Vec4(maximum, 1.0f).mul(getBeansComponent(Transform.class).toMatrix4(false)));
 
         return new Vec3[]{minimum, maximum};
     }
@@ -69,13 +69,13 @@ public class Sprite extends Components {
         ClassicMiniShaders.setMatrix4(Camera.perspectiveMatrix(), "projection", spriteShader);
         ClassicMiniShaders.setMatrix4(Camera.viewMatrix(), "view", spriteShader);
 
-        Mat4 model = getBean().getComponents(Transform.class).toMatrix4(false);
+        Mat4 model = getBeansComponent(Transform.class).toMatrix4(false);
         ClassicMiniShaders.setMatrix4(model, "model", spriteShader);
         model = model.inverse();
         model = model.transpose();
         ClassicMiniShaders.setMatrix4(model, "transposedInversedModel", spriteShader);
 
-        ClassicMiniShaders.setVector3(surfaceView.mainCamera.getBean().getComponents(Transform.class).position, "viewPos", spriteShader);
+        ClassicMiniShaders.setVector3(surfaceView.mainCamera.getBeansComponent(Transform.class).position, "viewPos", spriteShader);
         ClassicMiniShaders.setFloatArray(Light.getLightInfo(), "lightInfoArray", spriteShader);
         ClassicMiniShaders.setInt(useLight? 1 : 0, "useLight", spriteShader);
 

@@ -1,9 +1,9 @@
 Bean toby
 component toby classicmini.components.Camera
-field toby classicmini.components.Transform position vec3 0.0,0.0,-10.0
+field toby classicmini.components.Transform position vec3 0.0,0.0,-99.0
 field toby classicmini.components.Transform rotation vec3 0.0,0.0,0.0
 
 // uv's messed up - don't worry fam
 Bean tracy
-component tracy classicmini.components.Mesh
-field tracy classicmini.components.Mesh vertices floatArray -1.0,-1.0,0.0,0.0,0.0,0.0,0.0,0.0,1.0,-1.0,0.0,0.0,0.0,0.0,1.0,1.0,-1.0,1.0,0.0,0.0,0.0,0.0,0.0,1.0,
+component tracy classicmini.components.ParticleSystem
+field tracy classicmini.components.ParticleSystem resolution int 2
