@@ -2,7 +2,6 @@ package com.bean.classicmini.components;
 
 import android.opengl.GLES20;
 
-import com.bean.classicmini.MainActivity;
 import com.bean.classicmini.R;
 import com.bean.classicmini.utilities.ClassicMiniMaterial;
 import com.bean.classicmini.utilities.ClassicMiniMath;
@@ -14,7 +13,6 @@ import java.nio.ByteOrder;
 import java.nio.FloatBuffer;
 
 import glm.mat._4.Mat4;
-import glm.vec._3.Vec3;
 import glm.vec._4.Vec4;
 
 public class Image extends Components {

@@ -1,6 +1,5 @@
 package com.bean.classicmini;
 
-import com.bean.classicmini.components.Collider;
 import com.bean.classicmini.components.Transform;
 import com.bean.components.Components;
 
@@ -10,6 +9,15 @@ import java.util.UUID;
 public class Bean {
     public String objectName;
     public UUID id;
+
+    public static Bean getBean(String name){
+        Bean result = surfaceView.currentScene.allBeans.get(name);
+        if(result == null){
+            MainActivity.error("Cannot find bean with name " + name);
+            return null;
+        }
+        return result;
+    }
 
     public Bean(String name){
         objectName = name;

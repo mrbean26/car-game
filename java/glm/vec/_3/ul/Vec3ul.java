@@ -5,7 +5,6 @@
  */
 package glm.vec._3.ul;
 
-import java.math.BigInteger;
 import joou.ULong;
 
 /**

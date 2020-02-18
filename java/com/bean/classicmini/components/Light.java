@@ -1,7 +1,6 @@
 package com.bean.classicmini.components;
 
 import com.bean.classicmini.Bean;
-import com.bean.classicmini.MainActivity;
 import com.bean.classicmini.surfaceView;
 import com.bean.components.Components;
 

@@ -1,27 +1,16 @@
 package com.bean.classicmini;
 
-import android.opengl.GLES20;
-import android.opengl.GLES31Ext;
-
-import androidx.core.content.res.TypedArrayUtils;
-
 import com.bean.classicmini.components.Camera;
-import com.bean.classicmini.components.Light;
 import com.bean.classicmini.components.Mesh;
 import com.bean.classicmini.components.Sprite;
 import com.bean.classicmini.components.Transform;
 import com.bean.classicmini.utilities.ClassicMiniSavefiles;
 import com.bean.components.Components;
 
-import java.io.ObjectInputStream;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
-
-import java.nio.FloatBuffer;
-import java.nio.IntBuffer;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.UUID;
@@ -64,41 +53,47 @@ public class Scene {
         List<String> sceneInfo = ClassicMiniSavefiles.readLines(resourceId);
         int lineCount = sceneInfo.size();
 
-        for(int l = 0; l < lineCount; l++){
+        for(int l = 0; l < lineCount; l++) {
             String current = sceneInfo.get(l);
-            if(current.length() > 2){
+            if (current.trim().equals("")) {
+                continue;
+            }
+            if (current.length() > 2) {
                 String firstTwo = current.substring(0, 2);
-                if(firstTwo.equals("//")){ // comment
+                if (firstTwo.equals("//")) { // comment
                     continue;
                 }
             }
 
+            boolean recognisedLine = false;
             String[] data = current.split(" ");
-            if(data[0].equals("Bean")){
+            if (data[0].equals("Bean")) {
+                recognisedLine = true;
                 Bean newBean = new Bean(data[1]);
                 int dataLength = data.length;
 
                 allBeans.put(newBean.objectName, newBean);
-                if(dataLength > 2){
+                if (dataLength > 2) {
                     newBean.getComponents(Transform.class).parent = allBeans.get(data[2]);
                     allBeans.get(data[2]).getComponents(Transform.class).children.put(data[1], newBean);
                 }
             }
-            if(data[0].equals("component")){
+            if (data[0].equals("component")) {
+                recognisedLine = true;
                 data[2] = "com.bean." + data[2];
-                try{
+                try {
                     Class<?> newClass = Class.forName(data[2]);
                     Constructor<?> constructor = newClass.getConstructor();
 
-                    if(newClass == Mesh.class){
-                        if(allBeans.get(data[1]).hasComponents(Sprite.class)){
+                    if (newClass == Mesh.class) {
+                        if (allBeans.get(data[1]).hasComponents(Sprite.class)) {
                             MainActivity.error("You can only attach one type of renderer to a bean.");
                             return;
                         }
                     }
 
-                    if(newClass == Sprite.class){
-                        if(allBeans.get(data[1]).hasComponents(Mesh.class)){
+                    if (newClass == Sprite.class) {
+                        if (allBeans.get(data[1]).hasComponents(Mesh.class)) {
                             MainActivity.error("You can only attach one type of renderer to a bean.");
                             return;
                         }
@@ -107,94 +102,95 @@ public class Scene {
                     Object newComponent = constructor.newInstance();
                     allBeans.get(data[1]).addComponents((T) newComponent);
 
-                    if(newClass == Camera.class){
-                        if(surfaceView.mainCamera == null){
+                    if (newClass == Camera.class) {
+                        if (surfaceView.mainCamera == null) {
                             surfaceView.mainCamera = allBeans.get(data[1]).getComponents(Camera.class);
                         }
                     }
-                } catch(ClassNotFoundException e){
+                } catch (ClassNotFoundException e) {
                     MainActivity.error("ClassNotFoundException");
-                } catch(NoSuchMethodException e){
+                } catch (NoSuchMethodException e) {
                     MainActivity.error("NoSuchMethodException");
-                } catch(IllegalAccessException e){
+                } catch (IllegalAccessException e) {
                     MainActivity.error("IllegalAccessException");
-                } catch(InstantiationException e){
+                } catch (InstantiationException e) {
                     MainActivity.error("InstantiationException");
-                } catch(InvocationTargetException e){
+                } catch (InvocationTargetException e) {
                     MainActivity.error("InvocationTargetException");
                 }
             }
-            if(data[0].equals("field")){
+            if (data[0].equals("field")) {
+                recognisedLine = true;
                 data[2] = "com.bean." + data[2];
-                try{
+                try {
                     Class<?> selectedComponent = Class.forName(data[2]);
 
                     Object dataToSet = null;
-                    Object[] dataArrayToSet = new Object[0];
                     Object dataToSetTo = allBeans.get(data[1]).getComponents(selectedComponent);
 
                     Field selectedField = selectedComponent.getField("objectName"); // just for initialisaton
-                    if(!data[3].contains("-")){
+                    if (!data[3].contains("-")) {
                         selectedField = selectedComponent.getField(data[3]);
                     }
-                    if(data[3].contains("-")){
+                    if (data[3].contains("-")) {
                         String[] secondaryData = data[3].split("-");
                         int length = secondaryData.length;
 
-                        for(int i = 0; i < length; i++){
+                        for (int i = 0; i < length; i++) {
                             Class<?> currentClass = dataToSetTo.getClass();
                             selectedField = currentClass.getField(secondaryData[i]);
 
-                            if(i != length - 1){
+                            if (i != length - 1) {
                                 dataToSetTo = selectedField.get(dataToSetTo);
                             }
                         }
                     }
 
-                    if(data[4].equals("string")){
+                    if (data[4].equals("string")) {
                         dataToSet = data[5];
                     }
-                    if(data[4].equals("int")){
+                    if (data[4].equals("int")) {
                         dataToSet = Integer.valueOf(data[5]);
                     }
-                    if(data[4].equals("float")){
+                    if (data[4].equals("float")) {
                         dataToSet = Float.valueOf(data[5]);
                     }
-                    if(data[4].equals("bool")){
-                        if(data[5].equals("true")){
+                    if (data[4].equals("bool")) {
+                        if (data[5].equals("true")) {
                             dataToSet = true;
                         }
-                        if(data[5].equals("false")){
+                        if (data[5].equals("false")) {
                             dataToSet = false;
                         }
                     }
-                    if(data[4].equals("intResource")){
+                    if (data[4].equals("intResource")) {
                         dataToSet = MainActivity.getAppContext().getResources().getIdentifier(data[6], data[5], MainActivity.getAppContext().getPackageName());
                     }
-                    if(data[4].equals("floatArray")){
+                    if (data[4].equals("floatArray")) {
                         String[] allItems = data[5].split(",");
                         int length = allItems.length;
                         float[] setData = new float[length];
 
-                        for(int i = 0; i < length; i++){
+                        for (int i = 0; i < length; i++) {
                             setData[i] = Float.parseFloat(allItems[i]);
                         }
                         selectedField.set(dataToSetTo, setData);
+                        continue;
                     }
-                    if(data[4].equals("intArray")){
+                    if (data[4].equals("intArray")) {
                         String[] allItems = data[5].split(",");
                         int length = allItems.length;
                         int[] setData = new int[length];
 
-                        for(int i = 0; i < length; i++){
+                        for (int i = 0; i < length; i++) {
                             setData[i] = Integer.parseInt(allItems[i]);
                         }
                         selectedField.set(dataToSetTo, setData);
                     }
-                    if(data[4].equals("stringArray")){
+                    if (data[4].equals("stringArray")) {
                         dataToSet = data[5].split(",");
                     }
-                    if(data[4].equals("vec3")){
+                    if (data[4].equals("vec3")) {
                         String[] info = data[5].split(",");
 
                         Vec3 newVector = new Vec3();
@@ -204,7 +200,7 @@ public class Scene {
 
                         dataToSet = newVector;
                     }
-                    if(data[4].equals("vec4")){
+                    if (data[4].equals("vec4")) {
                         String[] info = data[5].split(",");
 
                         Vec4 newVector = new Vec4();
@@ -216,17 +212,25 @@ public class Scene {
                         dataToSet = newVector;
                     }
                     // set
-                    if(dataToSet != null){
+                    if (dataToSet != null) {
                         selectedField.set(dataToSetTo, dataToSet);
                     }
+                    if (dataToSet == null) {
+                        MainActivity.output("Type not understood in scene line: " + current);
+                    }
 
-                } catch (NoSuchFieldException e){
+                } catch (NoSuchFieldException e) {
                     MainActivity.error("NoSuchFieldException" + e.toString());
-                } catch (IllegalAccessException e){
+                } catch (IllegalAccessException e) {
                     MainActivity.error("IllegalAccessException");
-                } catch(ClassNotFoundException e){
+                } catch (ClassNotFoundException e) {
                     MainActivity.error("ClassNotFoundException");
                 }
+
+            }
+
+            if (!recognisedLine) {
+                MainActivity.error("Line: \"" + current + " in " + MainActivity.getAppContext().getResources().getResourceName(resourceId) + "\" was unrecognised.");
             }
         }
     }

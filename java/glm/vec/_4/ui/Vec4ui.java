@@ -5,13 +5,10 @@
  */
 package glm.vec._4.ui;
 
-import glm.vec._2.Vec2;
-import glm.vec._3.Vec3;
-import glm.vec._4.b.Vec4b;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
-import java.nio.FloatBuffer;
 import java.nio.IntBuffer;
+
 import joou.UInt;
 
 /**

@@ -24,7 +24,7 @@ import glm.vec._3.i.Vec3i;
 import glm.vec._4.Vec4;
 
 public class Mesh extends Components {
-    public float[] vertices = new float[0];
+    public float[] vertices = new float[]{-1.0f, -1.0f, 0.0f, 1.0f, -1.0f, 0.0f, -1.0f, 1.0f, 0.0f};
     public int vertexCount = 0;
     public FloatBuffer vertexBuffer;
 

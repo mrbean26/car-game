@@ -7,7 +7,6 @@ package glm.vec._3.ui;
 
 import glm.Glm;
 import glm.vec._3.bool.Vec3bool;
-import joou.UInt;
 
 /**
  *

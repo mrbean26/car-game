@@ -1,10 +1,10 @@
 package com.bean.classicmini.utilities;
 
-import com.bean.classicmini.MainActivity;
 import com.bean.classicmini.surfaceView;
 
 import glm.Glm;
 import glm.mat._4.Mat4;
+import glm.vec._2.Vec2;
 import glm.vec._3.Vec3;
 
 public class ClassicMiniMath {
@@ -68,5 +68,13 @@ public class ClassicMiniMath {
         newOne.z = one.z - two.z;
 
         return (float) Math.sqrt(newOne.x * newOne.x + newOne.y * newOne.y + newOne.z * newOne.z);
+    }
+
+    public static float bearing(Vec2 pointOne, Vec2 pointTwo){
+        double angle = Math.atan2(pointTwo.x - pointOne.x, pointTwo.y - pointOne.y);
+        if(angle < 0.0f){
+            angle = angle + Math.PI * 2;
+        }
+        return (float) Math.toDegrees(angle);
     }
 }

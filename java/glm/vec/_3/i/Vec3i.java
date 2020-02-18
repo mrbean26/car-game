@@ -5,12 +5,13 @@
  */
 package glm.vec._3.i;
 
-import glm.Glm;
-import glm.vec._4.i.Vec4i;
 import java.io.PrintStream;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.nio.IntBuffer;
+
+import glm.Glm;
+import glm.vec._4.i.Vec4i;
 
 /**
  *

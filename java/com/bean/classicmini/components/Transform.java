@@ -1,13 +1,11 @@
 package com.bean.classicmini.components;
 
 import com.bean.classicmini.Bean;
-import com.bean.classicmini.MainActivity;
 import com.bean.classicmini.surfaceView;
 import com.bean.classicmini.utilities.ClassicMiniMath;
 import com.bean.components.Components;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 

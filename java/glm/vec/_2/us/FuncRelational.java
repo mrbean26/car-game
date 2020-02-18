@@ -7,7 +7,6 @@ package glm.vec._2.us;
 
 import glm.Glm;
 import glm.vec._2.bool.Vec2bool;
-import joou.UShort;
 
 /**
  *

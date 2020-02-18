@@ -2,7 +2,6 @@ package com.bean.classicmini.components;
 
 import android.opengl.GLES20;
 
-import com.bean.classicmini.MainActivity;
 import com.bean.classicmini.R;
 import com.bean.classicmini.surfaceView;
 import com.bean.classicmini.utilities.ClassicMiniMaterial;
@@ -31,7 +30,7 @@ public class Sprite extends Components {
     public Vec2 yData = null;
     public Vec2 zData = null;
 
-    public Vec3[] getCollisionInfo(){
+    public Vec3[] getCollisionInfo(){ // one min vec3, one max vec3
         if(xData == null || yData == null || zData == null){
             return new Vec3[]{new Vec3(0.0f), new Vec3(0.0f)};
         }

@@ -5,9 +5,7 @@
  */
 package glm;
 
-import glm.vec._2.Vec2;
 import glm.vec._2.b.Vec2b;
-import glm.vec._2.d.Vec2d;
 import glm.vec._2.i.Vec2i;
 import glm.vec._2.l.Vec2l;
 import glm.vec._2.s.Vec2s;
@@ -15,9 +13,7 @@ import glm.vec._2.ub.Vec2ub;
 import glm.vec._2.ui.Vec2ui;
 import glm.vec._2.ul.Vec2ul;
 import glm.vec._2.us.Vec2us;
-import glm.vec._3.Vec3;
 import glm.vec._3.b.Vec3b;
-import glm.vec._3.d.Vec3d;
 import glm.vec._3.i.Vec3i;
 import glm.vec._3.l.Vec3l;
 import glm.vec._3.s.Vec3s;
@@ -25,9 +21,7 @@ import glm.vec._3.ub.Vec3ub;
 import glm.vec._3.ui.Vec3ui;
 import glm.vec._3.ul.Vec3ul;
 import glm.vec._3.us.Vec3us;
-import glm.vec._4.Vec4;
 import glm.vec._4.b.Vec4b;
-import glm.vec._4.d.Vec4d;
 import glm.vec._4.i.Vec4i;
 import glm.vec._4.l.Vec4l;
 import glm.vec._4.s.Vec4s;

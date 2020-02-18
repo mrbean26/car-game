@@ -5,9 +5,9 @@
  */
 package glm.vec._2;
 
-import glm.vec._2.i.Vec2i;
 import glm.Glm;
 import glm.vec._2.bool.Vec2bool;
+import glm.vec._2.i.Vec2i;
 
 /**
  * TODO ldexp, frexp, modf, roundEven, trunc

@@ -5,7 +5,6 @@
  */
 package glm;
 
-import glm.vec._3.d.Vec3d;
 import glm.vec._2.Vec2;
 import glm.vec._2.b.Vec2b;
 import glm.vec._2.bool.Vec2bool;
@@ -20,6 +19,7 @@ import glm.vec._2.us.Vec2us;
 import glm.vec._3.Vec3;
 import glm.vec._3.b.Vec3b;
 import glm.vec._3.bool.Vec3bool;
+import glm.vec._3.d.Vec3d;
 import glm.vec._3.i.Vec3i;
 import glm.vec._3.l.Vec3l;
 import glm.vec._3.s.Vec3s;

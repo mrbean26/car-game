@@ -5,8 +5,6 @@
  */
 package glm.vec._3.b;
 
-import glm.vec._2.b.*;
-
 /**
  *
  * @author GBarbieri

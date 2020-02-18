@@ -39,11 +39,12 @@ public class Camera extends Components {
         try{
             Camera mainCamera = surfaceView.mainCamera;
             Transform objectTransform = mainCamera.getBean().getComponents(Transform.class);
+            Vec3 oppositePosition = new Vec3(-objectTransform.position.x, -objectTransform.position.y, -objectTransform.position.z);
 
+            newMatrix = newMatrix.translate(oppositePosition);
             newMatrix = newMatrix.rotateX(Math.toRadians(objectTransform.rotation.x));
             newMatrix = newMatrix.rotateY(Math.toRadians(objectTransform.rotation.y));
             newMatrix = newMatrix.rotateZ(Math.toRadians(objectTransform.rotation.z));
-            newMatrix = newMatrix.translate(objectTransform.position);
         } catch (NullPointerException e){
             MainActivity.error("No Camera available");
         }
