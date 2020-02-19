@@ -128,7 +128,7 @@ public class ParticleSystem extends Components {
         ClassicMiniShaders.setVector4(particleColour, "colour", SimpleMesh.simpleMeshShader);
 
         for(int p = 0; p < count; p++){
-            ClassicMiniShaders.setMatrix4(allParticles.get(p).toMatrix4(false), "model", SimpleMesh.simpleMeshShader);
+            ClassicMiniShaders.setMatrix4(allParticles.get(p).toMatrix4(), "model", SimpleMesh.simpleMeshShader);
             GLES20.glDrawArrays(GLES20.GL_TRIANGLES, 0, allMeshes[resolution].vertexCount);
         }
 

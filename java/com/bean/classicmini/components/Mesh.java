@@ -21,7 +21,6 @@ import glm.mat._4.Mat4;
 import glm.vec._2.Vec2;
 import glm.vec._3.Vec3;
 import glm.vec._3.i.Vec3i;
-import glm.vec._4.Vec4;
 
 public class Mesh extends Components {
     public float[] vertices = new float[]{-1.0f, -1.0f, 0.0f, 1.0f, -1.0f, 0.0f, -1.0f, 1.0f, 0.0f};
@@ -44,9 +43,6 @@ public class Mesh extends Components {
 
         Vec3 minimum = new Vec3(xData.x, yData.x, zData.x);
         Vec3 maximum = new Vec3(xData.y, yData.y, zData.y);
-
-        minimum = new Vec3(new Vec4(minimum, 1.0f).mul(getBeansComponent(Transform.class).toMatrix4(false)));
-        maximum = new Vec3(new Vec4(maximum, 1.0f).mul(getBeansComponent(Transform.class).toMatrix4(false)));
 
         return new Vec3[]{minimum, maximum};
     }
@@ -75,9 +71,9 @@ public class Mesh extends Components {
         ClassicMiniShaders.setInt(0, "sampler", meshShader);
         ClassicMiniShaders.setMatrix4(Camera.perspectiveMatrix(), "projection", meshShader);
         ClassicMiniShaders.setMatrix4(Camera.viewMatrix(), "view", meshShader);
-        ClassicMiniShaders.setMatrix4(getBeansComponent(Transform.class).toMatrix4(false), "model", meshShader);
+        ClassicMiniShaders.setMatrix4(getBeansComponent(Transform.class).toMatrix4(), "model", meshShader);
 
-        Mat4 newMatrix = getBeansComponent(Transform.class).toMatrix4(false);
+        Mat4 newMatrix = getBeansComponent(Transform.class).toMatrix4();
         newMatrix = newMatrix.inverse();
         newMatrix = newMatrix.transpose();
         ClassicMiniShaders.setMatrix4(newMatrix, "transposedInversedModel", meshShader);

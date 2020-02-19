@@ -2,7 +2,6 @@ package com.bean.classicmini.components;
 
 import android.opengl.GLES20;
 
-import com.bean.classicmini.MainActivity;
 import com.bean.classicmini.R;
 import com.bean.classicmini.utilities.ClassicMiniShaders;
 import com.bean.components.Components;
@@ -11,6 +10,8 @@ import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.nio.FloatBuffer;
 
+import glm.vec._2.Vec2;
+import glm.vec._3.Vec3;
 import glm.vec._4.Vec4;
 
 public class SimpleMesh extends Components {
@@ -21,8 +22,52 @@ public class SimpleMesh extends Components {
 
     public static int simpleMeshShader = -1;
 
+    public Vec2 xData = null;
+    public Vec2 yData = null;
+    public Vec2 zData = null;
+
+    public Vec3[] getCollisionInfo(){ // one min vec3, one max vec3
+        if(xData == null || yData == null || zData == null){
+            return new Vec3[]{new Vec3(0.0f), new Vec3(0.0f)};
+        }
+
+        Vec3 minimum = new Vec3(xData.x, yData.x, zData.x);
+        Vec3 maximum = new Vec3(xData.y, yData.y, zData.y);
+
+        return new Vec3[]{minimum, maximum};
+    }
+
     @Override
     public void begin(){
+        int verticesLength = vertices.length;
+        for(int v = 0; v < verticesLength; v++){
+            float point = vertices[v];
+            if(v % 3 == 0){ // x
+                if(xData == null){
+                    xData = new Vec2(vertices[v]);
+                    continue;
+                }
+                xData.x = point < xData.x ? point : xData.x;
+                xData.y = point > xData.y ? point : xData.y;
+            }
+            if(v % 3 == 1){
+                if(yData == null){
+                    yData = new Vec2(vertices[v]);
+                    continue;
+                }
+                yData.x = point < yData.x ? point : yData.x;
+                yData.y = point > yData.y ? point : yData.y;
+            }
+            if(v % 3 == 2){
+                if(zData == null){
+                    zData = new Vec2(vertices[v]);
+                    continue;
+                }
+                zData.x = point < zData.x ? point : zData.x;
+                zData.y = point > zData.y ? point : zData.y;
+            }
+        }
+
         // buffer data
         ByteBuffer byteBuffer = ByteBuffer.allocateDirect(vertices.length * 4);
         byteBuffer.order(ByteOrder.nativeOrder());
@@ -59,7 +104,7 @@ public class SimpleMesh extends Components {
 
         ClassicMiniShaders.setMatrix4(Camera.perspectiveMatrix(), "projection", simpleMeshShader);
         ClassicMiniShaders.setMatrix4(Camera.viewMatrix(), "view", simpleMeshShader);
-        ClassicMiniShaders.setMatrix4(getBeansComponent(Transform.class).toMatrix4(false), "model", simpleMeshShader);
+        ClassicMiniShaders.setMatrix4(getBeansComponent(Transform.class).toMatrix4(), "model", simpleMeshShader);
 
         ClassicMiniShaders.setVector4(colour, "colour", simpleMeshShader);
         GLES20.glDrawArrays(GLES20.GL_TRIANGLES, 0, vertexCount);

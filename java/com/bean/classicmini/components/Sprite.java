@@ -13,9 +13,7 @@ import java.nio.ByteOrder;
 import java.nio.FloatBuffer;
 
 import glm.mat._4.Mat4;
-import glm.vec._2.Vec2;
 import glm.vec._3.Vec3;
-import glm.vec._4.Vec4;
 
 public class Sprite extends Components {
     public FloatBuffer vertexBuffer;
@@ -26,22 +24,9 @@ public class Sprite extends Components {
     public ClassicMiniMaterial material = new ClassicMiniMaterial();
     public Vec3 colour = new Vec3(1.0f);
 
-    public Vec2 xData = null;
-    public Vec2 yData = null;
-    public Vec2 zData = null;
-
     public Vec3[] getCollisionInfo(){ // one min vec3, one max vec3
-        if(xData == null || yData == null || zData == null){
-            return new Vec3[]{new Vec3(0.0f), new Vec3(0.0f)};
-        }
-
-        Vec3 minimum = new Vec3(xData.x, yData.x, zData.x);
-        Vec3 maximum = new Vec3(xData.y, yData.y, zData.y);
-
-        minimum = new Vec3(new Vec4(minimum, 1.0f).mul(getBeansComponent(Transform.class).toMatrix4(false)));
-        maximum = new Vec3(new Vec4(maximum, 1.0f).mul(getBeansComponent(Transform.class).toMatrix4(false)));
-
-        return new Vec3[]{minimum, maximum};
+        return new Vec3[]{new Vec3(-1.0f, -1.0f, 0.0f),
+                new Vec3(1.0f, 1.0f, 0.0f)};
     }
 
     public void draw(){
@@ -69,7 +54,7 @@ public class Sprite extends Components {
         ClassicMiniShaders.setMatrix4(Camera.perspectiveMatrix(), "projection", spriteShader);
         ClassicMiniShaders.setMatrix4(Camera.viewMatrix(), "view", spriteShader);
 
-        Mat4 model = getBeansComponent(Transform.class).toMatrix4(false);
+        Mat4 model = getBeansComponent(Transform.class).toMatrix4();
         ClassicMiniShaders.setMatrix4(model, "model", spriteShader);
         model = model.inverse();
         model = model.transpose();
@@ -103,11 +88,6 @@ public class Sprite extends Components {
                 1.0f, 1.0f, 0.0f, 0.0f, 0.0f, -1.0f, 0.0f, 0.0f
         };
         vertexCount = vertices.length / 8;
-
-        // get lowest xyz for collisions
-        xData = new Vec2(-1.0f, 1.0f);
-        yData = new Vec2(-1.0f, 1.0f);
-        zData = new Vec2(0.0f);
 
         // buffer
         ByteBuffer byteBuffer = ByteBuffer.allocateDirect(vertices.length * 4);

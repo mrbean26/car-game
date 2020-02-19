@@ -96,6 +96,33 @@ public class Transform extends Components {
         return parentMatrix.mul(newMatrix);
     }
 
+    public Mat4 toMatrix4(){ // single false as default
+        Mat4 parentMatrix = new Mat4(1.0f);
+        // get parent matrix
+        List<Transform> allParents = new ArrayList<>();
+        Transform currentTransform = this;
+
+        while(currentTransform.parent != null){
+            allParents.add(currentTransform.parent.getComponents(Transform.class));
+            currentTransform = currentTransform.parent.getComponents(Transform.class);
+        }
+
+        int size = allParents.size();
+        for(int i = 0; i < size; i++){
+            parentMatrix = allParents.get(i).toMatrix4(true).mul(parentMatrix);
+        }
+        // get local matrix
+        Mat4 newMatrix = new Mat4(1.0f);
+        newMatrix.translate(position);
+
+        newMatrix.rotate((float) Math.toRadians(rotation.x), new Vec3(1.0f, 0.0f, 0.0f));
+        newMatrix.rotate((float) Math.toRadians(rotation.y), new Vec3(0.0f, 1.0f, 0.0f));
+        newMatrix.rotate((float) Math.toRadians(rotation.z), new Vec3(0.0f, 0.0f, 1.0f));
+
+        newMatrix.scale(scale);
+        return parentMatrix.mul(newMatrix);
+    }
+
     public Bean parent;
     public HashMap<String, Bean> children = new HashMap<>();
 }

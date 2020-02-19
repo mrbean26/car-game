@@ -40,7 +40,7 @@ public class Image extends Components {
 
         // matrix
         Mat4 currentMatrix = ClassicMiniMath.getOrtho(); // ortho then transform bit
-        currentMatrix = currentMatrix.mul(getBeansComponent(Transform.class).toMatrix4(false));
+        currentMatrix = currentMatrix.mul(getBeansComponent(Transform.class).toMatrix4());
 
         GLES20.glUseProgram(imageShader);
         ClassicMiniShaders.setMatrix4(currentMatrix, "model", imageShader);

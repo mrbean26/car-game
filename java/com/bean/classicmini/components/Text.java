@@ -65,7 +65,7 @@ public class Text extends Components {
             getBeansComponent(Transform.class).scale.x = getBeansComponent(Transform.class).scale.x * material.getXTextMultiplier();
         }
         Mat4 currentMatrix = ClassicMiniMath.getOrtho(); // ortho then transform bit
-        currentMatrix = currentMatrix.mul(getBeansComponent(Transform.class).toMatrix4(false));
+        currentMatrix = currentMatrix.mul(getBeansComponent(Transform.class).toMatrix4());
         getBeansComponent(Transform.class).scale.x = xTempScale;
 
         GLES20.glUseProgram(imageShader);

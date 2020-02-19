@@ -12,6 +12,7 @@ import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.UUID;
 
@@ -238,7 +239,7 @@ public class Scene {
     public void mainloop(){
         for(Bean bean : allBeans.values()){
             if(surfaceView.framesThrough == 0){
-                for(HashMap<UUID, ? extends Components> component : bean.components.values()){
+                for(LinkedHashMap<UUID, ? extends Components> component : bean.components.values()){
                     if(component.get(bean.id).enabled){
                         component.get(bean.id).begin();
                     }

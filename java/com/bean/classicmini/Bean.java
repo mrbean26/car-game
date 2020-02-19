@@ -3,7 +3,7 @@ package com.bean.classicmini;
 import com.bean.classicmini.components.Transform;
 import com.bean.components.Components;
 
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.UUID;
 
 public class Bean {
@@ -24,10 +24,10 @@ public class Bean {
         id = UUID.randomUUID();
         addComponents(new Transform());
     }
-    public HashMap<Class, HashMap<UUID, ? extends Components>> components = new HashMap<>();
-
+    public LinkedHashMap<Class, LinkedHashMap<UUID, ? extends Components>> components = new LinkedHashMap<>();  // linkedhashmap so when iterate over values, theyre the same order each time
+                                                                                                                // so when added in scene you can add collider after renderer
     public void mainloop(){
-        for(HashMap<UUID, ? extends Components> currentHashmap : components.values()){
+        for(LinkedHashMap<UUID, ? extends Components> currentHashmap : components.values()){
             if(currentHashmap.get(id).enabled){
                 currentHashmap.get(id).mainloop();
             }
@@ -36,18 +36,18 @@ public class Bean {
 
     public <T extends Components> void addComponents(T component){
         synchronized(components){
-            HashMap<UUID, ? extends Components> store = components.get(component);
+            LinkedHashMap<UUID, ? extends Components> store = components.get(component);
             if(store == null){
-                store = new HashMap<UUID, T>();
+                store = new LinkedHashMap<UUID, T>();
                 components.put(component.getClass(), store);
             }
             component.objectName = objectName;
-            ((HashMap<UUID, T>) store).put(this.id, component);
+            ((LinkedHashMap<UUID, T>) store).put(this.id, component);
         }
     }
 
     public <T> void removeComponents(Class<T> component){
-        HashMap<UUID, ? extends Components> result = components.get(component);
+        LinkedHashMap<UUID, ? extends Components> result = components.get(component);
         if(result != null){
             components.remove(component);
         }
@@ -57,7 +57,7 @@ public class Bean {
     }
 
     public <T> T getComponents( Class<T> component) {
-        HashMap<UUID, ? extends Components> store = components.get(component);
+        LinkedHashMap<UUID, ? extends Components> store = components.get(component);
         T results = (T) store.get(this.id);
         if(results == null)
             throw new IllegalArgumentException("Get Fail: " + objectName + " does not posses Component of Class " + component);
