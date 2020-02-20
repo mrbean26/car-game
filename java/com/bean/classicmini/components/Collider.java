@@ -12,6 +12,10 @@ import glm.vec._4.Vec4;
 public class Collider extends Components {
     private Vec4 minData = new Vec4(0.0f);
     private Vec4 maxData = new Vec4(0.0f);
+    public boolean solid = false; // solid means gets pushed by another non-solid collider
+                                  // non-solid on non-solid goes through each other
+                                  // solid on solid pushes each other
+                                  // solid boolean works like rigidbody component
 
     public static float MIN_COLLISION_DISTANCE = 0.0001f;
 
@@ -66,14 +70,19 @@ public class Collider extends Components {
             Vec3 otherMinInfo = new Vec3(copiedMinOther.mul(otherModel));
             Vec3 otherMaxInfo = new Vec3(copiedMaxOther.mul(otherModel));
 
-            // compare
+            // compare - x collisions
             if(otherTransform.position.y >= thisMinInfo.y && otherTransform.position.y <= thisMaxInfo.y){
                 if(otherTransform.position.z >= thisMinInfo.z && otherTransform.position.z <= thisMaxInfo.z){
                     if(otherTransform.position.x >= thisTransform.position.x){
                         if(otherMinInfo.x <= thisMaxInfo.x && otherMinInfo.x >= thisMinInfo.x){
                             float dist = thisMaxInfo.x - otherMinInfo.x;
                             if(Math.abs(dist) >  MIN_COLLISION_DISTANCE){
-                                otherTransform.position.add(otherTransform.forwardVector().mul(dist));
+                                if(otherCollider.solid){
+                                    otherTransform.position.add(otherTransform.forwardVector().mul(dist));
+                                }
+                                if(solid && !otherCollider.solid){
+                                    thisTransform.position.add(thisTransform.forwardVector().mul(dist));
+                                }
                             }
                         }
                     }
@@ -81,7 +90,12 @@ public class Collider extends Components {
                         if(otherMaxInfo.x <= thisMaxInfo.x && otherMaxInfo.x >= thisMinInfo.x){
                             float dist = thisMinInfo.x - otherMaxInfo.x;
                             if(Math.abs(dist) >  MIN_COLLISION_DISTANCE){
-                                otherTransform.position.add(otherTransform.forwardVector().mul(dist));
+                                if(otherCollider.solid){
+                                    otherTransform.position.add(otherTransform.forwardVector().mul(dist));
+                                }
+                                if(this.solid && !otherCollider.solid){
+                                    thisTransform.position.add(thisTransform.forwardVector().mul(dist));
+                                }
                             }
                         }
                     }
@@ -95,7 +109,12 @@ public class Collider extends Components {
                         if(otherMinInfo.y <= thisMaxInfo.y && otherMinInfo.y >= thisMinInfo.y){
                             float dist = thisMaxInfo.y - otherMinInfo.y;
                             if(Math.abs(dist) > MIN_COLLISION_DISTANCE){
-                                otherTransform.position.add(otherTransform.upVector().mul(dist));
+                                if(otherCollider.solid){
+                                    otherTransform.position.add(otherTransform.upVector().mul(dist));
+                                }
+                                if(this.solid && !otherCollider.solid){
+                                   thisTransform.position.add(thisTransform.upVector().mul(dist));
+                                }
                             }
                         }
                     }
@@ -103,8 +122,12 @@ public class Collider extends Components {
                         if(otherMaxInfo.y <= thisMaxInfo.y && otherMaxInfo.y >= thisMinInfo.y){
                             float dist = thisMinInfo.y - otherMaxInfo.y;
                             if(Math.abs(dist) > MIN_COLLISION_DISTANCE){
-                                Vec3 added = otherTransform.upVector().mul(dist);
-                                otherTransform.position.add(otherTransform.upVector().mul(dist));
+                                if(otherCollider.solid){
+                                    otherTransform.position.add(otherTransform.upVector().mul(dist));
+                                }
+                                if(this.solid && !otherCollider.solid){
+                                    thisTransform.position.add(thisTransform.upVector().mul(dist));
+                                }
                             }
                         }
                     }
@@ -118,7 +141,12 @@ public class Collider extends Components {
                         if(otherMinInfo.z <= thisMaxInfo.z && otherMinInfo.x >= thisMinInfo.x){
                             float dist = thisMaxInfo.z - otherMinInfo.z;
                             if(Math.abs(dist) > MIN_COLLISION_DISTANCE){
-                                otherTransform.position.add(otherTransform.rightVector().mul(dist));
+                                if(otherCollider.solid){
+                                    otherTransform.position.add(otherTransform.rightVector().mul(dist));
+                                }
+                                if(this.solid && !otherCollider.solid){
+                                    thisTransform.position.add(thisTransform.rightVector().mul(dist));
+                                }
                             }
                         }
                     }
@@ -126,7 +154,12 @@ public class Collider extends Components {
                         if(otherMaxInfo.z <= thisMaxInfo.z && otherMaxInfo.x >= thisMinInfo.x){
                             float dist = thisMinInfo.z - otherMaxInfo.z;
                             if(Math.abs(dist) > MIN_COLLISION_DISTANCE){
-                                otherTransform.position.add(otherTransform.rightVector().mul(dist));
+                                if(otherCollider.solid){
+                                    otherTransform.position.add(otherTransform.rightVector().mul(dist));
+                                }
+                                if(this.solid && !otherCollider.solid){
+                                    thisTransform.position.add(thisTransform.rightVector().mul(dist));
+                                }
                             }
                         }
                     }
