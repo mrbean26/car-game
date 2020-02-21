@@ -3,6 +3,7 @@ package com.bean.classicmini.components;
 import android.opengl.GLES20;
 
 import com.bean.classicmini.R;
+import com.bean.classicmini.utilities.ClassicMiniMath;
 import com.bean.classicmini.utilities.ClassicMiniShaders;
 import com.bean.components.Components;
 
@@ -10,7 +11,6 @@ import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.nio.FloatBuffer;
 
-import glm.vec._2.Vec2;
 import glm.vec._3.Vec3;
 import glm.vec._4.Vec4;
 
@@ -22,50 +22,53 @@ public class SimpleMesh extends Components {
 
     public static int simpleMeshShader = -1;
 
-    public Vec2 xData = null;
-    public Vec2 yData = null;
-    public Vec2 zData = null;
-
+    private Vec3[] allPoints = new Vec3[0];
     public Vec3[] getCollisionInfo(){ // one min vec3, one max vec3
-        if(xData == null || yData == null || zData == null){
-            return new Vec3[]{new Vec3(0.0f), new Vec3(0.0f)};
+        Vec3 maxPoint = null;
+        Vec3 minPoint = null;
+
+        int count = allPoints.length;
+        for(int p = 0; p < count; p++){
+            Vec4 currentPointFour = new Vec4(ClassicMiniMath.copyVectorThree(allPoints[p]), 1.0f);
+            currentPointFour = currentPointFour.mul(getBeansComponent(Transform.class).toMatrix4());
+            Vec3 currentPoint = new Vec3(currentPointFour);
+
+            if(minPoint == null){
+                minPoint = currentPoint;
+                maxPoint = currentPoint;
+                continue;
+            }
+
+            minPoint.x = currentPoint.x < minPoint.x ? currentPoint.x : minPoint.x;
+            minPoint.y = currentPoint.y < minPoint.y ? currentPoint.y : minPoint.y;
+            minPoint.z = currentPoint.z < minPoint.z ? currentPoint.z : minPoint.z;
+
+            maxPoint.x = currentPoint.x > maxPoint.x ? currentPoint.x : maxPoint.x;
+            maxPoint.y = currentPoint.y > maxPoint.y ? currentPoint.y : maxPoint.y;
+            maxPoint.z = currentPoint.z > maxPoint.z ? currentPoint.z : maxPoint.z;
         }
 
-        Vec3 minimum = new Vec3(xData.x, yData.x, zData.x);
-        Vec3 maximum = new Vec3(xData.y, yData.y, zData.y);
+        if(minPoint == null){
+            minPoint = new Vec3(0f);
+            maxPoint = new Vec3(0f);
+        }
 
-        return new Vec3[]{minimum, maximum};
+        return new Vec3[]{minPoint, maxPoint};
     }
 
     @Override
     public void begin(){
-        int verticesLength = vertices.length;
-        for(int v = 0; v < verticesLength; v++){
-            float point = vertices[v];
-            if(v % 3 == 0){ // x
-                if(xData == null){
-                    xData = new Vec2(vertices[v]);
-                    continue;
-                }
-                xData.x = point < xData.x ? point : xData.x;
-                xData.y = point > xData.y ? point : xData.y;
-            }
-            if(v % 3 == 1){
-                if(yData == null){
-                    yData = new Vec2(vertices[v]);
-                    continue;
-                }
-                yData.x = point < yData.x ? point : yData.x;
-                yData.y = point > yData.y ? point : yData.y;
-            }
-            if(v % 3 == 2){
-                if(zData == null){
-                    zData = new Vec2(vertices[v]);
-                    continue;
-                }
-                zData.x = point < zData.x ? point : zData.x;
-                zData.y = point > zData.y ? point : zData.y;
-            }
+        vertexCount = vertices.length / 3;
+
+        // get all points
+        allPoints = new Vec3[vertexCount];
+        for(int v = 0; v < vertexCount; v++){
+            Vec3 newPoint = new Vec3();
+            newPoint.x = vertices[v * 3 + 0];
+            newPoint.y = vertices[v * 3 + 1];
+            newPoint.z = vertices[v * 3 + 2];
+
+            allPoints[v] = newPoint;
         }
 
         // buffer data
@@ -83,7 +86,6 @@ public class SimpleMesh extends Components {
             int[] programs = {vertexShader, fragmentShader};
             simpleMeshShader = ClassicMiniShaders.createProgram(programs);
         }
-        vertexCount = vertices.length / 3;
     }
 
     @Override

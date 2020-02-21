@@ -2,7 +2,6 @@ package com.bean.classicmini.components;
 
 import com.bean.classicmini.Bean;
 import com.bean.classicmini.surfaceView;
-import com.bean.classicmini.utilities.ClassicMiniMath;
 import com.bean.components.Components;
 
 import glm.mat._4.Mat4;
@@ -19,8 +18,7 @@ public class Collider extends Components {
 
     public static float MIN_COLLISION_DISTANCE = 0.0001f;
 
-    @Override
-    public void begin() {
+    public void updateCollisionInfo(){
         if(getBean().hasComponents(Mesh.class)){
             Vec3[] collisionInfo = getBeansComponent(Mesh.class).getCollisionInfo();
             minData = new Vec4(collisionInfo[0], 1.0f);
@@ -39,18 +37,26 @@ public class Collider extends Components {
     }
 
     @Override
+    public void begin() {
+
+    }
+
+    @Override
     public void mainloop(){
         Bean[] allColliders = surfaceView.currentScene.findBeansWithComponent(Collider.class);
         int count = allColliders.length;
 
         // this
+        this.updateCollisionInfo();
         Transform thisTransform = getBeansComponent(Transform.class);
         Mat4 thisModel = getBeansComponent(Transform.class).toMatrix4();
-        Vec4 copiedMin = ClassicMiniMath.copyVectorFour(minData);
-        Vec4 copiedMax = ClassicMiniMath.copyVectorFour(maxData);
+        //Vec4 copiedMin = ClassicMiniMath.copyVectorFour(minData);
+        //Vec4 copiedMax = ClassicMiniMath.copyVectorFour(maxData);
 
-        Vec3 thisMinInfo = new Vec3(copiedMin.mul(thisModel));
-        Vec3 thisMaxInfo = new Vec3(copiedMax.mul(thisModel));
+        //Vec3 thisMinInfo = new Vec3(copiedMin.mul(thisModel));
+        //Vec3 thisMaxInfo = new Vec3(copiedMax.mul(thisModel));
+        Vec3 thisMinInfo = new Vec3(this.minData);
+        Vec3 thisMaxInfo = new Vec3(this.maxData);
 
         for(int c = 0; c < count; c++){
             if(allColliders[c].id == getBean().id){
@@ -61,15 +67,18 @@ public class Collider extends Components {
                 continue;
             }
             Collider otherCollider = allColliders[c].getComponents(Collider.class);
+            otherCollider.updateCollisionInfo();
             Transform otherTransform = otherCollider.getBeansComponent(Transform.class);
 
             Mat4 otherModel = otherCollider.getBeansComponent(Transform.class).toMatrix4();
-            Vec4 copiedMinOther = ClassicMiniMath.copyVectorFour(otherCollider.minData);
-            Vec4 copiedMaxOther = ClassicMiniMath.copyVectorFour(otherCollider.maxData);
+            //Vec4 copiedMinOther = ClassicMiniMath.copyVectorFour(otherCollider.minData);
+            //Vec4 copiedMaxOther = ClassicMiniMath.copyVectorFour(otherCollider.maxData);
 
-            Vec3 otherMinInfo = new Vec3(copiedMinOther.mul(otherModel));
-            Vec3 otherMaxInfo = new Vec3(copiedMaxOther.mul(otherModel));
+            //Vec3 otherMinInfo = new Vec3(copiedMinOther.mul(otherModel));
+            //Vec3 otherMaxInfo = new Vec3(copiedMaxOther.mul(otherModel));
 
+            Vec3 otherMinInfo = new Vec3(otherCollider.minData);
+            Vec3 otherMaxInfo = new Vec3(otherCollider.maxData);
             // compare - x collisions
             if(otherTransform.position.y >= thisMinInfo.y && otherTransform.position.y <= thisMaxInfo.y){
                 if(otherTransform.position.z >= thisMinInfo.z && otherTransform.position.z <= thisMaxInfo.z){

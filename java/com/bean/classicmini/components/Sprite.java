@@ -5,6 +5,7 @@ import android.opengl.GLES20;
 import com.bean.classicmini.R;
 import com.bean.classicmini.surfaceView;
 import com.bean.classicmini.utilities.ClassicMiniMaterial;
+import com.bean.classicmini.utilities.ClassicMiniMath;
 import com.bean.classicmini.utilities.ClassicMiniShaders;
 import com.bean.components.Components;
 
@@ -14,6 +15,7 @@ import java.nio.FloatBuffer;
 
 import glm.mat._4.Mat4;
 import glm.vec._3.Vec3;
+import glm.vec._4.Vec4;
 
 public class Sprite extends Components {
     public FloatBuffer vertexBuffer;
@@ -24,9 +26,38 @@ public class Sprite extends Components {
     public ClassicMiniMaterial material = new ClassicMiniMaterial();
     public Vec3 colour = new Vec3(1.0f);
 
+    private Vec3[] allPoints = new Vec3[0];
     public Vec3[] getCollisionInfo(){ // one min vec3, one max vec3
-        return new Vec3[]{new Vec3(-1.0f, -1.0f, 0.0f),
-                new Vec3(1.0f, 1.0f, 0.0f)};
+        Vec3 maxPoint = null;
+        Vec3 minPoint = null;
+
+        int count = allPoints.length;
+        for(int p = 0; p < count; p++){
+            Vec4 currentPointFour = new Vec4(ClassicMiniMath.copyVectorThree(allPoints[p]), 1.0f);
+            currentPointFour = currentPointFour.mul(getBeansComponent(Transform.class).toMatrix4());
+            Vec3 currentPoint = new Vec3(currentPointFour);
+
+            if(minPoint == null){
+                minPoint = currentPoint;
+                maxPoint = currentPoint;
+                continue;
+            }
+
+            minPoint.x = currentPoint.x < minPoint.x ? currentPoint.x : minPoint.x;
+            minPoint.y = currentPoint.y < minPoint.y ? currentPoint.y : minPoint.y;
+            minPoint.z = currentPoint.z < minPoint.z ? currentPoint.z : minPoint.z;
+
+            maxPoint.x = currentPoint.x > maxPoint.x ? currentPoint.x : maxPoint.x;
+            maxPoint.y = currentPoint.y > maxPoint.y ? currentPoint.y : maxPoint.y;
+            maxPoint.z = currentPoint.z > maxPoint.z ? currentPoint.z : maxPoint.z;
+        }
+
+        if(minPoint == null){
+            minPoint = new Vec3(0f);
+            maxPoint = new Vec3(0f);
+        }
+
+        return new Vec3[]{minPoint, maxPoint};
     }
 
     public void draw(){
@@ -88,6 +119,16 @@ public class Sprite extends Components {
                 1.0f, 1.0f, 0.0f, 0.0f, 0.0f, -1.0f, 0.0f, 0.0f
         };
         vertexCount = vertices.length / 8;
+
+        allPoints = new Vec3[vertexCount];
+        for(int v = 0; v < vertexCount; v++){
+            Vec3 newPoint = new Vec3();
+            newPoint.x = vertices[v * 8 + 0];
+            newPoint.y = vertices[v * 8 + 1];
+            newPoint.z = vertices[v * 8 + 2];
+
+            allPoints[v] = newPoint;
+        }
 
         // buffer
         ByteBuffer byteBuffer = ByteBuffer.allocateDirect(vertices.length * 4);

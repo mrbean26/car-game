@@ -21,6 +21,7 @@ import glm.mat._4.Mat4;
 import glm.vec._2.Vec2;
 import glm.vec._3.Vec3;
 import glm.vec._3.i.Vec3i;
+import glm.vec._4.Vec4;
 
 public class Mesh extends Components {
     public float[] vertices = new float[]{-1.0f, -1.0f, 0.0f, 1.0f, -1.0f, 0.0f, -1.0f, 1.0f, 0.0f};
@@ -32,19 +33,39 @@ public class Mesh extends Components {
     public static int meshShader = -1;
     public Vec3 colour = new Vec3(1.0f);
 
-    public Vec2 xData = null;
-    public Vec2 yData = null;
-    public Vec2 zData = null;
+    private Vec3[] allPoints = new Vec3[0];
 
     public Vec3[] getCollisionInfo(){ // one min vec3, one max vec3
-        if(xData == null || yData == null || zData == null){
-            return new Vec3[]{new Vec3(0.0f), new Vec3(0.0f)};
+        Vec3 maxPoint = null;
+        Vec3 minPoint = null;
+
+        int count = allPoints.length;
+        for(int p = 0; p < count; p++){
+            Vec4 currentPointFour = new Vec4(ClassicMiniMath.copyVectorThree(allPoints[p]), 1.0f);
+            currentPointFour = currentPointFour.mul(getBeansComponent(Transform.class).toMatrix4());
+            Vec3 currentPoint = new Vec3(currentPointFour);
+
+            if(minPoint == null){
+                minPoint = currentPoint;
+                maxPoint = currentPoint;
+                continue;
+            }
+
+            minPoint.x = currentPoint.x < minPoint.x ? currentPoint.x : minPoint.x;
+            minPoint.y = currentPoint.y < minPoint.y ? currentPoint.y : minPoint.y;
+            minPoint.z = currentPoint.z < minPoint.z ? currentPoint.z : minPoint.z;
+
+            maxPoint.x = currentPoint.x > maxPoint.x ? currentPoint.x : maxPoint.x;
+            maxPoint.y = currentPoint.y > maxPoint.y ? currentPoint.y : maxPoint.y;
+            maxPoint.z = currentPoint.z > maxPoint.z ? currentPoint.z : maxPoint.z;
         }
 
-        Vec3 minimum = new Vec3(xData.x, yData.x, zData.x);
-        Vec3 maximum = new Vec3(xData.y, yData.y, zData.y);
+        if(minPoint == null){
+            minPoint = new Vec3(0f);
+            maxPoint = new Vec3(0f);
+        }
 
-        return new Vec3[]{minimum, maximum};
+        return new Vec3[]{minPoint, maxPoint};
     }
 
     public void render(){
@@ -95,33 +116,15 @@ public class Mesh extends Components {
     public void begin(){
         vertexCount = vertices.length / 8;
 
-        // get highest and lowest xyz (for collisions)
+        // get all points
+        allPoints = new Vec3[vertexCount];
         for(int v = 0; v < vertexCount; v++){
-            float x = vertices[v * 8];
-            float y = vertices[v * 8 + 1];
-            float z = vertices[v * 8 + 2];
+            Vec3 newPoint = new Vec3();
+            newPoint.x = vertices[v * 8 + 0];
+            newPoint.y = vertices[v * 8 + 1];
+            newPoint.z = vertices[v * 8 + 2];
 
-            if(xData == null){
-                xData = new Vec2(x);
-                yData = new Vec2(y);
-                zData = new Vec2(z);
-                continue;
-            }
-
-            xData.x = x < xData.x ? x : xData.x;
-            xData.y = x > xData.y ? x : xData.y;
-
-            yData.x = y < yData.x ? y : yData.x;
-            yData.y = y > yData.y ? y : yData.y;
-
-            zData.x = z < zData.x ? z : zData.x;
-            zData.y = z > zData.y ? z : zData.y;
-        }
-
-        if(xData == null){
-            xData = new Vec2(0.0f);
-            yData = new Vec2(0.0f);
-            zData = new Vec2(0.0f);
+            allPoints[v] = newPoint;
         }
 
         // buffer data

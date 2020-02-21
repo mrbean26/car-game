@@ -3,6 +3,18 @@ component toby classicmini.components.Camera
 field toby classicmini.components.Transform position vec3 0.0,0.0,-60.0
 field toby classicmini.components.Transform rotation vec3 0.0,0.0,0.0
 
-Bean tracy
-component tracy classicmini.components.ParticleSystem
-field tracy classicmini.components.ParticleSystem resolution int 2
+//Bean tracy
+//component tracy classicmini.components.ParticleSystem
+//field tracy classicmini.components.ParticleSystem resolution int 2
+
+Bean adam
+component adam classicmini.components.Sprite
+field adam classicmini.components.Transform position vec3 -4.0,0.0,0.0
+component adam classicmini.components.Collider
+field adam classicmini.components.Collider solid bool true
+field adam classicmini.components.Transform rotation vec3 0.0,0.0,45.0
+
+Bean martin
+component martin classicmini.components.Sprite
+field martin classicmini.components.Transform position vec3 0.0,0.0,0.0
+component martin classicmini.components.Collider

@@ -45,7 +45,7 @@ public class ParticleSystem extends Components {
     public Vec4 particleColour = new Vec4(1.0f);
     public Vec3 particleDecreaseSpeed = new Vec3(0.1f);
 
-    public float particleGenerateTime = 0.0005f;
+    public float particleGenerateTime = 0.05f;
     public float particleSpeed = 30f;
     public float particleDeleteDistance = 25f;
     private float counter = particleGenerateTime;
