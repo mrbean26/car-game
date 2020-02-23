@@ -23,6 +23,7 @@ public class Image extends Components {
 
     public ClassicMiniMaterial material = new ClassicMiniMaterial();
     public Vec4 colour = new Vec4(1.0f);
+    public float roundEdgeRadius = 0.0f;
 
     public void draw(){
         GLES20.glEnable(GLES20.GL_BLEND);
@@ -43,9 +44,12 @@ public class Image extends Components {
         currentMatrix = currentMatrix.mul(getBeansComponent(Transform.class).toMatrix4());
 
         GLES20.glUseProgram(imageShader);
-        ClassicMiniShaders.setMatrix4(currentMatrix, "model", imageShader);
+        ClassicMiniShaders.setMatrix4(currentMatrix, "orthoModel", imageShader);
+        ClassicMiniShaders.setMatrix4(getBeansComponent(Transform.class).toMatrix4(true, false, true), "model", imageShader);
+
         ClassicMiniShaders.setInt(0, "sampler", imageShader);
         ClassicMiniShaders.setVector4(colour, "colour", imageShader);
+        ClassicMiniShaders.setFloat(roundEdgeRadius, "roundedRadius", imageShader);
 
         material.bind();
 

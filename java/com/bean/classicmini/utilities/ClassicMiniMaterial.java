@@ -4,6 +4,8 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.Matrix;
+import android.graphics.Movie;
 import android.graphics.Paint;
 import android.graphics.Typeface;
 import android.opengl.GLES20;
@@ -13,56 +15,67 @@ import androidx.core.content.res.ResourcesCompat;
 
 import com.bean.classicmini.MainActivity;
 import com.bean.classicmini.R;
+import com.bean.classicmini.surfaceView;
+
+import java.io.InputStream;
 
 public class ClassicMiniMaterial {
+    // Main Details
     public int textureNum;
     public int textureWidth, textureHeight;
-
-    public String type = "colour"; // "colour" or "image" or "text"
-
-    public String colourHex = "#FF0000";
-
-    public String displayedText = "New Text";
-    public int textSize = 80;
-    public boolean textCentered = true;
-    public int fontPath = R.font.default_font;
-
-    private float xTextMultiplier = 1.0f;
-    public float getXTextMultiplier(){
-        return xTextMultiplier; // read only variable from outside class
-    }
-
-    public int imagePath = R.drawable.no_texture_image;
+    public String type = "colour"; // "colour" or "image" or "text" or "gif"
 
     public ClassicMiniMaterial(){
-        int[] textureId = new int[1];
-        GLES20.glActiveTexture(GLES20.GL_TEXTURE0);
-        GLES20.glGenTextures(1, textureId, 0);
-        if(textureId[0] != 0) {
-            textureNum = textureId[0];
-        } else{
-            MainActivity.error("Error loading texture.");
+        if(!type.equals("gif")){
+            int[] textureId = new int[1];
+            GLES20.glActiveTexture(GLES20.GL_TEXTURE0);
+            GLES20.glGenTextures(1, textureId, 0);
+            if(textureId[0] != 0) {
+                textureNum = textureId[0];
+            } else{
+                ClassicMiniOutput.error("Error loading texture.");
+            }
         }
     }
 
     public void begin(){
-        if(imagePath != R.drawable.no_texture_image){
-            type = "image";
-        } if(type.equals("colour")){
+        if(type.equals("colour")){
             loadColour(colourHex);
         } if(type.equals("image")){
             loadImage(imagePath);
-        }
-        if(type.equals("text")){
-            loadText(textSize, displayedText, textCentered);
+        } if(type.equals("text")){
+            loadText(textMaterialInfo.textSize,
+                    textMaterialInfo.displayedText, textMaterialInfo.textCentered);
+        } if(type.equals("gif")){
+            loadGIF(gifMaterialInfo.gifPath);
         }
     }
 
     public void bind(){
         GLES20.glActiveTexture(GLES20.GL_TEXTURE0);
-        GLES20.glBindTexture(GLES20.GL_TEXTURE_2D, textureNum);
+        if(!type.equals("gif")){
+            GLES20.glBindTexture(GLES20.GL_TEXTURE_2D, textureNum);
+        }
+        if(type.equals("gif")){
+            if(gifMaterialInfo.textureIDs.size() == 0){
+                return;
+            }
+            GLES20.glBindTexture(GLES20.GL_TEXTURE_2D,
+                    gifMaterialInfo.textureIDs.get(gifMaterialInfo.gifTimer));
+
+            if(gifMaterialInfo.currentTimer < 0f){
+                gifMaterialInfo.gifTimer = gifMaterialInfo.gifTimer + 1;
+                if(gifMaterialInfo.gifTimer > gifMaterialInfo.maxGifTimer - 1){
+                    gifMaterialInfo.gifTimer = 0;
+                }
+                gifMaterialInfo.currentTimer = gifMaterialInfo.timers.get(gifMaterialInfo.gifTimer);
+            }
+            gifMaterialInfo.currentTimer -= surfaceView.deltaTime;
+        }
     }
 
+    // Image Texture
+    public int imagePath = R.drawable.no_texture_image;
     public void loadImage(int resourcePath){
         GLES20.glBindTexture(GLES20.GL_TEXTURE_2D, textureNum);
         BitmapFactory.Options options = new BitmapFactory.Options();
@@ -79,6 +92,11 @@ public class ClassicMiniMaterial {
         GLES20.glTexParameteri(GLES20.GL_TEXTURE_2D, GLES20.GL_TEXTURE_MAG_FILTER, GLES20.GL_NEAREST);
     }
 
+    // Text Texture
+    public ClassicMiniTextMaterialInfo textMaterialInfo = new ClassicMiniTextMaterialInfo();
+    public float getXTextMultiplier(){
+        return textMaterialInfo.xTextMultiplier; // read only variable from outside class
+    }
     public void loadText(int size, String text, boolean centered){
         GLES20.glBindTexture(GLES20.GL_TEXTURE_2D, textureNum);
 
@@ -86,7 +104,7 @@ public class ClassicMiniMaterial {
         Canvas canvas = new Canvas(texture);
         texture.eraseColor(0);
 
-        Typeface font = ResourcesCompat.getFont(MainActivity.getAppContext(), fontPath);
+        Typeface font = ResourcesCompat.getFont(MainActivity.getAppContext(), textMaterialInfo.fontPath);
 
         Paint textPaint = new Paint();
         textPaint.setTextSize(size);
@@ -96,7 +114,7 @@ public class ClassicMiniMaterial {
 
         // resize to image (not outside)
         float scale = 512f / textPaint.measureText(text);
-        xTextMultiplier = textPaint.measureText(text) / 512f;
+        textMaterialInfo.xTextMultiplier = textPaint.measureText(text) / 512f;
         textPaint.setTextScaleX(scale);
 
         int xPosition = (canvas.getWidth() / 2);
@@ -112,6 +130,8 @@ public class ClassicMiniMaterial {
         GLES20.glTexParameteri(GLES20.GL_TEXTURE_2D, GLES20.GL_TEXTURE_MAG_FILTER, GLES20.GL_NEAREST);
     }
 
+    // Colour Texture
+    public String colourHex = "#FF0000";
     public void loadColour(String hexColour){
         GLES20.glBindTexture(GLES20.GL_TEXTURE_2D, textureNum);
         BitmapFactory.Options options = new BitmapFactory.Options();
@@ -126,5 +146,60 @@ public class ClassicMiniMaterial {
 
         GLES20.glTexParameteri(GLES20.GL_TEXTURE_2D, GLES20.GL_TEXTURE_MIN_FILTER, GLES20.GL_NEAREST);
         GLES20.glTexParameteri(GLES20.GL_TEXTURE_2D, GLES20.GL_TEXTURE_MAG_FILTER, GLES20.GL_NEAREST);
+    }
+
+    // GIF Texture
+    public ClassicMiniGIFMaterialInfo gifMaterialInfo = new ClassicMiniGIFMaterialInfo();
+    public static Matrix gifMatrix = null;
+    public void loadGIF(int resourcePath){
+        if(gifMatrix == null){
+            gifMatrix = new Matrix();
+            gifMatrix.preScale(-1f, 1f);
+        }
+
+        InputStream inputStream = MainActivity.getAppContext().getResources().openRawResource(gifMaterialInfo.gifPath);
+        gifMaterialInfo.gifData = Movie.decodeStream(inputStream);
+
+        gifMaterialInfo.gifCanvasTexture = Bitmap.createBitmap(gifMaterialInfo.gifData.width(), gifMaterialInfo.gifData.height(), Bitmap.Config.ARGB_8888);
+        gifMaterialInfo.gifCanvas = new Canvas(gifMaterialInfo.gifCanvasTexture);
+        gifMaterialInfo.gifCanvasTexture.eraseColor(0);
+
+        // first image
+        gifMaterialInfo.gifData.draw(gifMaterialInfo.gifCanvas, 0f, 0f);
+       Bitmap lastImage = Bitmap.createBitmap(gifMaterialInfo.gifCanvasTexture);
+
+        // loop
+        int differentFrames = 0;
+        int lastFrameTimestamp = 0;
+        for(int i = 0; i < gifMaterialInfo.gifData.duration(); i++){
+            lastFrameTimestamp += 1;
+            gifMaterialInfo.gifData.setTime(i);
+            gifMaterialInfo.gifData.draw(gifMaterialInfo.gifCanvas, 0f, 0f);
+
+            if(!gifMaterialInfo.gifCanvasTexture.sameAs(lastImage)){
+                differentFrames += 1;
+                lastImage = Bitmap.createBitmap(gifMaterialInfo.gifCanvasTexture);
+
+                int[] textureId = new int[1];
+                GLES20.glGenTextures(1, textureId, 0);
+
+                Bitmap flippedTextureImage = Bitmap.createBitmap(gifMaterialInfo.gifCanvasTexture, 0, 0, gifMaterialInfo.gifCanvasTexture.getWidth(),
+                        gifMaterialInfo.gifCanvasTexture.getHeight(), gifMatrix, true); // flip horizontally to make it normal
+                GLES20.glBindTexture(GLES20.GL_TEXTURE_2D, textureId[0]);
+                GLUtils.texImage2D(GLES20.GL_TEXTURE_2D, 0, flippedTextureImage, 0);
+
+                GLES20.glTexParameteri(GLES20.GL_TEXTURE_2D, GLES20.GL_TEXTURE_MIN_FILTER, GLES20.GL_NEAREST);
+                GLES20.glTexParameteri(GLES20.GL_TEXTURE_2D, GLES20.GL_TEXTURE_MAG_FILTER, GLES20.GL_NEAREST);
+
+                gifMaterialInfo.textureIDs.add(textureId[0]);
+                gifMaterialInfo.timers.add(lastFrameTimestamp / 1000f);
+                lastFrameTimestamp = 0;
+            }
+        }
+
+        gifMaterialInfo.maxGifTimer = differentFrames;
+        if(differentFrames > 0){
+            gifMaterialInfo.currentTimer = gifMaterialInfo.timers.get(0);
+        }
     }
 }

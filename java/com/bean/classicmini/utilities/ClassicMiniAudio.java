@@ -33,7 +33,7 @@ public class ClassicMiniAudio {
     public static void playAudio(int resourceId){ // load audio first
         ClassicMiniMediaPlayer result = allMediaPlayers.get(resourceId);
         if(result == null){
-            MainActivity.error("Audio has not been loaded and cannot be played with resource name: " + MainActivity.getAppContext().getResources().getResourceName(resourceId));
+            ClassicMiniOutput.error("Audio has not been loaded and cannot be played with resource name: " + MainActivity.getAppContext().getResources().getResourceName(resourceId));
             return;
         }
         result.mediaPlayer.start();
@@ -42,7 +42,7 @@ public class ClassicMiniAudio {
     public static void stopAudio(int resourceId){
         ClassicMiniMediaPlayer result = allMediaPlayers.get(resourceId);
         if(result == null){
-            MainActivity.error("Audio has not been loaded and cannot be stopped with resource name: " + MainActivity.getAppContext().getResources().getResourceName(resourceId));
+            ClassicMiniOutput.error("Audio has not been loaded and cannot be stopped with resource name: " + MainActivity.getAppContext().getResources().getResourceName(resourceId));
             return;
         }
         result.mediaPlayer.stop();
@@ -51,7 +51,7 @@ public class ClassicMiniAudio {
     public static void pauseAudio(int resourceId){
         ClassicMiniMediaPlayer result = allMediaPlayers.get(resourceId);
         if(result == null){
-            MainActivity.error("Audio has not been loaded and cannot be paused with resource name: " + MainActivity.getAppContext().getResources().getResourceName(resourceId));
+            ClassicMiniOutput.error("Audio has not been loaded and cannot be paused with resource name: " + MainActivity.getAppContext().getResources().getResourceName(resourceId));
             return;
         }
         result.mediaPlayer.pause();
@@ -60,7 +60,7 @@ public class ClassicMiniAudio {
     public static void resumeAudio(int resourceId){
         ClassicMiniMediaPlayer result = allMediaPlayers.get(resourceId);
         if(result == null){
-            MainActivity.error("Audio has not been loaded and cannot be paused with resource name: " + MainActivity.getAppContext().getResources().getResourceName(resourceId));
+            ClassicMiniOutput.error("Audio has not been loaded and cannot be paused with resource name: " + MainActivity.getAppContext().getResources().getResourceName(resourceId));
             return;
         }
         result.mediaPlayer.seekTo(result.position);
@@ -70,7 +70,7 @@ public class ClassicMiniAudio {
     public static void deleteAudio(int resourceId){
         ClassicMiniMediaPlayer result = allMediaPlayers.get(resourceId);
         if(result == null){
-            MainActivity.error("Audio has not been loaded and cannot be stopped with resource name: " + MainActivity.getAppContext().getResources().getResourceName(resourceId));
+            ClassicMiniOutput.error("Audio has not been loaded and cannot be stopped with resource name: " + MainActivity.getAppContext().getResources().getResourceName(resourceId));
             return;
         }
         allMediaPlayers.remove(resourceId);
@@ -98,7 +98,7 @@ public class ClassicMiniAudio {
 
         ClassicMiniMediaPlayer result = allMediaPlayers.get(resourceId);
         if(result == null){
-            MainActivity.error("Audio has not been loaded and cannot be played with resource name: " + MainActivity.getAppContext().getResources().getResourceName(resourceId));
+            ClassicMiniOutput.error("Audio has not been loaded and cannot be played with resource name: " + MainActivity.getAppContext().getResources().getResourceName(resourceId));
             return;
         }
         result.mediaPlayer.start();
@@ -110,7 +110,7 @@ public class ClassicMiniAudio {
 
         ClassicMiniMediaPlayer result = allMediaPlayers.get(resourceId);
         if(result == null){
-            MainActivity.error("Audio has not been loaded and cannot be stopped with resource name: " + MainActivity.getAppContext().getResources().getResourceName(resourceId));
+            ClassicMiniOutput.error("Audio has not been loaded and cannot be stopped with resource name: " + MainActivity.getAppContext().getResources().getResourceName(resourceId));
             return;
         }
         result.mediaPlayer.stop();
@@ -122,7 +122,7 @@ public class ClassicMiniAudio {
 
         ClassicMiniMediaPlayer result = allMediaPlayers.get(resourceId);
         if(result == null){
-            MainActivity.error("Audio has not been loaded and cannot be paused with resource name: " + MainActivity.getAppContext().getResources().getResourceName(resourceId));
+            ClassicMiniOutput.error("Audio has not been loaded and cannot be paused with resource name: " + MainActivity.getAppContext().getResources().getResourceName(resourceId));
             return;
         }
         result.mediaPlayer.pause();
@@ -134,7 +134,7 @@ public class ClassicMiniAudio {
 
         ClassicMiniMediaPlayer result = allMediaPlayers.get(resourceId);
         if(result == null){
-            MainActivity.error("Audio has not been loaded and cannot be paused with resource name: " + MainActivity.getAppContext().getResources().getResourceName(resourceId));
+            ClassicMiniOutput.error("Audio has not been loaded and cannot be paused with resource name: " + MainActivity.getAppContext().getResources().getResourceName(resourceId));
             return;
         }
         result.mediaPlayer.seekTo(result.position);
@@ -147,7 +147,7 @@ public class ClassicMiniAudio {
 
         ClassicMiniMediaPlayer result = allMediaPlayers.get(resourceId);
         if(result == null){
-            MainActivity.error("Audio has not been loaded and cannot be stopped with resource name: " + MainActivity.getAppContext().getResources().getResourceName(resourceId));
+            ClassicMiniOutput.error("Audio has not been loaded and cannot be stopped with resource name: " + MainActivity.getAppContext().getResources().getResourceName(resourceId));
             return;
         }
         allMediaPlayers.remove(resourceId);

@@ -1,6 +1,7 @@
 package com.bean.classicmini;
 
 import com.bean.classicmini.components.Transform;
+import com.bean.classicmini.utilities.ClassicMiniOutput;
 import com.bean.components.Components;
 
 import java.util.LinkedHashMap;
@@ -10,10 +11,15 @@ public class Bean {
     public String objectName;
     public UUID id;
 
+    public static boolean addBean(Bean added){
+        surfaceView.currentScene.allBeans.put(added.objectName, added);
+        return true;
+    }
+
     public static Bean getBean(String name){
         Bean result = surfaceView.currentScene.allBeans.get(name);
         if(result == null){
-            MainActivity.error("Cannot find bean with name " + name);
+            ClassicMiniOutput.error("Cannot find bean with name " + name);
             return null;
         }
         return result;
@@ -52,7 +58,7 @@ public class Bean {
             components.remove(component);
         }
         else{
-            MainActivity.error("Cannot remove component as it does not exist on this bean.");
+            ClassicMiniOutput.error("Cannot remove component as it does not exist on this bean.");
         }
     }
 

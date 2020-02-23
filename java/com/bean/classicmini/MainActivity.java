@@ -2,7 +2,6 @@ package com.bean.classicmini;
 
 import android.content.Context;
 import android.os.Bundle;
-import android.util.Log;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -12,14 +11,6 @@ public class MainActivity extends AppCompatActivity {
 
     public static Context getAppContext(){
         return appContext;
-    }
-
-    public static void output(String output){
-        Log.d("Bean:Output", output);
-    }
-
-    public static void error(String output){
-        Log.d("Bean:Error", output);
     }
 
     @Override

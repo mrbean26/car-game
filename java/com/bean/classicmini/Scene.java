@@ -4,6 +4,7 @@ import com.bean.classicmini.components.Camera;
 import com.bean.classicmini.components.Mesh;
 import com.bean.classicmini.components.Sprite;
 import com.bean.classicmini.components.Transform;
+import com.bean.classicmini.utilities.ClassicMiniOutput;
 import com.bean.classicmini.utilities.ClassicMiniSavefiles;
 import com.bean.components.Components;
 
@@ -88,14 +89,14 @@ public class Scene {
 
                     if (newClass == Mesh.class) {
                         if (allBeans.get(data[1]).hasComponents(Sprite.class)) {
-                            MainActivity.error("You can only attach one type of renderer to a bean.");
+                            ClassicMiniOutput.error("You can only attach one type of renderer to a bean.");
                             return;
                         }
                     }
 
                     if (newClass == Sprite.class) {
                         if (allBeans.get(data[1]).hasComponents(Mesh.class)) {
-                            MainActivity.error("You can only attach one type of renderer to a bean.");
+                            ClassicMiniOutput.error("You can only attach one type of renderer to a bean.");
                             return;
                         }
                     }
@@ -109,15 +110,15 @@ public class Scene {
                         }
                     }
                 } catch (ClassNotFoundException e) {
-                    MainActivity.error("ClassNotFoundException");
+                    ClassicMiniOutput.error("ClassNotFoundException");
                 } catch (NoSuchMethodException e) {
-                    MainActivity.error("NoSuchMethodException");
+                    ClassicMiniOutput.error("NoSuchMethodException");
                 } catch (IllegalAccessException e) {
-                    MainActivity.error("IllegalAccessException");
+                    ClassicMiniOutput.error("IllegalAccessException");
                 } catch (InstantiationException e) {
-                    MainActivity.error("InstantiationException");
+                    ClassicMiniOutput.error("InstantiationException");
                 } catch (InvocationTargetException e) {
-                    MainActivity.error("InvocationTargetException");
+                    ClassicMiniOutput.error("InvocationTargetException");
                 }
             }
             if (data[0].equals("field")) {
@@ -217,21 +218,21 @@ public class Scene {
                         selectedField.set(dataToSetTo, dataToSet);
                     }
                     if (dataToSet == null) {
-                        MainActivity.output("Type not understood in scene line: " + current);
+                        ClassicMiniOutput.output("Type not understood in scene line: " + current);
                     }
 
                 } catch (NoSuchFieldException e) {
-                    MainActivity.error("NoSuchFieldException" + e.toString());
+                    ClassicMiniOutput.error("NoSuchFieldException" + e.toString());
                 } catch (IllegalAccessException e) {
-                    MainActivity.error("IllegalAccessException");
+                    ClassicMiniOutput.error("IllegalAccessException");
                 } catch (ClassNotFoundException e) {
-                    MainActivity.error("ClassNotFoundException");
+                    ClassicMiniOutput.error("ClassNotFoundException");
                 }
 
             }
 
             if (!recognisedLine) {
-                MainActivity.error("Line: \"" + current + " in " + MainActivity.getAppContext().getResources().getResourceName(resourceId) + "\" was unrecognised.");
+                ClassicMiniOutput.error("Line: \"" + current + " in " + MainActivity.getAppContext().getResources().getResourceName(resourceId) + "\" was unrecognised.");
             }
         }
     }

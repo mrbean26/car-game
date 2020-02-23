@@ -68,7 +68,7 @@ public class ClassicMiniSavefiles {
                 returned.add(newScanner.nextLine());
             }
         } catch(FileNotFoundException exception){
-            MainActivity.error("Asset file not found with path: " + path);
+            ClassicMiniOutput.error("Asset file not found with path: " + path);
         }
 
         return returned;
@@ -88,7 +88,7 @@ public class ClassicMiniSavefiles {
                 }
 
                 fileWriter.close();
-                MainActivity.output("Lines written to file with mode append: " + String.valueOf(append));
+                ClassicMiniOutput.output("Lines written to file with mode append: " + String.valueOf(append));
                 break;
             }
 
@@ -99,7 +99,7 @@ public class ClassicMiniSavefiles {
             }
 
             catch (IOException ioException){
-                MainActivity.error("IOException when trying to write to asset at: " + path);
+                ClassicMiniOutput.error("IOException when trying to write to asset at: " + path);
                 break;
             }
         }
@@ -112,7 +112,7 @@ public class ClassicMiniSavefiles {
             newFile.createNewFile();
             returned = true;
         } catch (IOException exception){
-            MainActivity.error("Couldn't create file at: " + path);
+            ClassicMiniOutput.error("Couldn't create file at: " + path);
         }
         return returned;
     }
@@ -121,10 +121,10 @@ public class ClassicMiniSavefiles {
         boolean returned = false;
         File newFile = new File(MainActivity.getAppContext().getFilesDir(), path);
         if(newFile.delete()){
-            MainActivity.output("File was deleted at: " + path);
+            ClassicMiniOutput.output("File was deleted at: " + path);
             returned = true;
         } else{
-            MainActivity.error("File was not able to delete at: " + path);
+            ClassicMiniOutput.error("File was not able to delete at: " + path);
         }
         return returned;
     }

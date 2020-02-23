@@ -38,8 +38,8 @@ public class Sprite extends Components {
             Vec3 currentPoint = new Vec3(currentPointFour);
 
             if(minPoint == null){
-                minPoint = currentPoint;
-                maxPoint = currentPoint;
+                minPoint = ClassicMiniMath.copyVectorThree(currentPoint);
+                maxPoint = ClassicMiniMath.copyVectorThree(currentPoint);
                 continue;
             }
 

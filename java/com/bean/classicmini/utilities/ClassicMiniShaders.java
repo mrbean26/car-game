@@ -22,7 +22,7 @@ public class ClassicMiniShaders { // OpenGL ES GLSL ES 3.00
         IntBuffer isCompiled = IntBuffer.allocate(1);
         GLES20.glGetShaderiv(shaderNumber, GLES20.GL_COMPILE_STATUS, isCompiled);
         if(isCompiled.array()[0] == 0){
-            MainActivity.error("Couldnt create shader: " + MainActivity.getAppContext().getResources().getResourceName(codePath) + " error: " + GLES20.glGetShaderInfoLog(shaderNumber));
+            ClassicMiniOutput.error("Couldnt create shader: " + MainActivity.getAppContext().getResources().getResourceName(codePath) + " error: " + GLES20.glGetShaderInfoLog(shaderNumber));
             GLES20.glDeleteShader(shaderNumber);
         }
         return shaderNumber;
@@ -61,5 +61,10 @@ public class ClassicMiniShaders { // OpenGL ES GLSL ES 3.00
     public static void setVector4(Vec4 used, String name, int shader){
         int location = GLES20.glGetUniformLocation(shader, name);
         GLES20.glUniform4f(location, used.x, used.y, used.z, used.w);
+    }
+
+    public static void setFloat(float used, String name, int shader){
+        int location = GLES20.glGetUniformLocation(shader, name);
+        GLES20.glUniform1f(location, used);
     }
 }

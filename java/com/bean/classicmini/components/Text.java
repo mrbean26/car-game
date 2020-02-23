@@ -26,22 +26,22 @@ public class Text extends Components {
     public boolean realTextScale = false;
 
     public void setText(String newText){
-        material.displayedText = newText;
+        material.textMaterialInfo.displayedText = newText;
         material.begin();
     }
 
     public void setTextSize(int newSize){
-        material.textSize = newSize;
+        material.textMaterialInfo.textSize = newSize;
         material.begin();
     }
 
     public void setTextCentered(boolean as){
-        material.textCentered = as;
+        material.textMaterialInfo.textCentered = as;
         material.begin();
     }
 
     public void setTextFont(int newFont){
-        material.fontPath = newFont;
+        material.textMaterialInfo.fontPath = newFont;
         material.begin();
     }
 
@@ -81,7 +81,7 @@ public class Text extends Components {
 
     @Override
     public void mainloop(){
-        draw();
+        draw();setText("");
     }
 
     @Override

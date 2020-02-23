@@ -2,11 +2,11 @@ package com.bean.classicmini.components;
 
 import android.opengl.GLES20;
 
-import com.bean.classicmini.MainActivity;
 import com.bean.classicmini.R;
 import com.bean.classicmini.surfaceView;
 import com.bean.classicmini.utilities.ClassicMiniMaterial;
 import com.bean.classicmini.utilities.ClassicMiniMath;
+import com.bean.classicmini.utilities.ClassicMiniOutput;
 import com.bean.classicmini.utilities.ClassicMiniSavefiles;
 import com.bean.classicmini.utilities.ClassicMiniShaders;
 import com.bean.components.Components;
@@ -46,8 +46,8 @@ public class Mesh extends Components {
             Vec3 currentPoint = new Vec3(currentPointFour);
 
             if(minPoint == null){
-                minPoint = currentPoint;
-                maxPoint = currentPoint;
+                minPoint = ClassicMiniMath.copyVectorThree(currentPoint);
+                maxPoint = ClassicMiniMath.copyVectorThree(currentPoint);
                 continue;
             }
 
@@ -237,6 +237,6 @@ public class Mesh extends Components {
         }
         output = output.substring(0, output.length() - 1);
 
-        MainActivity.output(output);
+        ClassicMiniOutput.output(output);
     }
 }

@@ -123,6 +123,74 @@ public class Transform extends Components {
         return parentMatrix.mul(newMatrix);
     }
 
+    public Mat4 toMatrix4(boolean useTranslate, boolean useRotate, boolean useScale){ // single = false as default
+        Mat4 parentMatrix = new Mat4(1.0f);
+        // get parent matrix
+        List<Transform> allParents = new ArrayList<>();
+        Transform currentTransform = this;
+
+        while(currentTransform.parent != null){
+            allParents.add(currentTransform.parent.getComponents(Transform.class));
+            currentTransform = currentTransform.parent.getComponents(Transform.class);
+        }
+
+        int size = allParents.size();
+        for(int i = 0; i < size; i++){
+            parentMatrix = allParents.get(i).toMatrix4(useTranslate, useRotate, useScale, true).mul(parentMatrix);
+        }
+        // get local matrix
+        Mat4 newMatrix = new Mat4(1.0f);
+        if(useTranslate){
+            newMatrix.translate(position);
+        }
+
+        if(useRotate){
+            newMatrix.rotate((float) Math.toRadians(rotation.x), new Vec3(1.0f, 0.0f, 0.0f));
+            newMatrix.rotate((float) Math.toRadians(rotation.y), new Vec3(0.0f, 1.0f, 0.0f));
+            newMatrix.rotate((float) Math.toRadians(rotation.z), new Vec3(0.0f, 0.0f, 1.0f));
+        }
+
+        if(useScale){
+            newMatrix.scale(scale);
+        }
+        return parentMatrix.mul(newMatrix);
+    }
+
+    public Mat4 toMatrix4(boolean useTranslate, boolean useRotate, boolean useScale, boolean single){
+        Mat4 parentMatrix = new Mat4(1.0f);
+        if(!single){
+            // get parent matrix
+            List<Transform> allParents = new ArrayList<>();
+            Transform currentTransform = this;
+
+            while(currentTransform.parent != null){
+                allParents.add(currentTransform.parent.getComponents(Transform.class));
+                currentTransform = currentTransform.parent.getComponents(Transform.class);
+            }
+
+            int size = allParents.size();
+            for(int i = 0; i < size; i++){
+                parentMatrix = allParents.get(i).toMatrix4(true).mul(parentMatrix);
+            }
+        }
+        // get local matrix
+        Mat4 newMatrix = new Mat4(1.0f);
+        if(useTranslate){
+            newMatrix.translate(position);
+        }
+
+        if(useTranslate){
+            newMatrix.rotate((float) Math.toRadians(rotation.x), new Vec3(1.0f, 0.0f, 0.0f));
+            newMatrix.rotate((float) Math.toRadians(rotation.y), new Vec3(0.0f, 1.0f, 0.0f));
+            newMatrix.rotate((float) Math.toRadians(rotation.z), new Vec3(0.0f, 0.0f, 1.0f));
+        }
+
+        if(useScale){
+            newMatrix.scale(scale);
+        }
+        return parentMatrix.mul(newMatrix);
+    }
+
     public Bean parent;
     public HashMap<String, Bean> children = new HashMap<>();
 }

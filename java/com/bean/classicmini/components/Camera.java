@@ -2,8 +2,8 @@ package com.bean.classicmini.components;
 
 import android.opengl.GLES20;
 
-import com.bean.classicmini.MainActivity;
 import com.bean.classicmini.surfaceView;
+import com.bean.classicmini.utilities.ClassicMiniOutput;
 import com.bean.components.Components;
 
 import glm.mat._4.Mat4;
@@ -29,7 +29,7 @@ public class Camera extends Components {
         try{
             newMatrix.perspectiveFov((float) Math.toRadians(45.0f), surfaceView.displayWidth, surfaceView.displayHeight, surfaceView.mainCamera.nearPlane, surfaceView.mainCamera.farPlane);
         } catch (NullPointerException e){
-            MainActivity.error("No camera available");
+            ClassicMiniOutput.error("No camera available");
         }
         return newMatrix;
     }
@@ -46,7 +46,7 @@ public class Camera extends Components {
             newMatrix = newMatrix.rotateY(Math.toRadians(objectTransform.rotation.y));
             newMatrix = newMatrix.rotateZ(Math.toRadians(objectTransform.rotation.z));
         } catch (NullPointerException e){
-            MainActivity.error("No Camera available");
+            ClassicMiniOutput.error("No Camera available");
         }
         return newMatrix;
     }

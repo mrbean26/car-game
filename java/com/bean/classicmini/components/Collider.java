@@ -50,11 +50,7 @@ public class Collider extends Components {
         this.updateCollisionInfo();
         Transform thisTransform = getBeansComponent(Transform.class);
         Mat4 thisModel = getBeansComponent(Transform.class).toMatrix4();
-        //Vec4 copiedMin = ClassicMiniMath.copyVectorFour(minData);
-        //Vec4 copiedMax = ClassicMiniMath.copyVectorFour(maxData);
 
-        //Vec3 thisMinInfo = new Vec3(copiedMin.mul(thisModel));
-        //Vec3 thisMaxInfo = new Vec3(copiedMax.mul(thisModel));
         Vec3 thisMinInfo = new Vec3(this.minData);
         Vec3 thisMaxInfo = new Vec3(this.maxData);
 
@@ -71,11 +67,6 @@ public class Collider extends Components {
             Transform otherTransform = otherCollider.getBeansComponent(Transform.class);
 
             Mat4 otherModel = otherCollider.getBeansComponent(Transform.class).toMatrix4();
-            //Vec4 copiedMinOther = ClassicMiniMath.copyVectorFour(otherCollider.minData);
-            //Vec4 copiedMaxOther = ClassicMiniMath.copyVectorFour(otherCollider.maxData);
-
-            //Vec3 otherMinInfo = new Vec3(copiedMinOther.mul(otherModel));
-            //Vec3 otherMaxInfo = new Vec3(copiedMaxOther.mul(otherModel));
 
             Vec3 otherMinInfo = new Vec3(otherCollider.minData);
             Vec3 otherMaxInfo = new Vec3(otherCollider.maxData);
