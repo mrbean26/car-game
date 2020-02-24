@@ -12,7 +12,9 @@ import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.nio.FloatBuffer;
 
+import glm.Glm;
 import glm.mat._4.Mat4;
+import glm.vec._3.Vec3;
 import glm.vec._4.Vec4;
 
 public class Image extends Components {
@@ -45,7 +47,9 @@ public class Image extends Components {
 
         GLES20.glUseProgram(imageShader);
         ClassicMiniShaders.setMatrix4(currentMatrix, "orthoModel", imageShader);
-        ClassicMiniShaders.setMatrix4(getBeansComponent(Transform.class).toMatrix4(true, false, true), "model", imageShader);
+
+        ClassicMiniShaders.setVector3(getBeansComponent(Transform.class).getRelativePosition(), "position", imageShader);
+        ClassicMiniShaders.setVector3(getBeansComponent(Transform.class).getRelativeScale(), "scale", imageShader);
 
         ClassicMiniShaders.setInt(0, "sampler", imageShader);
         ClassicMiniShaders.setVector4(colour, "colour", imageShader);
@@ -59,6 +63,10 @@ public class Image extends Components {
 
     @Override
     public void mainloop(){
+        Vec3 relativeScale = getBeansComponent(Transform.class).getRelativeScale();
+        roundEdgeRadius = Glm.clamp(roundEdgeRadius, 0f, relativeScale.x);
+        roundEdgeRadius = Glm.clamp(roundEdgeRadius, 0f, relativeScale.y);
+
         draw();
     }
 

@@ -11,6 +11,7 @@ import java.util.List;
 
 import glm.mat._4.Mat4;
 import glm.vec._3.Vec3;
+import glm.vec._4.Vec4;
 
 public class Transform extends Components {
     @Override
@@ -73,7 +74,7 @@ public class Transform extends Components {
             // get parent matrix
             List<Transform> allParents = new ArrayList<>();
             Transform currentTransform = this;
-
+            int index = 0;
             while(currentTransform.parent != null){
                 allParents.add(currentTransform.parent.getComponents(Transform.class));
                 currentTransform = currentTransform.parent.getComponents(Transform.class);
@@ -123,72 +124,27 @@ public class Transform extends Components {
         return parentMatrix.mul(newMatrix);
     }
 
-    public Mat4 toMatrix4(boolean useTranslate, boolean useRotate, boolean useScale){ // single = false as default
-        Mat4 parentMatrix = new Mat4(1.0f);
-        // get parent matrix
-        List<Transform> allParents = new ArrayList<>();
-        Transform currentTransform = this;
-
-        while(currentTransform.parent != null){
-            allParents.add(currentTransform.parent.getComponents(Transform.class));
-            currentTransform = currentTransform.parent.getComponents(Transform.class);
+    public Vec3 getRelativePosition(){
+        if(parent == null){
+            return position;
         }
 
-        int size = allParents.size();
-        for(int i = 0; i < size; i++){
-            parentMatrix = allParents.get(i).toMatrix4(useTranslate, useRotate, useScale, true).mul(parentMatrix);
-        }
-        // get local matrix
-        Mat4 newMatrix = new Mat4(1.0f);
-        if(useTranslate){
-            newMatrix.translate(position);
-        }
-
-        if(useRotate){
-            newMatrix.rotate((float) Math.toRadians(rotation.x), new Vec3(1.0f, 0.0f, 0.0f));
-            newMatrix.rotate((float) Math.toRadians(rotation.y), new Vec3(0.0f, 1.0f, 0.0f));
-            newMatrix.rotate((float) Math.toRadians(rotation.z), new Vec3(0.0f, 0.0f, 1.0f));
-        }
-
-        if(useScale){
-            newMatrix.scale(scale);
-        }
-        return parentMatrix.mul(newMatrix);
+        Vec4 returned = new Vec4(0.0f, 0.0f, 0.0f, 1.0f).mul(toMatrix4());
+        return new Vec3(returned);
     }
 
-    public Mat4 toMatrix4(boolean useTranslate, boolean useRotate, boolean useScale, boolean single){
-        Mat4 parentMatrix = new Mat4(1.0f);
-        if(!single){
-            // get parent matrix
-            List<Transform> allParents = new ArrayList<>();
-            Transform currentTransform = this;
-
-            while(currentTransform.parent != null){
-                allParents.add(currentTransform.parent.getComponents(Transform.class));
-                currentTransform = currentTransform.parent.getComponents(Transform.class);
-            }
-
-            int size = allParents.size();
-            for(int i = 0; i < size; i++){
-                parentMatrix = allParents.get(i).toMatrix4(true).mul(parentMatrix);
-            }
-        }
-        // get local matrix
-        Mat4 newMatrix = new Mat4(1.0f);
-        if(useTranslate){
-            newMatrix.translate(position);
+    public Vec3 getRelativeScale(){
+        if(parent == null){
+            return scale;
         }
 
-        if(useTranslate){
-            newMatrix.rotate((float) Math.toRadians(rotation.x), new Vec3(1.0f, 0.0f, 0.0f));
-            newMatrix.rotate((float) Math.toRadians(rotation.y), new Vec3(0.0f, 1.0f, 0.0f));
-            newMatrix.rotate((float) Math.toRadians(rotation.z), new Vec3(0.0f, 0.0f, 1.0f));
+        Vec3 returned = ClassicMiniMath.copyVectorThree(scale);
+        Bean current = parent;
+        while(current != null){
+            returned.mul(current.getComponents(Transform.class).scale);
+            current = current.getComponents(Transform.class).parent;
         }
-
-        if(useScale){
-            newMatrix.scale(scale);
-        }
-        return parentMatrix.mul(newMatrix);
+        return returned;
     }
 
     public Bean parent;

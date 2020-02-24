@@ -1,17 +1,14 @@
 attribute vec3 inPosition;
 attribute vec2 inTexCoord;
 
-varying vec3 fragPos;
 varying vec2 texCoord;
-varying mat4 outModel;
+varying vec3 fragPos;
 
 uniform mat4 orthoModel;
-uniform mat4 model;
 
 void main(){
     gl_Position = orthoModel * vec4(inPosition, 1.0);
 
+    fragPos = inPosition;
     texCoord = inTexCoord;
-    fragPos = vec3(model * vec4(inPosition, 1.0));
-    outModel = model;
 }
