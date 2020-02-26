@@ -6,6 +6,7 @@ import com.bean.classicmini.utilities.ClassicMiniMath;
 import com.bean.components.Components;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 
@@ -68,60 +69,35 @@ public class Transform extends Components {
         return upperParentTransform;
     }
 
-    public Mat4 toMatrix4(boolean single){
-        Mat4 parentMatrix = new Mat4(1.0f);
-        if(!single){
-            // get parent matrix
-            List<Transform> allParents = new ArrayList<>();
-            Transform currentTransform = this;
-            int index = 0;
-            while(currentTransform.parent != null){
-                allParents.add(currentTransform.parent.getComponents(Transform.class));
-                currentTransform = currentTransform.parent.getComponents(Transform.class);
-            }
-
-            int size = allParents.size();
-            for(int i = 0; i < size; i++){
-                parentMatrix = allParents.get(i).toMatrix4(true).mul(parentMatrix);
-            }
-        }
-        // get local matrix
-        Mat4 newMatrix = new Mat4(1.0f);
-        newMatrix.translate(position);
-
-        newMatrix.rotate((float) Math.toRadians(rotation.x), new Vec3(1.0f, 0.0f, 0.0f));
-        newMatrix.rotate((float) Math.toRadians(rotation.y), new Vec3(0.0f, 1.0f, 0.0f));
-        newMatrix.rotate((float) Math.toRadians(rotation.z), new Vec3(0.0f, 0.0f, 1.0f));
-
-        newMatrix.scale(scale);
-        return parentMatrix.mul(newMatrix);
-    }
-
     public Mat4 toMatrix4(){ // single false as default
-        Mat4 parentMatrix = new Mat4(1.0f);
+        Mat4 returned = new Mat4(1.0f);
         // get parent matrix
-        List<Transform> allParents = new ArrayList<>();
-        Transform currentTransform = this;
+        List<Transform> allTransforms = new ArrayList<>();
+        allTransforms.add(this);
 
+        Transform currentTransform = this;
+        Vec3 currentScale = new Vec3(1.0f);
         while(currentTransform.parent != null){
-            allParents.add(currentTransform.parent.getComponents(Transform.class));
+            allTransforms.add(currentTransform.parent.getComponents(Transform.class));
             currentTransform = currentTransform.parent.getComponents(Transform.class);
         }
 
-        int size = allParents.size();
+        int size = allTransforms.size();
+        Collections.reverse(allTransforms);
+
         for(int i = 0; i < size; i++){
-            parentMatrix = allParents.get(i).toMatrix4(true).mul(parentMatrix);
+            returned.translate(ClassicMiniMath.copyVectorThree(allTransforms.get(i).position).mul(currentScale));
+
+            Vec3 currentRotation = allTransforms.get(i).rotation;
+            returned.rotate((float) Math.toRadians(currentRotation.x), new Vec3(1.0f, 0.0f, 0.0f));
+            returned.rotate((float) Math.toRadians(currentRotation.y), new Vec3(0.0f, 1.0f, 0.0f));
+            returned.rotate((float) Math.toRadians(currentRotation.z), new Vec3(0.0f, 0.0f, 1.0f));
+
+            currentScale.mul(allTransforms.get(i).scale);
         }
-        // get local matrix
-        Mat4 newMatrix = new Mat4(1.0f);
-        newMatrix.translate(position);
 
-        newMatrix.rotate((float) Math.toRadians(rotation.x), new Vec3(1.0f, 0.0f, 0.0f));
-        newMatrix.rotate((float) Math.toRadians(rotation.y), new Vec3(0.0f, 1.0f, 0.0f));
-        newMatrix.rotate((float) Math.toRadians(rotation.z), new Vec3(0.0f, 0.0f, 1.0f));
-
-        newMatrix.scale(scale);
-        return parentMatrix.mul(newMatrix);
+        returned.scale(currentScale);
+        return returned;
     }
 
     public Vec3 getRelativePosition(){

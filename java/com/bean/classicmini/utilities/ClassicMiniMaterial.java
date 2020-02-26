@@ -19,7 +19,27 @@ import com.bean.classicmini.surfaceView;
 
 import java.io.InputStream;
 
+import glm.Glm;
+import glm.vec._3.Vec3;
+import glm.vec._3.i.Vec3i;
+
 public class ClassicMiniMaterial {
+    // Program Functions
+    public static String rgbToHex(Vec3i higherValues){
+        higherValues = Glm.clamp_(higherValues, new Vec3i(0), new Vec3i(255));
+        String returned = "#";
+        returned = returned + Integer.toHexString(higherValues.x).toUpperCase();
+        returned = returned + Integer.toHexString(higherValues.y).toUpperCase();
+        returned = returned + Integer.toHexString(higherValues.z).toUpperCase();
+
+        return returned;
+    }
+
+    public static String rgbToHex(Vec3 openGLValues){
+        Vec3i integerValues = new Vec3i(Math.round(openGLValues.x * 255f), Math.round(openGLValues.y * 255f), Math.round(openGLValues.z * 255f));
+        return rgbToHex(integerValues);
+    }
+
     // Main Details
     public int textureNum;
     public int textureWidth, textureHeight;

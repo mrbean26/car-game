@@ -48,6 +48,7 @@ public class Bean {
                 components.put(component.getClass(), store);
             }
             component.objectName = objectName;
+            component.thisBean = this;
             ((LinkedHashMap<UUID, T>) store).put(this.id, component);
         }
     }

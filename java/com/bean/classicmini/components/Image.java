@@ -64,8 +64,8 @@ public class Image extends Components {
     @Override
     public void mainloop(){
         Vec3 relativeScale = getBeansComponent(Transform.class).getRelativeScale();
-        roundEdgeRadius = Glm.clamp(roundEdgeRadius, 0f, relativeScale.x);
-        roundEdgeRadius = Glm.clamp(roundEdgeRadius, 0f, relativeScale.y);
+        roundEdgeRadius = Glm.clamp(roundEdgeRadius, 0f, relativeScale.x - 0.0001f);
+        roundEdgeRadius = Glm.clamp(roundEdgeRadius, 0f, relativeScale.y - 0.0001f);
 
         draw();
     }

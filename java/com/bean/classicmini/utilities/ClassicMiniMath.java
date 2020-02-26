@@ -109,4 +109,13 @@ public class ClassicMiniMath {
     public static int randomInteger(int lowInclusive, int maxInclusive){
         return classicMiniRandom.nextInt(maxInclusive + 1) + lowInclusive;
     }
+
+    public static Vec2 touchToUICoords(){
+        Vec2 returned = new Vec2(surfaceView.xTouch, surfaceView.yTouch);
+        returned.sub(new Vec2(surfaceView.displayWidth / 2.0f, surfaceView.displayHeight / 2.0f));
+        returned.div(new Vec2(surfaceView.displayWidth / 2.0f, surfaceView.displayHeight / 2.0f));
+        returned.y = -returned.y;
+
+        return returned;
+    }
 }
