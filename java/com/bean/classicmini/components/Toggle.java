@@ -1,7 +1,6 @@
 package com.bean.classicmini.components;
 
 import com.bean.classicmini.Bean;
-import com.bean.classicmini.utilities.ClassicMiniMath;
 import com.bean.components.Components;
 
 import glm.vec._3.Vec3;
@@ -11,8 +10,7 @@ public class Toggle extends Components {
     public Bean backgroundBean = null;
     public Bean sliderBean = null;
 
-    public Vec4 backgroundColour = new Vec4(0.7f, 0.7f, 0.7f, 1.0f);
-    public Vec4 toggleColour = new Vec4(1.0f);
+    public Vec4 colour = new Vec4(1.0f, 1.0f, 1.0f, 1.0f);
     private boolean toggled = false;
 
     public boolean isToggled(){
@@ -31,20 +29,18 @@ public class Toggle extends Components {
 
         Image backgroundImage = new Image();
         backgroundImage.roundEdgeRadius = 0.2f;
-        backgroundImage.colour = backgroundColour;
-        backgroundImage.material.colourHex = "#FFFFFF";
+        backgroundImage.material.colourHex = "#B2B2B2";
         backgroundBean.addComponents(backgroundImage);
         backgroundBean.getComponents(Image.class).begin();
 
         sliderBean = new Bean(objectName + "_toggleSlider");
-        sliderBean.getComponents(Transform.class).parent = this.getBean();
+        sliderBean.getComponents(Transform.class).parent = backgroundBean;
         sliderBean.addComponents(new Button());
         sliderBean.getComponents(Button.class).onClickClass = this;
         sliderBean.getComponents(Button.class).begin();
 
         Image toggleImage = new Image();
         toggleImage.roundEdgeRadius = 0.2f;
-        toggleImage.colour = toggleColour;
         toggleImage.material.colourHex = "#FFFFFF";
         sliderBean.addComponents(toggleImage);
         sliderBean.getComponents(Image.class).begin();
@@ -53,7 +49,7 @@ public class Toggle extends Components {
         Bean.addBean(sliderBean);
 
         this.getBeansComponent(Transform.class).children.put(backgroundBean.objectName, backgroundBean);
-        this.getBeansComponent(Transform.class).children.put(sliderBean.objectName, sliderBean);
+        backgroundBean.getComponents(Transform.class).children.put(sliderBean.objectName, sliderBean);
     }
 
     public void setRoundEdgeRadius(float newRadius){
@@ -62,9 +58,11 @@ public class Toggle extends Components {
     }
 
     private void updateScales(){
-        Vec3 thisTransformScale = getBeansComponent(Transform.class).scale;
-        backgroundBean.getComponents(Transform.class).scale = thisTransformScale;
-        sliderBean.getComponents(Transform.class).scale = ClassicMiniMath.copyVectorThree(thisTransformScale).div(new Vec3(2.0f, 1.0f, 1.0f));
+        backgroundBean.getComponents(Transform.class).scale = getBeansComponent(Transform.class).scale;
+
+        Vec3 backgroundScale = backgroundBean.getComponents(Transform.class).getRelativeScale();
+        backgroundScale.x = backgroundScale.x / 2.0f;
+        sliderBean.getComponents(Transform.class).setRelativeScale(backgroundScale);
     }
 
     private void updatePositions(){
@@ -79,6 +77,9 @@ public class Toggle extends Components {
     public void mainloop() {
         updateScales();
         updatePositions();
+
+        backgroundBean.getComponents(Image.class).colour = colour;
+        sliderBean.getComponents(Image.class).colour = colour;
     }
 
 

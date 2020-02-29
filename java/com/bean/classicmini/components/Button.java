@@ -8,13 +8,20 @@ import glm.vec._3.Vec3;
 
 public class Button extends Components {
     public Object onClickClass = new Transform();
+    public int type = BUTTON_CLICK_DOWN;
+
+    public static final int BUTTON_CLICK_DOWN = 0;
+    public static final int BUTTON_CLICK_UP = 1;
+    public static final int BUTTON_HOLD = 2;
+
+    private boolean clickedLast = false;
 
     @Override
     public void mainloop(){
         checkClick();
     }
 
-    public boolean isClicked(){
+    public boolean isClicked(float xTouch, float yTouch){
         Transform buttonTransform = getBeansComponent(Transform.class);
         Vec3 localPosition = buttonTransform.getRelativePosition();
         Vec3 localScale = buttonTransform.getRelativeScale();
@@ -23,7 +30,7 @@ public class Button extends Components {
         float yCenter = surfaceView.displayHeight - ((surfaceView.displayHeight / 2.0f) + (localPosition.y * (surfaceView.displayWidth / 2.0f)));
 
         Vec2 center = new Vec2(xCenter, yCenter);
-        Vec2 touchPoint = new Vec2(surfaceView.xTouch, surfaceView.yTouch);
+        Vec2 touchPoint = new Vec2(xTouch, yTouch);
 
         float angleDegrees = -buttonTransform.rotation.z;
         Transform currentTransform = buttonTransform;
@@ -59,8 +66,20 @@ public class Button extends Components {
     }
 
     public void checkClick(){
-        if(isClicked()){
-            runClick();
+        if(type == BUTTON_CLICK_DOWN){
+            if(isClicked(surfaceView.xTouchDown, surfaceView.yTouchDown)){
+                runClick();
+            }
+        }
+        if(type == BUTTON_CLICK_UP){
+            if(isClicked(surfaceView.xTouchUp, surfaceView.yTouchUp)){
+                runClick();
+            }
+        }
+        if(type == BUTTON_HOLD){
+            if(isClicked(surfaceView.xTouch, surfaceView.yTouch)){
+                runClick();
+            }
         }
     }
 

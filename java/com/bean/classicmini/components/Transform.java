@@ -105,7 +105,7 @@ public class Transform extends Components {
             return position;
         }
 
-        Vec4 returned = new Vec4(0.0f, 0.0f, 0.0f, 1.0f).mul(toMatrix4());
+        Vec4 returned = toMatrix4().mul(new Vec4(0.0f, 0.0f, 0.0f, 1.0f));
         return new Vec3(returned);
     }
 
@@ -121,6 +121,38 @@ public class Transform extends Components {
             current = current.getComponents(Transform.class).parent;
         }
         return returned;
+    }
+
+    public void setRelativePosition(Vec3 usedPosition){
+        if(parent == null){
+            position = usedPosition;
+            return;
+        }
+
+        Vec3 parentRelativePosition = parent.getComponents(Transform.class).getRelativePosition();
+        Vec3 parentRelativeScale = parent.getComponents(Transform.class).getRelativeScale();
+
+        parentRelativeScale = new Vec3(1.0f).div(parentRelativeScale);
+        parentRelativePosition.mul(parentRelativeScale);
+
+        position = usedPosition.sub(parentRelativePosition);
+    }
+
+    public void setRelativeScale(Vec3 usedScale){
+        if(parent == null){
+            scale = usedScale;
+            return;
+        }
+
+        Vec3 parentScale = new Vec3(1.0f);
+        Bean current = parent;
+        while(current != null){
+            parentScale.mul(current.getComponents(Transform.class).scale);
+            current = current.getComponents(Transform.class).parent;
+        }
+        parentScale = new Vec3(1.0f).div(parentScale);
+
+        scale = usedScale.mul(parentScale);
     }
 
     public Bean parent;

@@ -8,8 +8,11 @@ import com.bean.components.Components;
 import glm.Glm;
 import glm.vec._2.Vec2;
 import glm.vec._3.Vec3;
+import glm.vec._4.Vec4;
 
 public class Slider extends Components {
+    public Vec4 colour = new Vec4(1.0f, 1.0f, 1.0f, 1.0f);
+
     public Bean backgroundBean;
     public Bean sliderBean;
 
@@ -41,6 +44,8 @@ public class Slider extends Components {
 
         Button newButton = new Button();
         newButton.onClickClass = this;
+        newButton.type = Button.BUTTON_HOLD;
+
         backgroundBean.addComponents(newButton);
         backgroundBean.getComponents(Button.class).begin();
 
@@ -69,13 +74,16 @@ public class Slider extends Components {
 
     @Override
     public void mainloop() {
+        backgroundBean.getComponents(Image.class).colour = new Vec4(0.78f, 0.78f, 0.78f, 1.0f).mul(colour);
+        sliderBean.getComponents(Image.class).colour = new Vec4(1.0f, 1.0f, 1.0f, 1.0f).mul(colour);
+
         updateRadius();
     }
 
     @Override
     public void onClick() {
-        Vec2 uiTouchPoint = ClassicMiniMath.touchToUICoords();
-        uiTouchPoint.y = uiTouchPoint.y * ((float) surfaceView.displayHeight/ (float) surfaceView.displayWidth);
+        Vec2 uiTouchPoint = ClassicMiniMath.touchToUICoords(surfaceView.xTouch, surfaceView.yTouch);
+        uiTouchPoint.y = uiTouchPoint.y * ((float) surfaceView.displayHeight / (float) surfaceView.displayWidth);
 
         float xPosition = uiTouchPoint.x * ClassicMiniMath.classicMiniCos(getBeansComponent(Transform.class).rotation.z);
         xPosition = xPosition + (uiTouchPoint.y * ClassicMiniMath.classicMiniSin(getBeansComponent(Transform.class).rotation.z));

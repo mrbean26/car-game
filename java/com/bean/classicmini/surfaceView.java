@@ -15,7 +15,6 @@ public class surfaceView extends GLSurfaceView implements GLSurfaceView.Renderer
     public static Scene currentScene;
     public static Camera mainCamera;
     public static int displayWidth, displayHeight;
-    public static float xTouch = -1.0f, yTouch = -1.0f;
 
     public static float startTime, currentTime, deltaTime;
     public static int framePerSecond;
@@ -34,10 +33,24 @@ public class surfaceView extends GLSurfaceView implements GLSurfaceView.Renderer
         framePerSecond = Math.round(1.0f / deltaTime);
         framesThrough = framesThrough + 1;
 
+        updateTouch();
+    }
+    
+    // touch
+    public static float xTouchDown = -1.0f, yTouchDown = -1.0f;
+    public static float xTouchUp = -1.0f, yTouchUp = -1.0f;
+    public static float xTouch = -1.0f, yTouch = -1.0f;
+    private void updateTouch(){
+        xTouchDown = -1.0f;
+        yTouchDown = -1.0f;
+
+        xTouchUp = -1.0f;
+        yTouchUp = -1.0f;
+
         xTouch = -1.0f;
         yTouch = -1.0f;
     }
-
+    
     // renderer
     public void onSurfaceCreated(GL10 unused, EGLConfig config){
         currentScene = new Scene(R.raw.start);
@@ -64,6 +77,14 @@ public class surfaceView extends GLSurfaceView implements GLSurfaceView.Renderer
     public boolean onTouchEvent(MotionEvent e){
         xTouch = e.getX();
         yTouch = e.getY();
+        if(e.getAction() == MotionEvent.ACTION_DOWN){
+            xTouchDown = e.getX();
+            yTouchDown = e.getY();
+        }
+        if(e.getAction() == MotionEvent.ACTION_UP){
+            xTouchUp = e.getX();
+            yTouchUp = e.getY();
+        }
         return true;
     }
 }
