@@ -85,6 +85,6 @@ public class Button extends Components {
 
     public <T extends Components> void runClick(){
         T usedComponent = (T) onClickClass;
-        usedComponent.onClick();
+        usedComponent.onClick(getBean());
     }
 }

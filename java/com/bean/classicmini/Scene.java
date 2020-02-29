@@ -17,6 +17,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.UUID;
 
+import glm.vec._2.Vec2;
 import glm.vec._3.Vec3;
 import glm.vec._4.Vec4;
 
@@ -191,6 +192,15 @@ public class Scene {
                     }
                     if (data[4].equals("stringArray")) {
                         dataToSet = data[5].split(",");
+                    }
+                    if(data[4].equals("vec2")){
+                        String[] info = data[5].split(",");
+
+                        Vec2 newVector = new Vec2();
+                        newVector.x = Float.parseFloat(info[0]);
+                        newVector.y = Float.parseFloat(info[1]);
+
+                        dataToSet = newVector;
                     }
                     if (data[4].equals("vec3")) {
                         String[] info = data[5].split(",");

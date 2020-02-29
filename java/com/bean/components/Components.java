@@ -15,7 +15,7 @@ public class Components implements ComponentsInterface {
 
     }
 
-    public void onClick(){
+    public void onClick(Bean clicked){
 
     }
 

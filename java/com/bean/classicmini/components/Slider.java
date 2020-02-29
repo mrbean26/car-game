@@ -81,7 +81,7 @@ public class Slider extends Components {
     }
 
     @Override
-    public void onClick() {
+    public void onClick(Bean clicked) {
         Vec2 uiTouchPoint = ClassicMiniMath.touchToUICoords(surfaceView.xTouch, surfaceView.yTouch);
         uiTouchPoint.y = uiTouchPoint.y * ((float) surfaceView.displayHeight / (float) surfaceView.displayWidth);
 

@@ -18,7 +18,7 @@ public class Toggle extends Components {
     }
 
     @Override
-    public void onClick(){
+    public void onClick(Bean clicked){
         toggled = !toggled;
     }
 
