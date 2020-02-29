@@ -8,4 +8,5 @@ public class ClassicMiniTextMaterialInfo {
     public boolean textCentered = true;
     public int fontPath = R.font.default_font;
     public float xTextMultiplier = 1.0f;
+    public float yTextMultiplier = 1.0f;
 }

@@ -9,6 +9,7 @@ uniform vec3 scale; // (for rounded rectangles)
 uniform sampler2D sampler;
 uniform vec4 colour;
 uniform float roundedRadius;
+uniform vec4 backgroundColour; // applied when fragcolour.a == 0
 
 void main(){
 
@@ -54,5 +55,9 @@ void main(){
 		if(distance(newFragPos, edgePoints[selectedIndex]) < distance(newFragPos, innerPoints[selectedIndex])){
 			discard;
 		}
+	}
+
+	if(gl_FragColor.a == 0.0){
+		gl_FragColor = backgroundColour;
 	}
 }

@@ -4,6 +4,8 @@ field toby classicmini.components.Transform position vec3 0.0,0.0,-60.0
 field toby classicmini.components.Transform rotation vec3 0.0,0.0,0.0
 
 Bean adam
-component adam classicmini.components.Slider
-field adam classicmini.components.Transform scale vec3 0.8,0.3,1.0
-field adam classicmini.components.Transform position vec3 0.5,0.0,0.0
+component adam classicmini.components.Dropdown
+field adam classicmini.components.Dropdown dropdownItemInterval float 0.4
+
+field adam classicmini.components.Transform scale vec3 1.0,0.3,1.0
+field adam classicmini.components.Transform position vec3 0.0,1.0,0.0

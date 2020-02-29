@@ -24,6 +24,7 @@ public class Text extends Components {
     public int vertexCount;
     public Vec4 colour = new Vec4(1.0f);
     public boolean realTextScale = false;
+    public Vec4 backgroundColour = new Vec4(0.0f);
 
     public void setText(String newText){
         material.textMaterialInfo.displayedText = newText;
@@ -72,6 +73,7 @@ public class Text extends Components {
         ClassicMiniShaders.setMatrix4(currentMatrix, "model", imageShader);
         ClassicMiniShaders.setInt(0, "sampler", imageShader);
         ClassicMiniShaders.setVector4(colour, "colour", imageShader);
+        ClassicMiniShaders.setVector4(backgroundColour, "backgroundColour", imageShader);
 
         material.bind();
 

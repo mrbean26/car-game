@@ -7,6 +7,8 @@ import com.bean.components.Components;
 
 import java.util.LinkedHashMap;
 
+import glm.vec._4.Vec4;
+
 class dropdownEntry{
     public String text = "";
     public ClassicMiniMaterial textMaterial = new ClassicMiniMaterial();
@@ -17,6 +19,7 @@ public class Dropdown extends Components {
     private LinkedHashMap<String, dropdownEntry> allDropdownEntries = new LinkedHashMap<>();
 
     public String[] dropdownItemsBegin;
+    public float dropdownItemInterval = 0.0f;
 
     @Override
     public void begin() {
@@ -28,6 +31,7 @@ public class Dropdown extends Components {
 
         Image newImage = new Image();
         newImage.material.colourHex = "#FFFFFF";
+        newImage.backgroundColour = new Vec4(1.0f, 0.0f, 0.0f, 1.0f);
         dropdownEntryBackground.addComponents(newImage);
         newImage.begin();
         // load entries
@@ -62,8 +66,11 @@ public class Dropdown extends Components {
 
         for(int i = 0; i < count; i++){
             dropdownEntry currentEntry = (dropdownEntry) allValues[i];
+            float defaultInterval = -2.0f * dropdownEntryBackground.getComponents(Transform.class).scale.y;
+            dropdownEntryBackground.getComponents(Transform.class).position.y = (defaultInterval - dropdownItemInterval) * (float) i;
 
-
+            dropdownEntryBackground.getComponents(Image.class).material = currentEntry.textMaterial;
+            dropdownEntryBackground.getComponents(Image.class).mainloop();
         }
     }
 }

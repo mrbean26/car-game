@@ -26,6 +26,7 @@ public class Image extends Components {
     public ClassicMiniMaterial material = new ClassicMiniMaterial();
     public Vec4 colour = new Vec4(1.0f);
     public float roundEdgeRadius = 0.0f;
+    public Vec4 backgroundColour = new Vec4(0.0f);
 
     public void draw(){
         GLES20.glEnable(GLES20.GL_BLEND);
@@ -54,6 +55,7 @@ public class Image extends Components {
         ClassicMiniShaders.setInt(0, "sampler", imageShader);
         ClassicMiniShaders.setVector4(colour, "colour", imageShader);
         ClassicMiniShaders.setFloat(roundEdgeRadius, "roundedRadius", imageShader);
+        ClassicMiniShaders.setVector4(backgroundColour, "backgroundColour", imageShader);
 
         material.bind();
 

@@ -7,6 +7,7 @@ import android.graphics.Color;
 import android.graphics.Matrix;
 import android.graphics.Movie;
 import android.graphics.Paint;
+import android.graphics.Rect;
 import android.graphics.Typeface;
 import android.opengl.GLES20;
 import android.opengl.GLUtils;
@@ -120,10 +121,6 @@ public class ClassicMiniMaterial {
     public void loadText(int size, String text, boolean centered){
         GLES20.glBindTexture(GLES20.GL_TEXTURE_2D, textureNum);
 
-        Bitmap texture = Bitmap.createBitmap(512, 512, Bitmap.Config.ARGB_8888);
-        Canvas canvas = new Canvas(texture);
-        texture.eraseColor(0);
-
         Typeface font = ResourcesCompat.getFont(MainActivity.getAppContext(), textMaterialInfo.fontPath);
 
         Paint textPaint = new Paint();
@@ -133,9 +130,16 @@ public class ClassicMiniMaterial {
         textPaint.setTypeface(font);
 
         // resize to image (not outside)
-        float scale = 512f / textPaint.measureText(text);
-        textMaterialInfo.xTextMultiplier = textPaint.measureText(text) / 512f;
-        textPaint.setTextScaleX(scale);
+        Rect bounds = new Rect();
+        textPaint.getTextBounds(text, 0, text.length(), bounds);
+
+        textMaterialInfo.xTextMultiplier = bounds.width() / 512f;
+        textMaterialInfo.yTextMultiplier = bounds.height() / 512f;
+        textPaint.setTextScaleX(512f / bounds.width());
+
+        Bitmap texture = Bitmap.createBitmap(512, bounds.height(), Bitmap.Config.ARGB_8888);
+        Canvas canvas = new Canvas(texture);
+        texture.eraseColor(0);
 
         int xPosition = (canvas.getWidth() / 2);
         int yPosition = (int) ((canvas.getHeight() / 2) - ((textPaint.descent() + textPaint.ascent()) / 2));
