@@ -21,6 +21,8 @@ import glm.vec._2.Vec2;
 import glm.vec._3.Vec3;
 import glm.vec._4.Vec4;
 
+import static com.bean.classicmini.surfaceView.framesThrough;
+
 /*
 WHEN CREATING A SCENE FILE:
 Follow this format.
@@ -83,7 +85,6 @@ public class Scene {
             }
             if (data[0].equals("component")) {
                 recognisedLine = true;
-                data[2] = "com.bean." + data[2];
                 try {
                     Class<?> newClass = Class.forName(data[2]);
                     Constructor<?> constructor = newClass.getConstructor();
@@ -193,6 +194,81 @@ public class Scene {
                     if (data[4].equals("stringArray")) {
                         dataToSet = data[5].split(",");
                     }
+                    if(data[4].equals("boolArray")){
+                        String[] allItems = data[5].split(",");
+                        int length = allItems.length;
+                        boolean[] setData = new boolean[length];
+
+                        for(int i = 0; i < length; i++){
+                            if(allItems[i].equals("true")){
+                                setData[i] = true;
+                                continue;
+                            }
+                            setData[i] = false;
+                        }
+
+                        selectedField.set(dataToSetTo, setData);
+                    }
+                    if(data[4].equals("vec2Array")){ // (0.0,1.0);(1.0,0.0);(0.0,1.0)
+                        String[] allItems = data[5].split(";"); // each item = "(0.0,1.0)
+                        int length = allItems.length;
+                        Vec2[] setData = new Vec2[length];
+
+                        for(int i = 0; i < length; i++){
+                            String currentString = allItems[i].replace("(", "");
+                            currentString = currentString.replace(")", "");
+
+                            String[] floats = currentString.split(",");
+                            Vec2 newVector = new Vec2(
+                              Float.parseFloat(floats[0]),
+                              Float.parseFloat(floats[1])
+                            );
+                            setData[i] = newVector;
+                        }
+
+                        selectedField.set(dataToSetTo, setData);
+                    }
+                    if(data[4].equals("vec3Array")){ // (0.0,1.0,0.0);(1.0,0.0,0.0);(0.0,1.0,0.0)
+                        String[] allItems = data[5].split(";"); // each item = "(0.0,1.0,0.0)
+                        int length = allItems.length;
+                        Vec3[] setData = new Vec3[length];
+
+                        for(int i = 0; i < length; i++){
+                            String currentString = allItems[i].replace("(", "");
+                            currentString = currentString.replace(")", "");
+
+                            String[] floats = currentString.split(",");
+                            Vec3 newVector = new Vec3(
+                                    Float.parseFloat(floats[0]),
+                                    Float.parseFloat(floats[1]),
+                                    Float.parseFloat(floats[2])
+                            );
+                            setData[i] = newVector;
+                        }
+
+                        selectedField.set(dataToSetTo, setData);
+                    }
+                    if(data[4].equals("vec3Array")){ // (0.0,1.0,0.0,0.0);(1.0,0.0,0.0,0.0);(0.0,1.0,0.0,0.0)
+                        String[] allItems = data[5].split(";"); // each item = "(0.0,1.0,0.0)
+                        int length = allItems.length;
+                        Vec4[] setData = new Vec4[length];
+
+                        for(int i = 0; i < length; i++){
+                            String currentString = allItems[i].replace("(", "");
+                            currentString = currentString.replace(")", "");
+
+                            String[] floats = currentString.split(",");
+                            Vec4 newVector = new Vec4(
+                                    Float.parseFloat(floats[0]),
+                                    Float.parseFloat(floats[1]),
+                                    Float.parseFloat(floats[2]),
+                                    Float.parseFloat(floats[3])
+                            );
+                            setData[i] = newVector;
+                        }
+
+                        selectedField.set(dataToSetTo, setData);
+                    }
                     if(data[4].equals("vec2")){
                         String[] info = data[5].split(",");
 
@@ -223,6 +299,11 @@ public class Scene {
 
                         dataToSet = newVector;
                     }
+                    if(data[4].equals("beansComponent")){ // beansComponent adam Transform
+                        Bean wantedBean = allBeans.get(data[5]);
+                        Class<?> selectedBeansComponent = Class.forName(data[6]);
+                        dataToSet = wantedBean.getComponents(selectedBeansComponent);
+                    }
                     // set
                     if (dataToSet != null) {
                         selectedField.set(dataToSetTo, dataToSet);
@@ -249,7 +330,7 @@ public class Scene {
 
     public void mainloop(){
         for(Bean bean : allBeans.values()){
-            if(surfaceView.framesThrough == 0){
+            if(framesThrough == 0){
                 for(LinkedHashMap<UUID, ? extends Components> component : bean.components.values()){
                     if(component.get(bean.id).enabled){
                         component.get(bean.id).begin();

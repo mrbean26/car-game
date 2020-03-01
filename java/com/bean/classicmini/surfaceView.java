@@ -77,11 +77,11 @@ public class surfaceView extends GLSurfaceView implements GLSurfaceView.Renderer
     public boolean onTouchEvent(MotionEvent e){
         xTouch = e.getX();
         yTouch = e.getY();
-        if(e.getAction() == MotionEvent.ACTION_DOWN){
+        if(e.getAction() == MotionEvent.ACTION_UP){
             xTouchDown = e.getX();
             yTouchDown = e.getY();
         }
-        if(e.getAction() == MotionEvent.ACTION_UP){
+        if(e.getAction() == MotionEvent.ACTION_DOWN){
             xTouchUp = e.getX();
             yTouchUp = e.getY();
         }

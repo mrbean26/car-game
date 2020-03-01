@@ -2,8 +2,10 @@ package com.bean.classicmini.components;
 
 import com.bean.classicmini.Bean;
 import com.bean.classicmini.R;
+import com.bean.classicmini.surfaceView;
 import com.bean.classicmini.utilities.ClassicMiniMaterial;
 import com.bean.classicmini.utilities.ClassicMiniMath;
+import com.bean.classicmini.utilities.ClassicMiniOutput;
 import com.bean.components.Components;
 
 import java.util.ArrayList;
@@ -56,7 +58,7 @@ public class Dropdown extends Components {
         // buttons
         float defaultInterval = -2.0f * dropdownEntryBackground.getComponents(Transform.class).scale.y;
         for(int i = 0; i < count; i++){
-            Bean newBean = new Bean(objectName + "_dropdownButton_" + String.valueOf(i));
+            Bean newBean = new Bean(objectName + "_dropdownButton_" + dropdownItemsBegin[i]);
             newBean.getComponents(Transform.class).parent = getBean();
             this.getBeansComponent(Transform.class).children.put(newBean.objectName, newBean);
             newBean.getComponents(Transform.class).position.y = (defaultInterval - dropdownItemInterval) * (float) i;
@@ -143,6 +145,82 @@ public class Dropdown extends Components {
             Bean currentBean = allDropdownButtons.get(i);
             currentBean.getComponents(Transform.class).position.y = (defaultInterval - dropdownItemInterval) * (float) i;
         }
+    }
+
+    public void addItem(String item){
+        float defaultInterval = -2.0f * dropdownEntryBackground.getComponents(Transform.class).scale.y;
+        dropdownEntry newDropdownEntry = new dropdownEntry();
+        newDropdownEntry.text = item;
+
+        newDropdownEntry.textMaterial.type = "text";
+        newDropdownEntry.textMaterial.textMaterialInfo.displayedText = item;
+        newDropdownEntry.textMaterial.textMaterialInfo.fontPath = R.font.default_font;
+        newDropdownEntry.textMaterial.textMaterialInfo.textCentered = true;
+
+        newDropdownEntry.textMaterial.begin();
+        allDropdownEntries.put(item, newDropdownEntry);
+
+        // create button (add to end)
+        int count = allDropdownEntries.size();
+        Bean newBean = new Bean(objectName + "_dropdownButton_" + item);
+
+        newBean.getComponents(Transform.class).parent = getBean();
+        this.getBeansComponent(Transform.class).children.put(newBean.objectName, newBean);
+        newBean.getComponents(Transform.class).position.y = (defaultInterval - dropdownItemInterval) * (float) (count - 1);
+
+        Button newButton = new Button();
+        newButton.onClickClass = this;
+        newButton.type = Button.BUTTON_CLICK_DOWN;
+        newBean.addComponents(newButton);
+
+        allDropdownButtons.add(newBean);
+        Bean.addBean(newBean);
+    }
+
+    public void removeItem(String item){
+        // remove from dropdown hashmap
+        allDropdownEntries.remove(item);
+        // remove bean from scene
+        int sceneBeanCount = surfaceView.currentScene.allBeans.size();
+        Object[] allKeys = surfaceView.currentScene.allBeans.keySet().toArray();
+        Bean idButton = null;
+
+        for(int i = 0; i < sceneBeanCount; i++){
+            String currentKey = (String) allKeys[i];
+            String[] dataParts = currentKey.split("_");
+
+            if(dataParts.length < 3){
+                continue;
+            }
+
+            if(!dataParts[1].equals("dropdownButton")){
+                continue;
+            }
+
+            if(dataParts[2].equals(item)){
+                idButton = surfaceView.currentScene.allBeans.remove(currentKey);
+                break;
+            }
+        }
+        // remove from allDropdownButtons
+        allDropdownButtons.remove(idButton);
+    }
+
+    public void removeItem(int index){
+        int count = allDropdownEntries.size();
+        if(index > count - 1){
+            return;
+        }
+
+        // get key
+        Object[] allKeys = allDropdownEntries.keySet().toArray();
+        ClassicMiniOutput.output((String) allKeys[index]);
+        removeItem((String) allKeys[index]);
+    }
+
+    public String getValue(){
+        Object[] allValues = allDropdownEntries.values().toArray();
+        return ((dropdownEntry) allValues[selectedIndex]).text;
     }
 
 }

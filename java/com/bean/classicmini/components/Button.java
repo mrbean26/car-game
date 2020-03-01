@@ -22,6 +22,10 @@ public class Button extends Components {
     }
 
     public boolean isClicked(float xTouch, float yTouch){
+        if(xTouch == -1.0f || yTouch == -1.0f){
+            return false;
+        }
+        ;
         Transform buttonTransform = getBeansComponent(Transform.class);
         Vec3 localPosition = buttonTransform.getRelativePosition();
         Vec3 localScale = buttonTransform.getRelativeScale();
