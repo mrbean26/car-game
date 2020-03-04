@@ -24,10 +24,13 @@ public class Dropdown extends Components {
     private LinkedHashMap<String, dropdownEntry> allDropdownEntries = new LinkedHashMap<>();
     private List<Bean> allDropdownButtons = new ArrayList<>();
 
-    public String[] dropdownItemsBegin;
+    public String[] dropdownItemsBegin = new String[]{"No Entries"};
     public float dropdownItemInterval = 0.0f;
     private boolean opened = false;
     private int selectedIndex = 0;
+
+    public Vec4 backgroundColour = new Vec4(1.0f);
+    public Vec4 textColourBegin = new Vec4(1.0f, 0.0f, 0.0f, 1.0f);
 
     @Override
     public void begin() {
@@ -38,7 +41,7 @@ public class Dropdown extends Components {
 
         Image newImage = new Image();
         newImage.material.colourHex = "#FFFFFF";
-        newImage.backgroundColour = new Vec4(1.0f, 0.0f, 0.0f, 1.0f);
+        newImage.backgroundColour = backgroundColour;
         dropdownEntryBackground.addComponents(newImage);
         newImage.begin();
         // load entries
@@ -48,6 +51,7 @@ public class Dropdown extends Components {
             newEntry.text = dropdownItemsBegin[i];
 
             newEntry.textMaterial.type = "text";
+            newEntry.textMaterial.textMaterialInfo.textColour = textColourBegin;
             newEntry.textMaterial.textMaterialInfo.displayedText = dropdownItemsBegin[i];
             newEntry.textMaterial.textMaterialInfo.fontPath = R.font.default_font;
             newEntry.textMaterial.textMaterialInfo.textCentered = true;
@@ -65,7 +69,7 @@ public class Dropdown extends Components {
 
             Button newButton = new Button();
             newButton.onClickClass = this;
-            newButton.type = Button.BUTTON_CLICK_DOWN;
+            newButton.type = Button.BUTTON_CLICK_UP;
             newBean.addComponents(newButton);
 
             allDropdownButtons.add(newBean);
@@ -221,6 +225,18 @@ public class Dropdown extends Components {
     public String getValue(){
         Object[] allValues = allDropdownEntries.values().toArray();
         return ((dropdownEntry) allValues[selectedIndex]).text;
+    }
+
+    public void setTextColour(Vec4 used){
+        Object[] allValues = allDropdownEntries.values().toArray();
+        int count = allValues.length;
+
+        for(int i = 0; i < count; i++){
+            dropdownEntry current = (dropdownEntry) allValues[i];
+            current.textMaterial.textMaterialInfo.textColour = used;
+            current.textMaterial.loadText(current.textMaterial.textMaterialInfo.textSize, current.textMaterial.textMaterialInfo.displayedText,
+                    current.textMaterial.textMaterialInfo.textCentered, used);
+        }
     }
 
 }

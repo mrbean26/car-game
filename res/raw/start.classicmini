@@ -5,8 +5,5 @@ field toby com.bean.classicmini.components.Transform rotation vec3 0.0,0.0,0.0
 
 Bean adam
 component adam com.bean.classicmini.components.Dropdown
-field adam com.bean.classicmini.components.Dropdown dropdownItemInterval float 0.4
-field adam com.bean.classicmini.components.Dropdown dropdownItemsBegin stringArray Adam,Giulio,Haydon
-
-field adam com.bean.classicmini.components.Transform scale vec3 1.0,0.1,1.0
-field adam com.bean.classicmini.components.Transform position vec3 0.0,1.0,0.0
+field adam com.bean.classicmini.components.Dropdown dropdownItemsBegin stringArray Adam,Isaac,Haydon,4445
+field adam com.bean.classicmini.components.Transform scale vec3 0.8,0.2,1.0

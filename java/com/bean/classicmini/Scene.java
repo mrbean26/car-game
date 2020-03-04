@@ -12,7 +12,6 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.UUID;
@@ -53,7 +52,7 @@ When changing fields include package in component name
  */
 
 public class Scene {
-    public HashMap<String, Bean> allBeans = new HashMap<>();
+    public LinkedHashMap<String, Bean> allBeans = new LinkedHashMap<>();
     public <T extends Components> Scene(int resourceId){
         List<String> sceneInfo = ClassicMiniSavefiles.readLines(resourceId);
         int lineCount = sceneInfo.size();
@@ -85,6 +84,7 @@ public class Scene {
             }
             if (data[0].equals("component")) {
                 recognisedLine = true;
+                //data[2] = "com.bean." + data[2];
                 try {
                     Class<?> newClass = Class.forName(data[2]);
                     Constructor<?> constructor = newClass.getConstructor();
@@ -125,7 +125,7 @@ public class Scene {
             }
             if (data[0].equals("field")) {
                 recognisedLine = true;
-                data[2] = "com.bean." + data[2];
+                //data[2] = "com.bean." + data[2];
                 try {
                     Class<?> selectedComponent = Class.forName(data[2]);
 

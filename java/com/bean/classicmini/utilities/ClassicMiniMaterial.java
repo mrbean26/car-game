@@ -23,6 +23,7 @@ import java.io.InputStream;
 import glm.Glm;
 import glm.vec._3.Vec3;
 import glm.vec._3.i.Vec3i;
+import glm.vec._4.Vec4;
 
 public class ClassicMiniMaterial {
     // Program Functions
@@ -66,7 +67,7 @@ public class ClassicMiniMaterial {
             loadImage(imagePath);
         } if(type.equals("text")){
             loadText(textMaterialInfo.textSize,
-                    textMaterialInfo.displayedText, textMaterialInfo.textCentered);
+                    textMaterialInfo.displayedText, textMaterialInfo.textCentered, textMaterialInfo.textColour);
         } if(type.equals("gif")){
             loadGIF(gifMaterialInfo.gifPath);
         }
@@ -118,7 +119,7 @@ public class ClassicMiniMaterial {
     public float getXTextMultiplier(){
         return textMaterialInfo.xTextMultiplier; // read only variable from outside class
     }
-    public void loadText(int size, String text, boolean centered){
+    public void loadText(int size, String text, boolean centered, Vec4 textColour){
         GLES20.glBindTexture(GLES20.GL_TEXTURE_2D, textureNum);
 
         Typeface font = ResourcesCompat.getFont(MainActivity.getAppContext(), textMaterialInfo.fontPath);
@@ -126,7 +127,7 @@ public class ClassicMiniMaterial {
         Paint textPaint = new Paint();
         textPaint.setTextSize(size);
         textPaint.setAntiAlias(true);
-        textPaint.setARGB(255, 255, 255, 255);
+        textPaint.setARGB(Math.round(textColour.w * 255f), Math.round(textColour.x * 255f), Math.round(textColour.y * 255f), Math.round(textColour.z * 255f));
         textPaint.setTypeface(font);
 
         // resize to image (not outside)

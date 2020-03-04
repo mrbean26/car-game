@@ -8,7 +8,7 @@ import glm.vec._3.Vec3;
 
 public class Button extends Components {
     public Object onClickClass = new Transform();
-    public int type = BUTTON_CLICK_DOWN;
+    public int type = BUTTON_CLICK_UP;
 
     public static final int BUTTON_CLICK_DOWN = 0;
     public static final int BUTTON_CLICK_UP = 1;
@@ -70,18 +70,28 @@ public class Button extends Components {
     }
 
     public void checkClick(){
+        boolean currentClicked = isClicked(surfaceView.xTouch, surfaceView.yTouch);
         if(type == BUTTON_CLICK_DOWN){
-            if(isClicked(surfaceView.xTouchDown, surfaceView.yTouchDown)){
+            if(currentClicked && !clickedLast){
                 runClick();
+                clickedLast = true;
+            }
+            if(!currentClicked){
+                clickedLast = false;
             }
         }
         if(type == BUTTON_CLICK_UP){
-            if(isClicked(surfaceView.xTouchUp, surfaceView.yTouchUp)){
+            if(isClicked(surfaceView.xTouch, surfaceView.yTouch)){
+                clickedLast = true;
+                return;
+            }
+            if(clickedLast && !currentClicked){
                 runClick();
+                clickedLast = false;
             }
         }
         if(type == BUTTON_HOLD){
-            if(isClicked(surfaceView.xTouch, surfaceView.yTouch)){
+            if(currentClicked){
                 runClick();
             }
         }

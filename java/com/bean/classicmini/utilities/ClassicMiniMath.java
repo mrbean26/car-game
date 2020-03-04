@@ -55,11 +55,33 @@ public class ClassicMiniMath {
         return decimal;
     }
 
+    public static boolean vectorTwoEquals(Vec2 one, Vec2 two){
+        if(one.x == two.x){
+            if(one.y == two.y){
+                return true;
+            }
+        }
+        return false;
+    }
+
     public static boolean vectorThreeEquals(Vec3 one, Vec3 two){
         if(one.x == two.x){
             if(one.y == two.y){
                 if(one.z == two.z){
                     return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    public static boolean vectorFourEquals(Vec4 one, Vec4 two){
+        if(one.x == two.x){
+            if(one.y == two.y){
+                if(one.z == two.z){
+                    if(one.w == two.w){
+                        return true;
+                    }
                 }
             }
         }

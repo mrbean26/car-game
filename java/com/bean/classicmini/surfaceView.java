@@ -7,9 +7,15 @@ import android.view.MotionEvent;
 
 import com.bean.classicmini.components.Camera;
 import com.bean.classicmini.utilities.ClassicMiniAudio;
+import com.bean.classicmini.utilities.ClassicMiniOutput;
+import com.bean.classicmini.utilities.ClassicMiniPathfinding;
+
+import java.util.List;
 
 import javax.microedition.khronos.egl.EGLConfig;
 import javax.microedition.khronos.opengles.GL10;
+
+import glm.vec._2.Vec2;
 
 public class surfaceView extends GLSurfaceView implements GLSurfaceView.Renderer {
     public static Scene currentScene;
@@ -37,18 +43,12 @@ public class surfaceView extends GLSurfaceView implements GLSurfaceView.Renderer
     }
     
     // touch
-    public static float xTouchDown = -1.0f, yTouchDown = -1.0f;
-    public static float xTouchUp = -1.0f, yTouchUp = -1.0f;
     public static float xTouch = -1.0f, yTouch = -1.0f;
     private void updateTouch(){
-        xTouchDown = -1.0f;
-        yTouchDown = -1.0f;
-
-        xTouchUp = -1.0f;
-        yTouchUp = -1.0f;
-
-        xTouch = -1.0f;
-        yTouch = -1.0f;
+        if(!touchedDown){
+            xTouch = -1.0f;
+            yTouch = -1.0f;
+        }
     }
     
     // renderer
@@ -57,6 +57,15 @@ public class surfaceView extends GLSurfaceView implements GLSurfaceView.Renderer
 
         startTime = System.nanoTime() / 1000000000.0f;
         GLES20.glEnable(GLES20.GL_DEPTH_TEST);
+
+        Vec2 start = new Vec2(0.0f);
+        Vec2 end = new Vec2(2.0f, 0.0f);
+        Vec2[] blocks = new Vec2[]{new Vec2(1f, 0f)};
+
+        List<Vec2> path = ClassicMiniPathfinding.findPath(start, end, blocks);
+
+        ClassicMiniOutput.output(String.valueOf(path));
+
     }
 
     public void onDrawFrame(GL10 unused) {
@@ -73,18 +82,19 @@ public class surfaceView extends GLSurfaceView implements GLSurfaceView.Renderer
         displayHeight = height;
     }
 
+    public boolean touchedDown = false;
     @Override
     public boolean onTouchEvent(MotionEvent e){
-        xTouch = e.getX();
-        yTouch = e.getY();
         if(e.getAction() == MotionEvent.ACTION_UP){
-            xTouchDown = e.getX();
-            yTouchDown = e.getY();
+            touchedDown = false;
+            return true;
         }
-        if(e.getAction() == MotionEvent.ACTION_DOWN){
-            xTouchUp = e.getX();
-            yTouchUp = e.getY();
-        }
+        float x = e.getX();
+        float y = e.getY();
+
+        touchedDown = true;
+        xTouch = x;
+        yTouch = y;
         return true;
     }
 }
