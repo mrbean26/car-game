@@ -29,9 +29,12 @@ public class Button extends Components {
         Transform buttonTransform = getBeansComponent(Transform.class);
         Vec3 localPosition = buttonTransform.getRelativePosition();
         Vec3 localScale = buttonTransform.getRelativeScale();
-        
-        float xCenter = (surfaceView.displayWidth / 2.0f) + (localPosition.x * (surfaceView.displayWidth / 2.0f));
-        float yCenter = surfaceView.displayHeight - ((surfaceView.displayHeight / 2.0f) + (localPosition.y * (surfaceView.displayWidth / 2.0f)));
+
+        float halfWidth = surfaceView.displayWidth / 2.0f;
+        float halfHeight = surfaceView.displayHeight / 2.0f;
+
+        float xCenter = halfWidth + (localPosition.x * halfWidth);
+        float yCenter = surfaceView.displayHeight - (halfHeight + (localPosition.y * halfWidth));
 
         Vec2 center = new Vec2(xCenter, yCenter);
         Vec2 touchPoint = new Vec2(xTouch, yTouch);
@@ -54,11 +57,11 @@ public class Button extends Components {
         touchPoint.x = xNew + center.x;
         touchPoint.y = yNew + center.y;
 
-        float xRight = xCenter + ((surfaceView.displayWidth / 2.0f) * localScale.x);
-        float xLeft = xCenter - ((surfaceView.displayWidth / 2.0f) * localScale.x);
+        float xRight = xCenter + (halfWidth * localScale.x);
+        float xLeft = xCenter - (halfWidth * localScale.x);
 
-        float yTop = yCenter + ((surfaceView.displayWidth / 2.0f) * localScale.y);
-        float yBottom = yCenter - ((surfaceView.displayWidth / 2.0f) * localScale.y);
+        float yTop = yCenter + (halfWidth * localScale.y);
+        float yBottom = yCenter - (halfWidth * localScale.y); // this might have to be half height instead
 
         if(touchPoint.x > xLeft && touchPoint.x < xRight){
             if(touchPoint.y < yTop && touchPoint.y > yBottom){
