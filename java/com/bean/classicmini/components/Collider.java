@@ -41,6 +41,47 @@ public class Collider extends Components {
 
     }
 
+	private boolean isinsideYZ(Vec3 minInfo, Vec3 maxInfo, Vec3 position){
+		if(position.y >= minInfo.y && position.y <= maxInfo.y){
+			if(position.z >= minInfo.z && position.z <= maxInfo.z){
+				return true;
+			}
+		}
+		return false;
+	}
+
+	private boolean isinsideXZ(Vec3 minInfo, Vec3 maxInfo, Vec3 position){
+		if(position.x >= minInfo.x && position.x <= maxInfo.x){
+			if(position.z >= minInfo.z && position.z <= maxInfo.z){
+				return true;
+			}
+		}
+		return false;
+	}
+
+	private boolean isinsideXY(Vec3 minInfo, Vec3 maxInfo, Vec3 position){
+		if(position.x >= minInfo.x && position.x <= maxInfo.x){
+			if(position.z >= minInfo.z && position.z <= maxInfo.z){
+				return true;
+			}
+		}
+		return false;
+	}
+
+	private void push(float firstFloat, float secondFloat, Collider firstCollider, Collider secondCollider,
+			Transform firstTransform, Transform secondTransform){
+		float dist = thisMaxInfo - secondFloat;
+
+		if(Math.abs(dist) > MIN_COLLISION_DISTANCE){
+			if(firstCollider.solid){
+				firstTransform.position.add(firstTransform.forwardVector().mul(dist));
+			}
+			if(secondCollider.solid && !firstCollider.solid){
+				secondTransform.position.add(secondTransform.forwardVector().mul(dist));
+			}
+		}
+	}
+
     @Override
     public void mainloop(){
         Bean[] allColliders = surfaceView.currentScene.findBeansWithComponent(Collider.class);
@@ -71,102 +112,52 @@ public class Collider extends Components {
             Vec3 otherMinInfo = new Vec3(otherCollider.minData);
             Vec3 otherMaxInfo = new Vec3(otherCollider.maxData);
             // compare - x collisions
-            if(otherTransform.position.y >= thisMinInfo.y && otherTransform.position.y <= thisMaxInfo.y){
-                if(otherTransform.position.z >= thisMinInfo.z && otherTransform.position.z <= thisMaxInfo.z){
-                    if(otherTransform.position.x >= thisTransform.position.x){
-                        if(otherMinInfo.x <= thisMaxInfo.x && otherMinInfo.x >= thisMinInfo.x){
-                            float dist = thisMaxInfo.x - otherMinInfo.x;
-                            if(Math.abs(dist) >  MIN_COLLISION_DISTANCE){
-                                if(otherCollider.solid){
-                                    otherTransform.position.add(otherTransform.forwardVector().mul(dist));
-                                }
-                                if(solid && !otherCollider.solid){
-                                    thisTransform.position.add(thisTransform.forwardVector().mul(dist));
-                                }
-                            }
-                        }
-                    }
-                    if(otherTransform.position.x <= thisTransform.position.x){
-                        if(otherMaxInfo.x <= thisMaxInfo.x && otherMaxInfo.x >= thisMinInfo.x){
-                            float dist = thisMinInfo.x - otherMaxInfo.x;
-                            if(Math.abs(dist) >  MIN_COLLISION_DISTANCE){
-                                if(otherCollider.solid){
-                                    otherTransform.position.add(otherTransform.forwardVector().mul(dist));
-                                }
-                                if(this.solid && !otherCollider.solid){
-                                    thisTransform.position.add(thisTransform.forwardVector().mul(dist));
-                                }
-                            }
-                        }
-                    }
-                }
-            }
+			if(isinsideYZ(thisMinInfo, thisMaxInfo, otherTransform.position)){
+				if(otherTransform.position.x >= thisTransform.position.x){
+					if(otherMinInfo.x <= thisMaxInfo.x && otherMinInfo.x >= thisMinInfo.x){
+						push(thisMaxInfo.x, otherMinInfo.x, otherCollider, this,
+							otherTransform, thisTransform);
+					}
+				}
+				if(otherTransform.position.x <= thisTransform.position.x){
+					if(otherMaxInfo.x <= thisMaxInfo.x && otherMaxInfo.x >= thisMinInfo.x){
+						push(thisMinInfo.x, otherMaxInfo.x, otherCollider, this,
+							otherTransform, thisTransform);
+					}
+				}
+			}
 
             // y collisions
-            if(otherTransform.position.x >= thisMinInfo.x && otherTransform.position.x <= thisMaxInfo.x){
-                if(otherTransform.position.z >= thisMinInfo.z && otherTransform.position.z <= thisMaxInfo.z){
-                    if(otherTransform.position.y >= thisTransform.position.y){
-                        if(otherMinInfo.y <= thisMaxInfo.y && otherMinInfo.y >= thisMinInfo.y){
-                            float dist = thisMaxInfo.y - otherMinInfo.y;
-                            if(Math.abs(dist) > MIN_COLLISION_DISTANCE){
-                                if(otherCollider.solid){
-                                    otherTransform.position.add(otherTransform.upVector().mul(dist));
-                                }
-                                if(this.solid && !otherCollider.solid){
-                                   thisTransform.position.add(thisTransform.upVector().mul(dist));
-                                }
-                            }
-                        }
-                    }
-                    if(otherTransform.position.y <= thisTransform.position.y){
-                        if(otherMaxInfo.y <= thisMaxInfo.y && otherMaxInfo.y >= thisMinInfo.y){
-                            float dist = thisMinInfo.y - otherMaxInfo.y;
-                            if(Math.abs(dist) > MIN_COLLISION_DISTANCE){
-                                if(otherCollider.solid){
-                                    otherTransform.position.add(otherTransform.upVector().mul(dist));
-                                }
-                                if(this.solid && !otherCollider.solid){
-                                    thisTransform.position.add(thisTransform.upVector().mul(dist));
-                                }
-                            }
-                        }
-                    }
-                }
-            }
+			if(isinsideXZ(thisMinInfo, thisMaxInfo, otherTransform)){
+				if(otherTransform.position.y >= thisTransform.position.y){
+					if(otherMinInfo.y <= thisMaxInfo.y && otherMinInfo.y >= thisMinInfo.y){
+						push(thisMaxInfo.y, otherMinInfo.y, otherCollider, this,
+							otherTransform, thisTransform);
+					}
+				}
+				if(otherTransform.position.y <= thisTransform.position.y){
+					if(otherMaxInfo.y <= thisMaxInfo.y && otherMaxInfo.y >= thisMinInfo.y){
+						push(thisMinInfo.y, otherMaxInfo.y, otherCollider, this,
+							otherTransform, thisTransform);
+					}
+				}
+			}
 
             // z collisions
-            if(otherTransform.position.x >= thisMinInfo.x && otherTransform.position.x <= thisMaxInfo.x){
-                if(otherTransform.position.y >= thisMinInfo.y && otherTransform.position.y <= thisMaxInfo.y){
-                    if(otherTransform.position.z >= thisTransform.position.z){
-                        if(otherMinInfo.z <= thisMaxInfo.z && otherMinInfo.x >= thisMinInfo.x){
-                            float dist = thisMaxInfo.z - otherMinInfo.z;
-                            if(Math.abs(dist) > MIN_COLLISION_DISTANCE){
-                                if(otherCollider.solid){
-                                    otherTransform.position.add(otherTransform.rightVector().mul(dist));
-                                }
-                                if(this.solid && !otherCollider.solid){
-                                    thisTransform.position.add(thisTransform.rightVector().mul(dist));
-                                }
-                            }
-                        }
-                    }
-                    if(otherTransform.position.z <= thisTransform.position.z){
-                        if(otherMaxInfo.z <= thisMaxInfo.z && otherMaxInfo.x >= thisMinInfo.x){
-                            float dist = thisMinInfo.z - otherMaxInfo.z;
-                            if(Math.abs(dist) > MIN_COLLISION_DISTANCE){
-                                if(otherCollider.solid){
-                                    otherTransform.position.add(otherTransform.rightVector().mul(dist));
-                                }
-                                if(this.solid && !otherCollider.solid){
-                                    thisTransform.position.add(thisTransform.rightVector().mul(dist));
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-
-
+			if(isinsideXY(thisMinInfo, thisMaxInfo, otherTransform.position)){
+				if(otherTransform.position.z >= thisTransform.position.z){
+					if(otherMinInfo.z <= thisMaxInfo.z && otherMinInfo.x >= thisMinInfo.x){
+						push(thisMaxInfo.z, otherMinInfo.z, otherCollider, this,
+							otherTransform, thisTransform);
+					}
+				}
+				if(otherTransform.position.z <= thisTransform.position.z){
+					if(otherMaxInfo.z <= thisMaxInfo.z && otherMaxInfo.x >= thisMinInfo.x){
+						push(thisMinInfo.z, otherMaxInfo.z, otherCollider, this,
+							otherTransform, thisTransform);
+					}
+				}
+			}
         }
     }
 }
