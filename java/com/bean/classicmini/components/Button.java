@@ -21,6 +21,29 @@ public class Button extends Components {
         checkClick();
     }
 
+    private boolean isBelowButton(xTouch, yTouch){
+		Bean[] allButtonBeans = surfaceView.currentScene.findBeansWithComponent(Button.class);
+		int count = allButtonBeans.length;
+
+		int thisBeansIndex = -1;
+		for(int i = 0; i < count; i++){
+			if(thisBeansIndex == -1){
+				if(getBean().id == allButtonBeans[i].id){
+					thisBeansIndex = i;
+					continue;
+				}
+			}
+
+			if(thisBeansIndex != -1){
+				// anything here is rendered / run after this button
+				if(allButtonBeans[i].getComponents(Button.class).isClicked(xTouch, yTouch)){
+					return true;
+				}
+			}
+		}
+		return false;
+	}
+
     public boolean isClicked(float xTouch, float yTouch){
         if(xTouch == -1.0f || yTouch == -1.0f){
             return false;
@@ -65,7 +88,9 @@ public class Button extends Components {
 
         if(touchPoint.x > xLeft && touchPoint.x < xRight){
             if(touchPoint.y < yTop && touchPoint.y > yBottom){
-                return true;
+                if(!isBelowButton(xTouch, yTouch)){
+					return true;
+				}
             }
         }
 
