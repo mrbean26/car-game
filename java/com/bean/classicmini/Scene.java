@@ -329,7 +329,12 @@ public class Scene {
     }
 
     public void mainloop(){
-        for(Bean bean : allBeans.values()){
+        Object[] allBeansArray = allBeans.values().toArray();
+        int count = allBeansArray.length;
+
+        for(int i = 0; i < count; i++){
+            Bean bean = (Bean) allBeansArray[i];
+
             if(framesThrough == 0){
                 for(LinkedHashMap<UUID, ? extends Components> component : bean.components.values()){
                     if(component.get(bean.id).enabled){
@@ -337,7 +342,11 @@ public class Scene {
                     }
                 }
             }
+
             bean.mainloop();
+
+            allBeansArray = allBeans.values().toArray();
+            count = allBeansArray.length; // this helps if a bean is removed in a mainloop
         }
     }
 

@@ -6,7 +6,7 @@ import glm.vec._2.Vec2;
 import glm.vec._3.Vec3;
 import glm.vec._4.Vec4;
 
-public class ClassicMiniOutput {
+public class ClassicMiniOutput { // for debugging purposes
     public static void error(String message){
         Log.d("Bean:Error", message);
     }

@@ -15,8 +15,8 @@ class ClassicMiniPathfindingNode{
     public ClassicMiniPathfindingNode parent = null;
     public Vec2 position = new Vec2(0.0f);
 
-    public float gCost = 0f;
-    public float hCost = 0f;
+    public float gCost = 0f; // distance between node and start
+    public float hCost = 0f; // distance between node and end
     public float fCost = 0f;
 
     public boolean equalNode(ClassicMiniPathfindingNode other){
@@ -62,6 +62,7 @@ public class ClassicMiniPathfinding {
                 return path;
             }
 
+            // generate children
             List<ClassicMiniPathfindingNode> children = new ArrayList<>();
             Vec2[] allOptions = new Vec2[]{new Vec2(0f, -1f), new Vec2(0f, 1f), new Vec2(-1f, 0f), new Vec2(1f, 0f)};
 
@@ -69,6 +70,7 @@ public class ClassicMiniPathfinding {
                 Vec2 newPosition = allOptions[i];
                 Vec2 nodePosition = new Vec2(currentNode.position.x + newPosition.x, currentNode.position.y + newPosition.y);
 
+                // check if there is a block at the current position
                 boolean continueBool = false;
                 int blockCount = blocks.length;
                 for(int b = 0; b < blockCount; b++){
@@ -97,8 +99,8 @@ public class ClassicMiniPathfinding {
                     }
                 }
 
-                child.gCost = currentNode.gCost + 1f;
-                child.hCost = (float) ((Math.pow((double) (child.position.x - endNode.position.x), 2.0)) + (Math.pow((double) (child.position.y - endNode.position.y), 2.0)));
+                child.gCost = currentNode.gCost + 1f; // current to start
+                child.hCost = (float) ((Math.pow((double) (child.position.x - endNode.position.x), 2.0)) + (Math.pow((double) (child.position.y - endNode.position.y), 2.0))); // current to end
                 child.fCost = child.gCost + child.hCost;
 
                 int openListCountNew = openList.size();

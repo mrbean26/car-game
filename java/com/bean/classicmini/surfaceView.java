@@ -7,15 +7,9 @@ import android.view.MotionEvent;
 
 import com.bean.classicmini.components.Camera;
 import com.bean.classicmini.utilities.ClassicMiniAudio;
-import com.bean.classicmini.utilities.ClassicMiniOutput;
-import com.bean.classicmini.utilities.ClassicMiniPathfinding;
-
-import java.util.List;
 
 import javax.microedition.khronos.egl.EGLConfig;
 import javax.microedition.khronos.opengles.GL10;
-
-import glm.vec._2.Vec2;
 
 public class surfaceView extends GLSurfaceView implements GLSurfaceView.Renderer {
     public static Scene currentScene;
@@ -57,15 +51,6 @@ public class surfaceView extends GLSurfaceView implements GLSurfaceView.Renderer
 
         startTime = System.nanoTime() / 1000000000.0f;
         GLES20.glEnable(GLES20.GL_DEPTH_TEST);
-
-        Vec2 start = new Vec2(0.0f);
-        Vec2 end = new Vec2(2.0f, 0.0f);
-        Vec2[] blocks = new Vec2[]{new Vec2(1f, 0f)};
-
-        List<Vec2> path = ClassicMiniPathfinding.findPath(start, end, blocks);
-
-        ClassicMiniOutput.output(String.valueOf(path));
-
     }
 
     public void onDrawFrame(GL10 unused) {

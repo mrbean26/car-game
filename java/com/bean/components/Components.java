@@ -15,7 +15,7 @@ public class Components implements ComponentsInterface {
 
     }
 
-    public void onClick(Bean clicked){
+    public void onClick(Bean clicked){ // run when assigned object is clicked
 
     }
 
