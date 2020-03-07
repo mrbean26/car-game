@@ -4,7 +4,6 @@ import com.bean.classicmini.Bean;
 import com.bean.classicmini.surfaceView;
 import com.bean.components.Components;
 
-import glm.mat._4.Mat4;
 import glm.vec._3.Vec3;
 import glm.vec._4.Vec4;
 
@@ -69,8 +68,8 @@ public class Collider extends Components {
 	}
 
 	private void push(float firstFloat, float secondFloat, Collider firstCollider, Collider secondCollider,
-			Transform firstTransform, Transform secondTransform){
-		float dist = thisMaxInfo - secondFloat;
+					  Transform firstTransform, Transform secondTransform){
+    	float dist = firstFloat - secondFloat;
 
 		if(Math.abs(dist) > MIN_COLLISION_DISTANCE){
 			if(firstCollider.solid){
@@ -126,7 +125,7 @@ public class Collider extends Components {
 			}
 
             // y collisions
-			if(isinsideXZ(thisMinInfo, thisMaxInfo, otherTransform)){
+			if(isinsideXZ(thisMinInfo, thisMaxInfo, otherTransform.position)){
 				if(otherTransform.position.y >= thisTransform.position.y){
 					if(otherMinInfo.y <= thisMaxInfo.y && otherMinInfo.y >= thisMinInfo.y){
 						push(thisMaxInfo.y, otherMinInfo.y, otherCollider, this,

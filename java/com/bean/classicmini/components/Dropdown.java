@@ -148,6 +148,14 @@ public class Dropdown extends Components {
         for(int i = 0; i < count; i++){
             Bean currentBean = allDropdownButtons.get(i);
             currentBean.getComponents(Transform.class).position.y = (defaultInterval - dropdownItemInterval) * (float) i;
+
+            if(!opened && i > 0){
+                currentBean.getComponents(Button.class).enabled = false;
+            }
+
+            if(opened){
+                currentBean.getComponents(Button.class).enabled = true;
+            }
         }
     }
 

@@ -1,5 +1,6 @@
 package com.bean.classicmini.components;
 
+import com.bean.classicmini.Bean;
 import com.bean.classicmini.surfaceView;
 import com.bean.components.Components;
 
@@ -21,26 +22,22 @@ public class Button extends Components {
         checkClick();
     }
 
-    private boolean isBelowButton(xTouch, yTouch){
+    private boolean isBelowButton(float xTouch, float yTouch){
 		Bean[] allButtonBeans = surfaceView.currentScene.findBeansWithComponent(Button.class);
 		int count = allButtonBeans.length;
 
-		int thisBeansIndex = -1;
 		for(int i = 0; i < count; i++){
-			if(thisBeansIndex == -1){
-				if(getBean().id == allButtonBeans[i].id){
-					thisBeansIndex = i;
-					continue;
-				}
-			}
+            if(getBean().id == allButtonBeans[i].id){
+                break;
+            }
 
-			if(thisBeansIndex != -1){
-				// anything here is rendered / run after this button
-				if(allButtonBeans[i].getComponents(Button.class).isClicked(xTouch, yTouch)){
-					return true;
-				}
-			}
-		}
+            if(allButtonBeans[i].getComponents(Button.class).isClicked(xTouch, yTouch)){
+                if(allButtonBeans[i].getComponents(Button.class).enabled){
+                    return true;
+                }
+            }
+        }
+
 		return false;
 	}
 
@@ -48,7 +45,7 @@ public class Button extends Components {
         if(xTouch == -1.0f || yTouch == -1.0f){
             return false;
         }
-
+        isBelowButton(xTouch, yTouch);
         Transform buttonTransform = getBeansComponent(Transform.class);
         Vec3 localPosition = buttonTransform.getRelativePosition();
         Vec3 localScale = buttonTransform.getRelativeScale();
@@ -89,8 +86,8 @@ public class Button extends Components {
         if(touchPoint.x > xLeft && touchPoint.x < xRight){
             if(touchPoint.y < yTop && touchPoint.y > yBottom){
                 if(!isBelowButton(xTouch, yTouch)){
-					return true;
-				}
+                    return true;
+                }
             }
         }
 

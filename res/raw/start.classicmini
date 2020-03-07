@@ -15,20 +15,3 @@ field martin com.bean.classicmini.components.Dropdown dropdownItemsBegin stringA
 field martin com.bean.classicmini.components.Transform scale vec3 0.8,0.2,1.0
 field martin com.bean.classicmini.components.Transform position vec3 0.0,0.8,0.0
 
-Bean gilfoyle
-component gilfoyle com.bean.classicmini.components.Dropdown
-field gilfoyle com.bean.classicmini.components.Dropdown dropdownItemsBegin stringArray Adam,Isaac,Haydon,4445
-field gilfoyle com.bean.classicmini.components.Transform scale vec3 0.8,0.2,1.0
-field gilfoyle com.bean.classicmini.components.Transform position vec3 0.0,0.6,0.0
-
-Bean sonny
-component sonny com.bean.classicmini.components.Dropdown
-field sonny com.bean.classicmini.components.Dropdown dropdownItemsBegin stringArray Adam,Isaac,Haydon,4445
-field sonny com.bean.classicmini.components.Transform scale vec3 0.8,0.2,1.0
-field sonny com.bean.classicmini.components.Transform position vec3 0.0,0.4,0.0
-
-Bean haydon
-component haydon com.bean.classicmini.components.Dropdown
-field haydon com.bean.classicmini.components.Dropdown dropdownItemsBegin stringArray Adam,Isaac,Haydon,4445
-field haydon com.bean.classicmini.components.Transform scale vec3 0.8,0.2,1.0
-field haydon com.bean.classicmini.components.Transform position vec3 0.0,0.2,0.0
