@@ -90,7 +90,6 @@ public class Collider extends Components {
         // this
         this.updateCollisionInfo();
         Transform thisTransform = getBeansComponent(Transform.class);
-        Mat4 thisModel = getBeansComponent(Transform.class).toMatrix4();
 
         Vec3 thisMinInfo = new Vec3(this.minData);
         Vec3 thisMaxInfo = new Vec3(this.maxData);
@@ -103,13 +102,12 @@ public class Collider extends Components {
             if(!allColliders[c].getComponents(Collider.class).enabled){
                 continue;
             }
+			
             Collider otherCollider = allColliders[c].getComponents(Collider.class);
-            otherCollider.updateCollisionInfo();
             Transform otherTransform = otherCollider.getBeansComponent(Transform.class);
 
-            Mat4 otherModel = otherCollider.getBeansComponent(Transform.class).toMatrix4();
-
-            Vec3 otherMinInfo = new Vec3(otherCollider.minData);
+			otherCollider.updateCollisionInfo();
+			Vec3 otherMinInfo = new Vec3(otherCollider.minData);
             Vec3 otherMaxInfo = new Vec3(otherCollider.maxData);
             // compare - x collisions
 			if(isinsideYZ(thisMinInfo, thisMaxInfo, otherTransform.position)){
