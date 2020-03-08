@@ -1,0 +1,10 @@
+Bean toby
+component toby com.bean.classicmini.components.Camera
+field toby com.bean.classicmini.components.Transform position vec3 0.0,0.0,-60.0
+field toby com.bean.classicmini.components.Transform rotation vec3 0.0,0.0,0.0
+
+Bean martin
+component martin com.bean.classicmini.components.Button
+component martin com.bean.classicmini.components.Image
+field martin com.bean.classicmini.components.Button onClickClass beansComponent martin com.bean.classicmini.components.Transform
+
