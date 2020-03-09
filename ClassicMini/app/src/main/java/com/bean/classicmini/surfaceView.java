@@ -53,8 +53,7 @@ public class surfaceView extends GLSurfaceView implements GLSurfaceView.Renderer
         startTime = System.nanoTime() / 1000000000.0f;
         GLES20.glEnable(GLES20.GL_DEPTH_TEST);
 
-        ClassicMiniAdverts.begin();
-        ClassicMiniAdverts.loadRewardedAd();
+        ClassicMiniAdverts.loadBannerAd();
     }
 
     public void onDrawFrame(GL10 unused) {

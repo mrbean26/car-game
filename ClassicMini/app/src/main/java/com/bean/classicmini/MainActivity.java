@@ -6,6 +6,8 @@ import android.os.Bundle;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.bean.classicmini.utilities.ClassicMiniAdverts;
+
 public class MainActivity extends AppCompatActivity {
     public surfaceView mainView;
     private static Context appContext;
@@ -23,6 +25,10 @@ public class MainActivity extends AppCompatActivity {
         mainActivity = this;
 
         mainView = new surfaceView(this);
-        setContentView(mainView);
+        ClassicMiniAdverts.begin();
+
+        ClassicMiniAdverts.getMainRelativeLayout().addView(mainView);
+        ClassicMiniAdverts.getMainRelativeLayout().addView(ClassicMiniAdverts.getBannerAd(), ClassicMiniAdverts.getAdParams());
+        setContentView(ClassicMiniAdverts.getMainRelativeLayout());
     }
 }
