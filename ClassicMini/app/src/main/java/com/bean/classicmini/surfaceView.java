@@ -6,7 +6,6 @@ import android.opengl.GLSurfaceView;
 import android.view.MotionEvent;
 
 import com.bean.classicmini.components.Camera;
-import com.bean.classicmini.utilities.ClassicMiniAdverts;
 import com.bean.classicmini.utilities.ClassicMiniAudio;
 
 import javax.microedition.khronos.egl.EGLConfig;
@@ -52,8 +51,6 @@ public class surfaceView extends GLSurfaceView implements GLSurfaceView.Renderer
 
         startTime = System.nanoTime() / 1000000000.0f;
         GLES20.glEnable(GLES20.GL_DEPTH_TEST);
-
-        ClassicMiniAdverts.loadBannerAd();
     }
 
     public void onDrawFrame(GL10 unused) {

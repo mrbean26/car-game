@@ -18,6 +18,11 @@ import com.google.android.gms.ads.reward.RewardedVideoAd;
 import com.google.android.gms.ads.reward.RewardedVideoAdListener;
 
 public class ClassicMiniAdverts {
+    public static String REWARDED_AD_ID = "ca-app-pub-3940256099942544/5224354917";
+    public static String INTERSTITIAL_AD_ID = "ca-app-pub-3940256099942544/1033173712";
+    public static String BANNER_AD_ID = "ca-app-pub-3940256099942544/6300978111";
+
+    // begins
     private static boolean initialized = false;
     private static void _begin(){
         MobileAds.initialize(MainActivity.getAppContext(), new OnInitializationCompleteListener() {
@@ -28,6 +33,8 @@ public class ClassicMiniAdverts {
         });
 
         _beginBannerAd();
+        _beginInterstitialAd();
+        _beginRewardedAd();
     }
     
     public static void begin(){
@@ -41,7 +48,7 @@ public class ClassicMiniAdverts {
 
     // rewarded
     private static RewardedVideoAd rewardedVideoAd;
-    private static void _loadRewardedAd(){
+    private static void _beginRewardedAd(){
         rewardedVideoAd = MobileAds.getRewardedVideoAdInstance(MainActivity.getAppContext());
         rewardedVideoAd.setRewardedVideoAdListener(new RewardedVideoAdListener() {
             @Override
@@ -84,10 +91,22 @@ public class ClassicMiniAdverts {
 
             }
         });
-        rewardedVideoAd.loadAd("ca-app-pub-3940256099942544/5224354917", new AdRequest.Builder().build());
+    }
+
+    private static void _loadRewardedAd(){
+        if(rewardedVideoAd == null){
+            return;
+        }
+
+        AdRequest adRequest = new AdRequest.Builder().build();
+        rewardedVideoAd.loadAd(REWARDED_AD_ID, adRequest);
     }
 
     private static void _showRewardedAd(){
+        if(rewardedVideoAd == null){
+            return;
+        }
+
         if(rewardedVideoAd.isLoaded()){
             rewardedVideoAd.show();
         }
@@ -113,10 +132,9 @@ public class ClassicMiniAdverts {
 
     // interstitial
     private static InterstitialAd interstitialAd;
-    private static void _loadInterstitialAd(){
+    private static void _beginInterstitialAd(){
         interstitialAd = new InterstitialAd(MainActivity.getAppContext());
-        interstitialAd.setAdUnitId("ca-app-pub-3940256099942544/1033173712");
-
+        interstitialAd.setAdUnitId(INTERSTITIAL_AD_ID);
         interstitialAd.setAdListener(new AdListener(){
             @Override
             public void onAdLoaded() {
@@ -153,12 +171,22 @@ public class ClassicMiniAdverts {
 
             }
         });
+    }
 
-        interstitialAd.loadAd(new AdRequest.Builder().build());
+    private static void _loadInterstitialAd(){
+        if(interstitialAd == null){
+            return;
+        }
 
+        AdRequest adRequest = new AdRequest.Builder().build();
+        interstitialAd.loadAd(adRequest);
     }
 
     private static void _showInterstitialAd(){
+        if(interstitialAd == null){
+            return;
+        }
+
         if(interstitialAd.isLoaded()){
             interstitialAd.show();
         }
@@ -190,7 +218,6 @@ public class ClassicMiniAdverts {
     private static void _beginBannerAd(){
         bannerAd = new AdView(MainActivity.getAppContext());
         bannerAd.setAdSize(AdSize.BANNER);
-        bannerAd.setAdUnitId("ca-app-pub-3940256099942544/6300978111");
         bannerAd.setBackgroundColor(Color.TRANSPARENT);
 
         mainRelativeLayout = new RelativeLayout(MainActivity.getAppContext());
@@ -251,7 +278,8 @@ public class ClassicMiniAdverts {
             }
         });
 
-        AdRequest adRequest = new AdRequest.Builder().addTestDevice(AdRequest.DEVICE_ID_EMULATOR).build();
+        bannerAd.setAdUnitId(BANNER_AD_ID);
+        AdRequest adRequest = new AdRequest.Builder().build();
         bannerAd.loadAd(adRequest);
     }
 
