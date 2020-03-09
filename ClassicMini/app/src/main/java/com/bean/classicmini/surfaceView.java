@@ -6,6 +6,7 @@ import android.opengl.GLSurfaceView;
 import android.view.MotionEvent;
 
 import com.bean.classicmini.components.Camera;
+import com.bean.classicmini.utilities.ClassicMiniAdverts;
 import com.bean.classicmini.utilities.ClassicMiniAudio;
 
 import javax.microedition.khronos.egl.EGLConfig;
@@ -35,7 +36,7 @@ public class surfaceView extends GLSurfaceView implements GLSurfaceView.Renderer
 
         updateTouch();
     }
-    
+
     // touch
     public static float xTouch = -1.0f, yTouch = -1.0f;
     private void updateTouch(){
@@ -44,13 +45,16 @@ public class surfaceView extends GLSurfaceView implements GLSurfaceView.Renderer
             yTouch = -1.0f;
         }
     }
-    
+
     // renderer
     public void onSurfaceCreated(GL10 unused, EGLConfig config){
         currentScene = new Scene(R.raw.start);
 
         startTime = System.nanoTime() / 1000000000.0f;
         GLES20.glEnable(GLES20.GL_DEPTH_TEST);
+
+        ClassicMiniAdverts.begin();
+        ClassicMiniAdverts.loadRewardedAd();
     }
 
     public void onDrawFrame(GL10 unused) {
