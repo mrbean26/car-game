@@ -14,14 +14,14 @@ import java.util.List;
 
 import glm.vec._4.Vec4;
 
-class dropdownEntry{
+class ClassicMiniDropdownEntry {
     public String text = "";
     public ClassicMiniMaterial textMaterial = new ClassicMiniMaterial();
 }
 
 public class Dropdown extends Components {
     private Bean dropdownEntryBackground;
-    private LinkedHashMap<String, dropdownEntry> allDropdownEntries = new LinkedHashMap<>();
+    private LinkedHashMap<String, ClassicMiniDropdownEntry> allDropdownEntries = new LinkedHashMap<>();
     private List<Bean> allDropdownButtons = new ArrayList<>();
 
     public String[] dropdownItemsBegin = new String[]{"No Entries"};
@@ -47,7 +47,7 @@ public class Dropdown extends Components {
         // load entries
         int count = dropdownItemsBegin.length;
         for(int i = 0; i < count; i++){
-            dropdownEntry newEntry = new dropdownEntry();
+            ClassicMiniDropdownEntry newEntry = new ClassicMiniDropdownEntry();
             newEntry.text = dropdownItemsBegin[i];
 
             newEntry.textMaterial.type = "text";
@@ -117,7 +117,7 @@ public class Dropdown extends Components {
                 break;
             }
 
-            dropdownEntry currentEntry = (dropdownEntry) allValues[i];
+            ClassicMiniDropdownEntry currentEntry = (ClassicMiniDropdownEntry) allValues[i];
             dropdownEntryBackground.getComponents(Transform.class).position.y = (defaultInterval - dropdownItemInterval) * (float) i;
 
             Vec4 tempForegroundColour = ClassicMiniMath.copyVectorFour(dropdownEntryBackground.getComponents(Image.class).colour);
@@ -130,7 +130,7 @@ public class Dropdown extends Components {
 
             dropdownEntryBackground.getComponents(Image.class).material = currentEntry.textMaterial;
             if(!opened){
-                dropdownEntryBackground.getComponents(Image.class).material = ((dropdownEntry) allValues[selectedIndex]).textMaterial;
+                dropdownEntryBackground.getComponents(Image.class).material = ((ClassicMiniDropdownEntry) allValues[selectedIndex]).textMaterial;
             }
 
 
@@ -161,7 +161,7 @@ public class Dropdown extends Components {
 
     public void addItem(String item){
         float defaultInterval = -2.0f * dropdownEntryBackground.getComponents(Transform.class).scale.y;
-        dropdownEntry newDropdownEntry = new dropdownEntry();
+        ClassicMiniDropdownEntry newDropdownEntry = new ClassicMiniDropdownEntry();
         newDropdownEntry.text = item;
 
         newDropdownEntry.textMaterial.type = "text";
@@ -232,7 +232,7 @@ public class Dropdown extends Components {
 
     public String getValue(){
         Object[] allValues = allDropdownEntries.values().toArray();
-        return ((dropdownEntry) allValues[selectedIndex]).text;
+        return ((ClassicMiniDropdownEntry) allValues[selectedIndex]).text;
     }
 
     public void setTextColour(Vec4 used){
@@ -240,7 +240,7 @@ public class Dropdown extends Components {
         int count = allValues.length;
 
         for(int i = 0; i < count; i++){
-            dropdownEntry current = (dropdownEntry) allValues[i];
+            ClassicMiniDropdownEntry current = (ClassicMiniDropdownEntry) allValues[i];
             current.textMaterial.textMaterialInfo.textColour = used;
             current.textMaterial.loadText(current.textMaterial.textMaterialInfo.textSize, current.textMaterial.textMaterialInfo.displayedText,
                     current.textMaterial.textMaterialInfo.textCentered, used);

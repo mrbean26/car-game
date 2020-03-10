@@ -43,13 +43,13 @@ public class Sprite extends Components {
                 continue;
             }
 
-            minPoint.x = currentPoint.x < minPoint.x ? currentPoint.x : minPoint.x;
-            minPoint.y = currentPoint.y < minPoint.y ? currentPoint.y : minPoint.y;
-            minPoint.z = currentPoint.z < minPoint.z ? currentPoint.z : minPoint.z;
+            minPoint.x = Math.min(currentPoint.x, minPoint.x);
+            minPoint.y = Math.min(currentPoint.y, minPoint.y);
+            minPoint.z = Math.min(currentPoint.z, minPoint.z);
 
-            maxPoint.x = currentPoint.x > maxPoint.x ? currentPoint.x : maxPoint.x;
-            maxPoint.y = currentPoint.y > maxPoint.y ? currentPoint.y : maxPoint.y;
-            maxPoint.z = currentPoint.z > maxPoint.z ? currentPoint.z : maxPoint.z;
+            maxPoint.x = Math.max(currentPoint.x, maxPoint.x);
+            maxPoint.y = Math.max(currentPoint.y, maxPoint.y);
+            maxPoint.z = Math.max(currentPoint.z, maxPoint.z);
         }
 
         if(minPoint == null){

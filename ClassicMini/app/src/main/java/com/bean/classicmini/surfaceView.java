@@ -6,7 +6,10 @@ import android.opengl.GLSurfaceView;
 import android.view.MotionEvent;
 
 import com.bean.classicmini.components.Camera;
+import com.bean.classicmini.utilities.ClassicMiniAdverts;
 import com.bean.classicmini.utilities.ClassicMiniAudio;
+import com.google.android.gms.ads.reward.RewardItem;
+import com.google.android.gms.ads.reward.RewardedVideoAdListener;
 
 import javax.microedition.khronos.egl.EGLConfig;
 import javax.microedition.khronos.opengles.GL10;
@@ -51,6 +54,50 @@ public class surfaceView extends GLSurfaceView implements GLSurfaceView.Renderer
 
         startTime = System.nanoTime() / 1000000000.0f;
         GLES20.glEnable(GLES20.GL_DEPTH_TEST);
+        ClassicMiniAdverts.loadRewardedAd();
+        ClassicMiniAdverts.setRewardedAdListener(new RewardedVideoAdListener() {
+            @Override
+            public void onRewardedVideoAdLoaded() {
+                ClassicMiniAdverts.showRewardedAd();
+            }
+
+            @Override
+            public void onRewardedVideoAdOpened() {
+
+            }
+
+            @Override
+            public void onRewardedVideoStarted() {
+
+            }
+
+            @Override
+            public void onRewardedVideoAdClosed() {
+
+            }
+
+            @Override
+            public void onRewarded(RewardItem rewardItem) {
+
+            }
+
+            @Override
+            public void onRewardedVideoAdLeftApplication() {
+
+            }
+
+            @Override
+            public void onRewardedVideoAdFailedToLoad(int i) {
+
+            }
+
+            @Override
+            public void onRewardedVideoCompleted() {
+
+            }
+        });
+
+        ClassicMiniAdverts.loadBannerAd();
     }
 
     public void onDrawFrame(GL10 unused) {
