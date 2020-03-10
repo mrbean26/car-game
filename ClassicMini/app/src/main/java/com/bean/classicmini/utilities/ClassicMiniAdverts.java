@@ -13,11 +13,11 @@ import com.google.android.gms.ads.InterstitialAd;
 import com.google.android.gms.ads.MobileAds;
 import com.google.android.gms.ads.initialization.InitializationStatus;
 import com.google.android.gms.ads.initialization.OnInitializationCompleteListener;
-import com.google.android.gms.ads.reward.RewardItem;
 import com.google.android.gms.ads.reward.RewardedVideoAd;
 import com.google.android.gms.ads.reward.RewardedVideoAdListener;
 
 public class ClassicMiniAdverts {
+    // Test Ad ID's
     public static String REWARDED_AD_ID = "ca-app-pub-3940256099942544/5224354917";
     public static String INTERSTITIAL_AD_ID = "ca-app-pub-3940256099942544/1033173712";
     public static String BANNER_AD_ID = "ca-app-pub-3940256099942544/6300978111";
@@ -50,47 +50,6 @@ public class ClassicMiniAdverts {
     private static RewardedVideoAd rewardedVideoAd;
     private static void _beginRewardedAd(){
         rewardedVideoAd = MobileAds.getRewardedVideoAdInstance(MainActivity.getAppContext());
-        rewardedVideoAd.setRewardedVideoAdListener(new RewardedVideoAdListener() {
-            @Override
-            public void onRewardedVideoAdLoaded() {
-
-            }
-
-            @Override
-            public void onRewardedVideoAdOpened() {
-
-            }
-
-            @Override
-            public void onRewardedVideoStarted() {
-
-            }
-
-            @Override
-            public void onRewardedVideoAdClosed() {
-
-            }
-
-            @Override
-            public void onRewarded(RewardItem rewardItem) {
-
-            }
-
-            @Override
-            public void onRewardedVideoAdLeftApplication() {
-
-            }
-
-            @Override
-            public void onRewardedVideoAdFailedToLoad(int i) {
-
-            }
-
-            @Override
-            public void onRewardedVideoCompleted() {
-
-            }
-        });
     }
 
     private static void _loadRewardedAd(){
@@ -112,6 +71,10 @@ public class ClassicMiniAdverts {
         }
     }
 
+    private static void _setRewardedAdListener(RewardedVideoAdListener used){
+        rewardedVideoAd.setRewardedVideoAdListener(used);
+    }
+
     public static void loadRewardedAd(){
         MainActivity.getMainActivity().runOnUiThread(new Runnable() {
             @Override
@@ -130,47 +93,20 @@ public class ClassicMiniAdverts {
         });
     }
 
+    public static void setRewardedAdListener(final RewardedVideoAdListener used){
+        MainActivity.getMainActivity().runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                _setRewardedAdListener(used);
+            }
+        });
+    }
+
     // interstitial
     private static InterstitialAd interstitialAd;
     private static void _beginInterstitialAd(){
         interstitialAd = new InterstitialAd(MainActivity.getAppContext());
         interstitialAd.setAdUnitId(INTERSTITIAL_AD_ID);
-        interstitialAd.setAdListener(new AdListener(){
-            @Override
-            public void onAdLoaded() {
-
-            }
-
-            @Override
-            public void onAdOpened() {
-
-            }
-
-            @Override
-            public void onAdFailedToLoad(int i) {
-
-            }
-
-            @Override
-            public void onAdLeftApplication() {
-
-            }
-
-            @Override
-            public void onAdClicked() {
-
-            }
-
-            @Override
-            public void onAdClosed() {
-
-            }
-
-            @Override
-            public void onAdImpression() {
-
-            }
-        });
     }
 
     private static void _loadInterstitialAd(){
@@ -192,6 +128,10 @@ public class ClassicMiniAdverts {
         }
     }
 
+    private static void _setInterstitialAdListener(AdListener used){
+        interstitialAd.setAdListener(used);
+    }
+
     public static void loadInterstitialAd(){
         MainActivity.getMainActivity().runOnUiThread(new Runnable() {
             @Override
@@ -206,6 +146,15 @@ public class ClassicMiniAdverts {
             @Override
             public void run() {
                 _showInterstitialAd();
+            }
+        });
+    }
+
+    public static void setInterstitialAdListener(final AdListener used){
+        MainActivity.getMainActivity().runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                _setInterstitialAdListener(used);
             }
         });
     }
@@ -241,46 +190,13 @@ public class ClassicMiniAdverts {
     }
 
     private static void _loadBannerAd(){
-        bannerAd.setAdListener(new AdListener(){
-            @Override
-            public void onAdLoaded() {
-
-            }
-
-            @Override
-            public void onAdClosed() {
-
-            }
-
-            @Override
-            public void onAdFailedToLoad(int i) {
-
-            }
-
-            @Override
-            public void onAdImpression() {
-
-            }
-
-            @Override
-            public void onAdClicked() {
-
-            }
-
-            @Override
-            public void onAdLeftApplication() {
-
-            }
-
-            @Override
-            public void onAdOpened() {
-
-            }
-        });
-
         bannerAd.setAdUnitId(BANNER_AD_ID);
         AdRequest adRequest = new AdRequest.Builder().build();
         bannerAd.loadAd(adRequest);
+    }
+
+    private static void _setBannerAdListener(AdListener used){
+        bannerAd.setAdListener(used);
     }
 
     public static void loadBannerAd(){
@@ -288,6 +204,15 @@ public class ClassicMiniAdverts {
             @Override
             public void run() {
                 _loadBannerAd();
+            }
+        });
+    }
+
+    public static void setBannerAdListener(final AdListener used){
+        MainActivity.getMainActivity().runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                _setBannerAdListener(used);
             }
         });
     }

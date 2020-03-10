@@ -1,5 +1,7 @@
 package com.bean.classicmini;
 
+import android.os.Process;
+
 import com.bean.classicmini.components.Camera;
 import com.bean.classicmini.components.Mesh;
 import com.bean.classicmini.components.Sprite;
@@ -51,9 +53,39 @@ When adding component in scene don't include package
 When changing fields include package in component name
  */
 
-public class Scene {
+public class Scene implements Runnable {
+    private int usedResourceId = -1;
+    private boolean loadedScene = false;
+
+    @Override
+    public void run(){
+        android.os.Process.setThreadPriority(Process.THREAD_PRIORITY_MORE_FAVORABLE);
+        if(!loadedScene){
+            _loadScene(usedResourceId);
+        }
+        if(loadedScene){
+            _mainloop();
+        }
+
+    }
+
     public LinkedHashMap<String, Bean> allBeans = new LinkedHashMap<>();
-    public <T extends Components> Scene(int resourceId){
+    public Scene(int resourceId){
+        usedResourceId = resourceId;
+        loadedScene = false;
+
+        run();
+    }
+
+    public void loadScene(int resourceId){
+        loadedScene = false;
+        usedResourceId = resourceId;
+
+        run();
+    }
+
+    private <T extends Components> void _loadScene(int resourceId){
+        allBeans.clear();
         List<String> sceneInfo = ClassicMiniSavefiles.readLines(resourceId);
         int lineCount = sceneInfo.size();
 
@@ -220,8 +252,8 @@ public class Scene {
 
                             String[] floats = currentString.split(",");
                             Vec2 newVector = new Vec2(
-                              Float.parseFloat(floats[0]),
-                              Float.parseFloat(floats[1])
+                                    Float.parseFloat(floats[0]),
+                                    Float.parseFloat(floats[1])
                             );
                             setData[i] = newVector;
                         }
@@ -326,9 +358,14 @@ public class Scene {
                 ClassicMiniOutput.error("Line: \"" + current + " in " + MainActivity.getAppContext().getResources().getResourceName(resourceId) + "\" was unrecognised.");
             }
         }
+        loadedScene = true;
     }
 
     public void mainloop(){
+        run();
+    }
+
+    private void _mainloop(){
         Object[] allBeansArray = allBeans.values().toArray();
         int count = allBeansArray.length;
 
