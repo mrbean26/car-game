@@ -4,14 +4,19 @@ import android.opengl.GLES20;
 
 import com.bean.classicmini.R;
 import com.bean.classicmini.utilities.ClassicMiniMath;
+import com.bean.classicmini.utilities.ClassicMiniOutput;
+import com.bean.classicmini.utilities.ClassicMiniSavefiles;
 import com.bean.classicmini.utilities.ClassicMiniShaders;
 import com.bean.components.Components;
 
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.nio.FloatBuffer;
+import java.util.ArrayList;
+import java.util.List;
 
 import glm.vec._3.Vec3;
+import glm.vec._3.i.Vec3i;
 import glm.vec._4.Vec4;
 
 public class SimpleMesh extends Components {
@@ -111,5 +116,79 @@ public class SimpleMesh extends Components {
         ClassicMiniShaders.setVector4(colour, "colour", simpleMeshShader);
         GLES20.glDrawArrays(GLES20.GL_TRIANGLES, 0, vertexCount);
         GLES20.glDisable(GLES20.GL_BLEND);
+    }
+
+    public static void outputOBJVertices(int resourceId){
+        List<String> allLines = ClassicMiniSavefiles.readLines(resourceId);
+        int lineCount = allLines.size();
+        List<Float> allVerts = new ArrayList<>();
+
+        List<Vec3> points = new ArrayList<>();
+        List<List<Vec3i>> faces = new ArrayList<>();
+
+        for(int l = 0; l < lineCount; l++){
+            String line = allLines.get(l);
+
+            if(line.length() > 0){
+                String firstTwoCharacters = line.substring(0, 2);
+                if(firstTwoCharacters.equals("v ")){
+                    line = line.replace("v ", "");
+                    String[] data = line.split(" ");
+
+                    Vec3 newPoint = new Vec3(
+                            Float.parseFloat(data[0]),
+                            Float.parseFloat(data[1]),
+                            Float.parseFloat(data[2])
+                    );
+                    points.add(newPoint);
+                }
+                if(line.toCharArray()[0] == 'f'){ // vector then texture then normal
+                    line = line.replace("f ", "");
+                    String[] data = line.split(" ");
+                    List<Vec3i> newFace = new ArrayList<>();
+
+                    for(int i = 0; i < 3; i++){
+                        String[] newData = data[i].split("/");
+                        Vec3i newIndex = new Vec3i(0);
+
+                        if(newData[0].equals("")){
+                            newIndex.x = -1;
+                        }
+                        if(!newData[0].equals("")){
+                            newIndex.x = Integer.parseInt(newData[0]) - 1;
+                        }
+
+                        newFace.add(newIndex);
+                    }
+                    faces.add(newFace);
+                }
+            }
+        }
+
+        boolean hasPositions = false;
+        for(List<Vec3i> face : faces){
+            for(Vec3i indexes : face){
+                if(indexes.x != -1){
+                    ClassicMiniOutput.output("HI");
+                    allVerts.add(ClassicMiniMath.roundDecimal(points.get(indexes.x).x, 2));
+                    allVerts.add(ClassicMiniMath.roundDecimal(points.get(indexes.x).y, 2));
+                    allVerts.add(ClassicMiniMath.roundDecimal(points.get(indexes.x).z, 2));
+
+                    hasPositions = true;
+                }
+            }
+
+            if(!hasPositions){
+                ClassicMiniOutput.output("This mesh is missing vertex attributes for positions.");
+            }
+        }
+
+        String output = "";
+        for(Float f : allVerts){
+            output = output + String.valueOf(f) + ",";
+        }
+        output = output.substring(0, output.length() - 1);
+
+        ClassicMiniOutput.output(output);
     }
 }

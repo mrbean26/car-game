@@ -47,10 +47,6 @@ field com.bean.classicmini.components.Image usedTexture-id 44
 
 Make sure fields are public
 Make sure component extends from components
-Make sure name is specified in default constructor of component
-Only one name of object per scene I think
-When adding component in scene don't include package
-When changing fields include package in component name
  */
 
 public class Scene implements Runnable {
@@ -331,7 +327,7 @@ public class Scene implements Runnable {
 
                         dataToSet = newVector;
                     }
-                    if(data[4].equals("beansComponent")){ // beansComponent adam Transform
+                    if(data[4].equals("beansComponent")){ // beansComponent adam com.bean.classicmini.components.Transform
                         Bean wantedBean = allBeans.get(data[5]);
                         Class<?> selectedBeansComponent = Class.forName(data[6]);
                         dataToSet = wantedBean.getComponents(selectedBeansComponent);

@@ -73,6 +73,11 @@ public class ClassicMiniOutput { // for debugging purposes
         Log.d("Bean:Output", one + ", " + two);
     }
 
+    public static void output(Vec2 one, String two){
+        Log.d("Bean:Output", one + ", " + two);
+    }
+
+
     public static void output(Vec3 one, Vec2 two){
         Log.d("Bean:Output", one + ", " + two);
     }
@@ -100,6 +105,11 @@ public class ClassicMiniOutput { // for debugging purposes
     public static void output(Vec3 one, boolean two){
         Log.d("Bean:Output", one + ", " + two);
     }
+
+    public static void output(Vec3 one, String two){
+        Log.d("Bean:Output", one + ", " + two);
+    }
+
 
     public static void output(Vec4 one, Vec2 two){
         Log.d("Bean:Output", one + ", " + two);
@@ -129,6 +139,11 @@ public class ClassicMiniOutput { // for debugging purposes
         Log.d("Bean:Output", one + ", " + two);
     }
 
+    public static void output(Vec4 one, String two){
+        Log.d("Bean:Output", one + ", " + two);
+    }
+
+
     public static void output(float one, float two){
         Log.d("Bean:Output", one + ", " + two);
     }
@@ -157,6 +172,10 @@ public class ClassicMiniOutput { // for debugging purposes
         Log.d("Bean:Output", one + ", " + two);
     }
 
+    public static void output(float one,  String two){
+        Log.d("Bean:Output", one + ", " + two);
+    }
+
     public static void output(int one, int two){
         Log.d("Bean:Output", one + ", " + two);
     }
@@ -182,9 +201,14 @@ public class ClassicMiniOutput { // for debugging purposes
         Log.d("Bean:Output", one + ", " + two);
     }
 
+    public static void output(int one, String two){
+        Log.d("Bean:Output", one + ", " + two);
+    }
+
     public static void output(int one, boolean two){
         Log.d("Bean:Output", one + ", " + two);
     }
+
 
     public static void output(double one, Vec2 two){
         Log.d("Bean:Output", one + ", " + two);
@@ -206,9 +230,14 @@ public class ClassicMiniOutput { // for debugging purposes
         Log.d("Bean:Output", one + ", " + two);
     }
 
+    public static void output(double one, String two){
+        Log.d("Bean:Output", one + ", " + two);
+    }
+
     public static void output(double one, boolean two){
         Log.d("Bean:Output", one + ", " + two);
     }
+
 
     public static void output(boolean one, Vec2 two){
         Log.d("Bean:Output", one + ", " + two);
@@ -230,7 +259,36 @@ public class ClassicMiniOutput { // for debugging purposes
         Log.d("Bean:Output", one + ", " + two);
     }
 
+    public static void output(boolean one, String two){
+        Log.d("Bean:Output", one + ", " + two);
+    }
+
     public static void output(boolean one, boolean two){
+        Log.d("Bean:Output", one + ", " + two);
+    }
+
+
+    public static void output(String one, Vec2 two){
+        Log.d("Bean:Output", one + ", " + two);
+    }
+
+    public static void output(String one, Vec3 two){
+        Log.d("Bean:Output", one + ", " + two);
+    }
+
+    public static void output(String one, Vec4 two){
+        Log.d("Bean:Output", one + ", " + two);
+    }
+
+    public static void output(String one, float two){
+        Log.d("Bean:Output", one + ", " + two);
+    }
+
+    public static void output(String one, double two){
+        Log.d("Bean:Output", one + ", " + two);
+    }
+
+    public static void output(String one, boolean two){
         Log.d("Bean:Output", one + ", " + two);
     }
 }

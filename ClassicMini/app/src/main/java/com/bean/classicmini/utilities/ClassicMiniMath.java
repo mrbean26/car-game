@@ -132,6 +132,15 @@ public class ClassicMiniMath {
         return classicMiniRandom.nextInt(maxInclusive + 1) + lowInclusive;
     }
 
+    public static float randomFloat(float lowInclusive, float maxInclusive, int places){
+        float multiplier = (float) Math.pow(10.0, places);
+        int lowInclusiveInt = (int) (lowInclusive * multiplier);
+        int maxInclusiveInt = (int) (maxInclusive * multiplier);
+
+        int randomReturned = randomInteger(lowInclusiveInt, maxInclusiveInt);
+        return (float) randomReturned / multiplier;
+    }
+
     public static Vec2 touchToUICoords(float x, float y){
         Vec2 returned = new Vec2(x, y);
         returned.sub(new Vec2(surfaceView.displayWidth / 2.0f, surfaceView.displayHeight / 2.0f));

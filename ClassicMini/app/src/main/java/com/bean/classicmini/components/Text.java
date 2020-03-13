@@ -83,7 +83,7 @@ public class Text extends Components {
 
     @Override
     public void mainloop(){
-        draw();setText("");
+        draw();
     }
 
     @Override

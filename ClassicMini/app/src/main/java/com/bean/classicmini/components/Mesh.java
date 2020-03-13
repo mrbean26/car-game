@@ -170,9 +170,9 @@ public class Mesh extends Components {
                     String[] data = line.split(" ");
 
                     Vec3 newPoint = new Vec3(
-                      Float.valueOf(data[0]),
-                      Float.valueOf(data[1]),
-                      Float.valueOf(data[2])
+                      Float.parseFloat(data[0]),
+                      Float.parseFloat(data[1]),
+                      Float.parseFloat(data[2])
                     );
                     points.add(newPoint);
                 }
@@ -181,9 +181,9 @@ public class Mesh extends Components {
                     String[] data = line.split(" ");
 
                     Vec3 newNormal = new Vec3(
-                            Float.valueOf(data[0]),
-                            Float.valueOf(data[1]),
-                            Float.valueOf(data[2])
+                            Float.parseFloat(data[0]),
+                            Float.parseFloat(data[1]),
+                            Float.parseFloat(data[2])
                     );
                     normals.add(newNormal);
                 }
@@ -192,8 +192,8 @@ public class Mesh extends Components {
                     String[] data = line.split(" ");
 
                     Vec2 newTexcoord = new Vec2(
-                            Float.valueOf(data[0]),
-                            Float.valueOf(data[1])
+                            Float.parseFloat(data[0]),
+                            Float.parseFloat(data[1])
                     );
                     texCoords.add(newTexcoord);
                 }
@@ -204,11 +204,29 @@ public class Mesh extends Components {
 
                     for(int i = 0; i < 3; i++){
                         String[] newData = data[i].split("/");
-                        Vec3i newIndex = new Vec3i(
-                                Integer.valueOf(newData[0]) - 1,
-                                Integer.valueOf(newData[1]) - 1,
-                                Integer.valueOf(newData[2]) - 1
-                        );
+                        Vec3i newIndex = new Vec3i(0);
+
+                        if(newData[0].equals("")){
+                            newIndex.x = -1;
+                        }
+                        if(!newData[0].equals("")){
+                            newIndex.x = Integer.parseInt(newData[0]) - 1;
+                        }
+
+                        if(newData[1].equals("")){
+                            newIndex.y = -1;
+                        }
+                        if(!newData[1].equals("")){
+                            newIndex.y = Integer.parseInt(newData[1]) - 1;
+                        }
+
+                        if(newData[2].equals("")){
+                            newIndex.z = -1;
+                        }
+                        if(!newData[2].equals("")){
+                            newIndex.z = Integer.parseInt(newData[2]) - 1;
+                        }
+
                         newFace.add(newIndex);
                     }
                     faces.add(newFace);
@@ -216,18 +234,63 @@ public class Mesh extends Components {
             }
         }
 
+        boolean hasNormals = false;
+        boolean hasTextures = false;
+        boolean hasPositions = false;
+
         for(List<Vec3i> face : faces){
             for(Vec3i indexes : face){
-                allVerts.add(ClassicMiniMath.roundDecimal(points.get(indexes.x).x, 2));
-                allVerts.add(ClassicMiniMath.roundDecimal(points.get(indexes.x).y, 2));
-                allVerts.add(ClassicMiniMath.roundDecimal(points.get(indexes.x).z, 2));
+                if(indexes.x != -1){
+                    allVerts.add(ClassicMiniMath.roundDecimal(points.get(indexes.x).x, 2));
+                    allVerts.add(ClassicMiniMath.roundDecimal(points.get(indexes.x).y, 2));
+                    allVerts.add(ClassicMiniMath.roundDecimal(points.get(indexes.x).z, 2));
 
-                allVerts.add(ClassicMiniMath.roundDecimal(normals.get(indexes.z).x, 2));
-                allVerts.add(ClassicMiniMath.roundDecimal(normals.get(indexes.z).y, 2));
-                allVerts.add(ClassicMiniMath.roundDecimal(normals.get(indexes.z).z, 2));
+                    hasPositions = true;
+                }
 
-                allVerts.add(ClassicMiniMath.roundDecimal(texCoords.get(indexes.y).x, 2));
-                allVerts.add(ClassicMiniMath.roundDecimal(texCoords.get(indexes.y).y, 2));
+                if(indexes.x == -1){
+                    allVerts.add(0f);
+                    allVerts.add(0f);
+                    allVerts.add(0f);
+                }
+
+                if(indexes.z != -1){
+                    allVerts.add(ClassicMiniMath.roundDecimal(normals.get(indexes.z).x, 2));
+                    allVerts.add(ClassicMiniMath.roundDecimal(normals.get(indexes.z).y, 2));
+                    allVerts.add(ClassicMiniMath.roundDecimal(normals.get(indexes.z).z, 2));
+
+                    hasNormals = true;
+                }
+
+                if(indexes.z == -1){
+                    allVerts.add(0f);
+                    allVerts.add(0f);
+                    allVerts.add(0f);
+                }
+
+                if(indexes.y != -1){
+                    allVerts.add(ClassicMiniMath.roundDecimal(texCoords.get(indexes.y).x, 2));
+                    allVerts.add(ClassicMiniMath.roundDecimal(texCoords.get(indexes.y).y, 2));
+
+                    hasTextures = true;
+                }
+
+                if(indexes.y == -1){
+                    allVerts.add(0f);
+                    allVerts.add(0f);
+                }
+            }
+
+            if(!hasTextures){
+                ClassicMiniOutput.output("This mesh does not fully support textures.");
+            }
+
+            if(!hasNormals){
+                ClassicMiniOutput.output("This mesh does not fully support lighting.");
+            }
+
+            if(!hasPositions){
+                ClassicMiniOutput.output("This mesh is missing vertex attributes for positions.");
             }
         }
 

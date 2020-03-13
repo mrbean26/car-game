@@ -11,7 +11,7 @@ import glm.mat._4.Mat4;
 import glm.vec._3.Vec3;
 import glm.vec._4.Vec4;
 
-public class ClassicMiniShaders { // OpenGL ES GLSL ES 3.00
+public class ClassicMiniShaders {
     public static int createShader(int codePath, int shaderType){
         String code = ClassicMiniSavefiles.readLinesString(codePath);
         int shaderNumber = GLES20.glCreateShader(shaderType);

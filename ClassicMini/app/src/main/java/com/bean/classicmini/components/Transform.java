@@ -29,6 +29,10 @@ public class Transform extends Components {
         position.x = start.x;
         position.y = start.y;
         position.z = start.z;
+
+        if(useGravity){
+            position.y = position.y - surfaceView.deltaTime * gameGravitySpeed;
+        }
     }
 
     public Vec3 position = new Vec3();
@@ -157,4 +161,7 @@ public class Transform extends Components {
 
     public Bean parent;
     public HashMap<String, Bean> children = new HashMap<>();
+
+    public static float gameGravitySpeed = 9.81f;
+    public boolean useGravity = false;
 }
