@@ -84,7 +84,7 @@ public class Dropdown extends Components {
     }
 
     @Override
-    public void onClick(Bean clicked) {
+    public void onClick(Bean clicked, float x, float y) {
         int count = allDropdownButtons.size();
         if(count < 1){
             return;

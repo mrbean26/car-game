@@ -37,11 +37,12 @@ public class surfaceView extends GLSurfaceView implements GLSurfaceView.Renderer
     }
 
     // touch
-    public static float xTouch = -1.0f, yTouch = -1.0f;
+    public static float xTouches[] = new float[]{-1.0f};
+    public static float yTouches[] = new float[]{-1.0f};
     private void updateTouch(){
         if(!touchedDown){
-            xTouch = -1.0f;
-            yTouch = -1.0f;
+            xTouches = new float[]{-1.0f};
+            yTouches = new float[]{-1.0f};
         }
     }
 
@@ -78,8 +79,16 @@ public class surfaceView extends GLSurfaceView implements GLSurfaceView.Renderer
         float y = e.getY();
 
         touchedDown = true;
-        xTouch = x;
-        yTouch = y;
+
+        int touchCount = e.getPointerCount();
+        xTouches = new float[touchCount];
+        yTouches = new float[touchCount];
+
+        for(int i = 0; i < touchCount; i++){
+            xTouches[i] = e.getX(i);
+            yTouches[i] = e.getY(i);
+        }
+
         return true;
     }
 }

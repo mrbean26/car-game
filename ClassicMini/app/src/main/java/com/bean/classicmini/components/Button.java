@@ -95,35 +95,42 @@ public class Button extends Components {
     }
 
     public void checkClick(){
-        boolean currentClicked = isClicked(surfaceView.xTouch, surfaceView.yTouch);
-        if(type == BUTTON_CLICK_DOWN){
-            if(currentClicked && !clickedLast){
-                runClick();
-                clickedLast = true;
+        int touchCount = surfaceView.xTouches.length;
+
+        for(int i = 0; i < touchCount; i++){
+            boolean currentClicked = isClicked(surfaceView.xTouches[i], surfaceView.yTouches[i]);
+            if(type == BUTTON_CLICK_DOWN){
+                if(currentClicked && !clickedLast){
+                    runClick(surfaceView.xTouches[i], surfaceView.yTouches[i]);
+                    clickedLast = true;
+                }
+                if(!currentClicked){
+                    clickedLast = false;
+                }
             }
-            if(!currentClicked){
-                clickedLast = false;
+            if(type == BUTTON_CLICK_UP){
+                if(isClicked(surfaceView.xTouches[i], surfaceView.yTouches[i])){
+                    clickedLast = true;
+                    return;
+                }
+                if(clickedLast && !currentClicked){
+                    runClick(surfaceView.xTouches[i], surfaceView.yTouches[i]);
+                    clickedLast = false;
+                }
             }
-        }
-        if(type == BUTTON_CLICK_UP){
-            if(isClicked(surfaceView.xTouch, surfaceView.yTouch)){
-                clickedLast = true;
-                return;
+            if(type == BUTTON_HOLD){
+                if(currentClicked){
+                    runClick(surfaceView.xTouches[i], surfaceView.yTouches[i]);
+                }
             }
-            if(clickedLast && !currentClicked){
-                runClick();
-                clickedLast = false;
-            }
-        }
-        if(type == BUTTON_HOLD){
             if(currentClicked){
-                runClick();
+                break;
             }
         }
     }
 
-    public <T extends Components> void runClick(){
+    public <T extends Components> void runClick(float x, float y){
         T usedComponent = (T) onClickClass;
-        usedComponent.onClick(getBean());
+        usedComponent.onClick(getBean(), x, y);
     }
 }

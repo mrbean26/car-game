@@ -81,8 +81,8 @@ public class Slider extends Components {
     }
 
     @Override
-    public void onClick(Bean clicked) {
-        Vec2 uiTouchPoint = ClassicMiniMath.touchToUICoords(surfaceView.xTouch, surfaceView.yTouch);
+    public void onClick(Bean clicked, float x, float y) {
+        Vec2 uiTouchPoint = ClassicMiniMath.touchToUICoords(x, y);
         uiTouchPoint.y = uiTouchPoint.y * ((float) surfaceView.displayHeight / (float) surfaceView.displayWidth);
 
         float xPosition = uiTouchPoint.x * ClassicMiniMath.classicMiniCos(getBeansComponent(Transform.class).rotation.z);
