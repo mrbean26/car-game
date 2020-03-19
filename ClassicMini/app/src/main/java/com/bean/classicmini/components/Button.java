@@ -16,6 +16,8 @@ public class Button extends Components {
     public static final int BUTTON_HOLD = 2;
 
     private boolean clickedLast = false;
+    private float xTouchUp = -1.0f;
+    private float yTouchUp = -1.0f;
 
     @Override
     public void mainloop(){
@@ -96,6 +98,7 @@ public class Button extends Components {
 
     public void checkClick(){
         int touchCount = surfaceView.xTouches.length;
+        boolean clickedOverall = false;
 
         for(int i = 0; i < touchCount; i++){
             boolean currentClicked = isClicked(surfaceView.xTouches[i], surfaceView.yTouches[i]);
@@ -104,18 +107,17 @@ public class Button extends Components {
                     runClick(surfaceView.xTouches[i], surfaceView.yTouches[i]);
                     clickedLast = true;
                 }
-                if(!currentClicked){
-                    clickedLast = false;
+                if(currentClicked){
+                    clickedOverall = true;
                 }
             }
             if(type == BUTTON_CLICK_UP){
-                if(isClicked(surfaceView.xTouches[i], surfaceView.yTouches[i])){
+                if(currentClicked){
                     clickedLast = true;
-                    return;
-                }
-                if(clickedLast && !currentClicked){
-                    runClick(surfaceView.xTouches[i], surfaceView.yTouches[i]);
-                    clickedLast = false;
+                    clickedOverall = true;
+
+                    xTouchUp = surfaceView.xTouches[i];
+                    yTouchUp = surfaceView.yTouches[i];
                 }
             }
             if(type == BUTTON_HOLD){
@@ -125,6 +127,18 @@ public class Button extends Components {
             }
             if(currentClicked){
                 break;
+            }
+        }
+
+        if(!clickedOverall){
+            if(type == BUTTON_CLICK_DOWN){
+                clickedLast = false;
+            }
+            if(type == BUTTON_CLICK_UP){
+                if(clickedLast){
+                    runClick(xTouchUp, yTouchUp);
+                    clickedLast = false;
+                }
             }
         }
     }

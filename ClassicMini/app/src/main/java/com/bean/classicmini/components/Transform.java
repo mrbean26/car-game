@@ -3,6 +3,7 @@ package com.bean.classicmini.components;
 import com.bean.classicmini.Bean;
 import com.bean.classicmini.surfaceView;
 import com.bean.classicmini.utilities.ClassicMiniMath;
+import com.bean.classicmini.utilities.ClassicMiniOutput;
 import com.bean.components.Components;
 
 import java.util.ArrayList;
@@ -164,4 +165,9 @@ public class Transform extends Components {
 
     public static float gameGravitySpeed = 9.81f;
     public boolean useGravity = false;
+
+    @Override
+    public void onClick(Bean clicked, float x, float y) {
+        ClassicMiniOutput.output(x, y);
+    }
 }
