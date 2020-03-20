@@ -4,6 +4,7 @@ import android.os.Process;
 
 import com.bean.classicmini.components.Camera;
 import com.bean.classicmini.components.Mesh;
+import com.bean.classicmini.components.SimpleMesh;
 import com.bean.classicmini.components.Sprite;
 import com.bean.classicmini.components.Transform;
 import com.bean.classicmini.utilities.ClassicMiniOutput;
@@ -122,10 +123,29 @@ public class Scene implements Runnable {
                             ClassicMiniOutput.error("You can only attach one type of renderer to a bean.");
                             return;
                         }
+                        if(allBeans.get(data[1]).hasComponents(SimpleMesh.class)){
+                            ClassicMiniOutput.error("You can only attach one type of renderer to a bean.");
+                            return;
+                        }
                     }
 
                     if (newClass == Sprite.class) {
                         if (allBeans.get(data[1]).hasComponents(Mesh.class)) {
+                            ClassicMiniOutput.error("You can only attach one type of renderer to a bean.");
+                            return;
+                        }
+                        if(allBeans.get(data[1]).hasComponents(SimpleMesh.class)){
+                            ClassicMiniOutput.error("You can only attach one type of renderer to a bean.");
+                            return;
+                        }
+                    }
+
+                    if(newClass == SimpleMesh.class){
+                        if(allBeans.get(data[1]).hasComponents(Mesh.class)){
+                            ClassicMiniOutput.error("You can only attach one type of renderer to a bean.");
+                            return;
+                        }
+                        if(allBeans.get(data[1]).hasComponents(Sprite.class)){
                             ClassicMiniOutput.error("You can only attach one type of renderer to a bean.");
                             return;
                         }

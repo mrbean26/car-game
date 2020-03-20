@@ -15,6 +15,9 @@ public class Collider extends Components {
                                   // solid on solid pushes each other
                                   // solid boolean works like rigidbody component
 
+	public Vec3 minInfoForNoRenderer = new Vec3(-1.0f);
+	public Vec3 maxInfoForNoRenderer = new Vec3(1.0f);
+
     public static float MIN_COLLISION_DISTANCE = 0.0001f;
 
     public void updateCollisionInfo(){
@@ -22,17 +25,24 @@ public class Collider extends Components {
             Vec3[] collisionInfo = getBeansComponent(Mesh.class).getCollisionInfo();
             minData = new Vec4(collisionInfo[0], 1.0f);
             maxData = new Vec4(collisionInfo[1], 1.0f);
+            return;
         }
         if(getBean().hasComponents(Sprite.class)){
             Vec3[] collisionInfo = getBeansComponent(Sprite.class).getCollisionInfo();
             minData = new Vec4(collisionInfo[0], 1.0f);
             maxData = new Vec4(collisionInfo[1], 1.0f);
+            return;
         }
         if(getBean().hasComponents(SimpleMesh.class)){
             Vec3[] collisionInfo = getBeansComponent(SimpleMesh.class).getCollisionInfo();
             minData = new Vec4(collisionInfo[0], 1.0f);
             maxData = new Vec4(collisionInfo[1], 1.0f);
+            return;
         }
+
+        // data for when the collider has no renderer
+		minData = new Vec4(minInfoForNoRenderer, -1.0f);
+        maxData = new Vec4(maxInfoForNoRenderer, 1.0f);
     }
 
     @Override
