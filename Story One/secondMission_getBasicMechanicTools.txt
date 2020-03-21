@@ -1,0 +1,37 @@
+*Mission triggered after being in the warehouse after completing the first mission (getting tow truck)*
+
+Mechanic: Now, all we need to start the buisiness is my tools, are you able to get them for me? (Y/N)
+
+Y:
+	{name}: Of course!
+	*carry on*
+N:
+	{name}: Not right now, sorry.
+	Mechanic: Don't worry, i'm ready when you are!
+	*automatically leave warehouse*
+
+Mechanic: Awesome! You need to talk to the man driving the tool van, try and get him to stop!
+*you exit warehouse*
+
+*you drive too near the tool van*
+Tool Van Driver: Hey! Move over!
+
+*the tool van driver stops and gets out*
+Tool Van Driver: Oh, Hey {name}! Didn't realise it was you, did the mechanic send you?
+{name}: That's right, have you got some tools for me?
+Tool Van Driver: Sure have, i'll go grab them.
+
+*tool van driver walks away and returns with tool box and hands it to {name}*
+{name}: Thanks! I'll see you around!
+
+Tool Van Driver: Take these back to the mechanic for me.
+*tool van driver gets back in van and drives off*
+
+*You return the toolbox to the mechanic in the warehouse*
+{name}: Here you are!
+Mechanic: Thank you! Now we will be able to repair reposessed vehicles.
+Mechanic: The tools will also allow us to modify and upgrade vehicles to sell on to buyers for an even bigger profit!
+{name}: Great!
+
+Mechanic: I'll see you around.
+*mission over*

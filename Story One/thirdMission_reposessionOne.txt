@@ -1,0 +1,38 @@
+*Mission triggered when you enter vehicle warehouse after completing 2 setups*
+
+Mechanic: Hey {name}! Welcome back to the warehouse, ready for your first reposession job? (Y/N)
+
+Y:
+	{name}: Let's do it!
+	carry on
+N:
+	{name}: Sorry, can't make it right now.
+	*stop talking to mechanic, don't leave as player may want upgrades*
+
+Mechanic: Great! Here's the details...
+Mechanic: We've got a "{civilian 1 name}" driving about in an uninsured vehicle. Its a blue pickup.
+Mechanic: {civilian 1 name}'s keen to keep the vehicle, so make sure your quick driving off once your in. Good luck!
+
+*you leave the warehouse and find the blue pickup*
+*once hooked onto the pickup*
+
+{civilian 1}: Hey! Thats my car!
+{name}: It's uninsured! Keep off!
+
+If civilian 1 unhooks pickup:
+	*civilian 1 jumps in car*
+	{civilian 1}: I paid good money for this car!
+	{name}: It's not insured.
+
+	*if player doesn't pull out civilian, civilian drives off and mission failed*
+if player drives off towing the pickup:
+	{civilian 1}: I will get you!
+
+
+*when returning the pickup to the warehouse*
+Mechanic: Well done on completing your first reposession!
+Mechanic: Plenty more where that came from, we're always full for work.
+
+{name}: I'll see you around!
+
+*mission over*

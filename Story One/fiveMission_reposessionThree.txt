@@ -1,0 +1,34 @@
+*mission triggered after being in warehouse after third repo job*
+
+Mechanic: We need to stop a driver quickly! Can you do it? (Y/N)
+
+Y:
+	{name}: Let's do it!
+	carry on
+N:
+	{name}: Sorry, this isn't the one for me.
+	*stop talking to mechanic - dont leave the warehousea s player may upgrade*
+
+Mechanic: Nice! Here's the lowdown...
+Mechanic: We've got a dangerous driver in a white smart car. He's a big threat to other people and himself.
+Mechanic: Stop him and pick up the car. Good luck!
+{name}: I'll try my best!
+
+*you leave warehouse and find the white smart car*
+*the white smart car is going left to right everywhere*
+
+{name}: Hey {civilian 3 name}! Pull over, you are a liability!
+{civilian 3 name}: What?! I'm going to keep driving!
+
+*player stops civilian 3 driving by pulling out driver / driving in front with tow truck*
+{civilian 3}: Oi! I was driving fine!
+
+*civilian 3 passes out*
+{name}: He'll learn a lesson once he wakes up.
+
+*after towing back white smart car to warehouse*
+Mechanic: {name}'s back!! How did it go?
+{name}: {civilian 3} was completely out of it, they didn't even try to contest the car in the end.
+Mechanic: Good job.
+
+*mission ends*

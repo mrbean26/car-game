@@ -1,0 +1,35 @@
+*mission triggered after going in warehouse after first repo job*
+
+Mechanic: We've got another vehicle ready to claim! You ready? (Y/N)
+
+Y:
+	{name}: Of course! Let's make the money!
+	carry on
+N:
+	{name}: I can't do that right now.
+	*stop talking to mechanic , dont leave as player may want upgrades*
+
+
+Mechanic: Great! This one's a tricky one...
+Mechanic: There's a reckless driver called {civilian 2 name} who's a bit too confident with the accelerate pedal.
+Mechanic: He's currently driving a yellow sports car, it's all smashed up. See if you can bring it in.
+{name}: I can do it!
+
+*you leave the warehouse and go near the moving yellow sports car*
+
+{name}: I'm going to need that vehicle! It's almost broken!
+{civilian 2 name}: Not a chance! This works fine! 
+
+*civilian 2 speeds off*
+
+*caught up with civilian 2 - his brakes have gone and he's crashed*
+{civilian 2}: My breaks went! I think you should take it...
+{name}: Thank you. Next time hand it over when you should!
+
+*player tows back vehicle without brakes (skiddy car)*
+Mechanic: Well done! I knew this would be a tricky one. What do we have here...
+{name}: Brakes completely gone, {civilian 2 name} crashed it.
+Mechanic: What a nutter. I'll get this sorted out.
+
+*mission over*
+

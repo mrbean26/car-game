@@ -1,0 +1,36 @@
+*Mission triggered when you enter vehicle warehouse for the first time*
+
+Mechanic: Welcome to your new vehicle reposession buisiness, {name}!
+Mechanic: In this warehouse we'll be taking control of illegal vehicles and selling them on.
+Mechanic: To start, can you go over to the local car salesman and choose your pick of a tow truck? (Y/N)
+
+Y: 
+	{name}: Sure!
+	*carry on*
+N:
+	{name}: I'm a bit busy, maybe another time?
+	Mechanic : Ok, come back when your ready!
+	*automatically leave warehouse*
+
+Mechanic: Great, look for the car dealership!
+*you exit warehouse*
+
+*go into car dealership*
+Car salesman: Hey {name}! Did the mechanic send you?
+{name}: Yeah! I'm looking for a starter tow truck.
+Car salesman: Great! I'll take you over to them
+
+*you and the salesman walk to the tow trucks*
+Car salesman: Here are your options.
+
+*you choose one out of the three options*
+{name}: I'll take the {1st, 2nd, 3rd} one please.
+Car salesman: Great choice! You'll be earning before you know it.
+
+*you sign the form and take the keys*
+Car salesman: I'll see you around!
+
+*you drive the tow truck back to warehouse*
+Mechanic: Great, thank you {name}!
+
+*mission over*
