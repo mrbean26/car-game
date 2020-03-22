@@ -1,0 +1,48 @@
+*mission triggered after walking next to toolbox with enough cash*
+
+*mechanic walks over*
+Mechanic: These sort of tools are getting outdated, getting more would get higher level work.
+Mechanic: Want to upgrade them for {upgraded tool cash ammount}? (y/n)
+
+y:
+	{name}: Sure! We could use some more jobs.
+	carry on
+n:
+	{name}: I'll stick to the current work right now.
+	Mechanic: Ok!
+	*walk away from toolbox and mechanic walks away*
+
+Mechanic: Great! This will be great for the buisiness.
+
+*cash taken from player*
+{name}: So how am I getting these, easy job right?
+Mechanic: Wrong, your collecting them from a military outpost.
+Mechanic: They'll let you right in as you've paid for it, but make a wrong move and your over.
+{name}: I'll be careful.
+Mechanic: Good luck!
+
+*you leave warehouse in tow truck*
+*you go in the military base and are near the tools (flashing)*
+
+{name}: There they are!
+
+If {name} takes just the tools:
+	Military Leader: Hi {name}! Here are the tools, take them and head right on out.
+	{name}: Thanks!
+
+if {name} crashes into something:
+	Military Solider (nearest): Watch it!
+
+if {name} tries to tow a tank:
+	{name}: I'll take this one!
+	Military Leader: Wrong move!
+	*name gets pulled out of tank*
+	*mission failed*
+
+
+*toolbox back to warehouse*
+Mechanic: You got them! Well done! I knew this was a tricky one...
+{name}: I just followed the rules.
+
+Mechanic: This is great. This will allow us to do higher value work.
+*mission over*

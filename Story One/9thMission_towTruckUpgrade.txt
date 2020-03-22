@@ -1,0 +1,37 @@
+*mission triggered when you enter car dealership after already owning 1+ tow truck*
+
+Car Dealer: {name}! Your back! How can I help?
+{name}: I'm looking for a higher level tow truck.
+Car Dealer: Right this way...
+
+*they walk to the selection of 2 other low level tow trucks and 3 high level tow trucks*
+Car Dealer: Here we are!
+
+Player makes selection of a 2nd lower end vehicle:
+	Car Dealer: Are you sure? You'll still only be able to do low level work in that. (y/n)
+	y:
+		Car Dealer: Ok! It's yours!
+		*player automatically jumps in and cash is taken*
+	n:
+		Car Dealer: You can also choose some others, or exit.
+
+Player makes selection of a higher end vehicle:
+	Car Dealer: Good choice! You'll be able to do higher paying jobs in this. You want it? (y/n)
+	y:
+		Car Dealer: Great! Take it away!
+		*player automatically jumps in and cash is taken*
+	n:
+		Car Dealer: You can also choose some others, or exit.
+
+Player exits:
+	Car Dealer: See you around!
+	*exit car dealership, mission over*
+
+*player drives back to warehouse in new car*
+Mechanic: Great choice!
+
+if higher level car:
+	Mechanic: We'll be able to bring in offers for more difficult and higher paying vehicle reposessions with this.
+
+Mechanic: See you around!
+*stop talking to mechanic*

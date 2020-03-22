@@ -1,0 +1,28 @@
+*mission triggered after going into warehouse after third repo mission*
+
+Mechanic: {name}! I have another job! Up for it? (Y/N)
+
+Y:
+	{name}: Always!
+	carry on
+N:
+	{name}: No, sorry.
+	*stop talking to mechanic*
+
+Mechanic: Nice! Here's what you need to do...
+Mechanic: There's a stolen green classic car hidden somewhere in a parking lot. 
+Mechanic: The owner's nowhere in sight, see if you can tow it back for me.
+{name}: I'm on it!
+
+
+*you exit warehouse in tow truck and find "green classic car"*
+{name}: There it is!
+
+*the car park is very full so its quite difficult to pull out the car*
+*once taken back to warehouse*
+
+Mechanic: Welcome back! How did it go?
+{name}: Tricky job to get it out, but I got there in the end.
+Mechanic: Well done!
+
+*mission end*

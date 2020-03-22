@@ -1,0 +1,26 @@
+*mission triggered when player has enough cash for a security guard and goes near the guy walking around*
+
+Security Guard: Hey! {name}!
+{name}: Who are you?
+Security Guard: I'm the local security guard. Your mechanic said I might want to see you.
+Security Guard: You currently have enough cash to employ me for your buisiness.
+{name}: What would you do?
+Security Guard: I can help you defend off angry past-customers. Can I join for {security guard cash ammount}? (y/n)
+
+y:
+	{name}: Let's make it happen! Follow me!
+	carry on
+n:
+	{name}: Don't think I need it right now, thanks anyway!
+	Security Guard: Ok!
+	*security guard walks away and mission ends*
+
+*cash is taken from player*
+*security guard either goes in player's car / follows player*
+
+*security guard enters warehouse*
+Mechanic: Welcome! Good choice {name}!
+Security Guard: In the future, I'll help defend the buisiness against angry customers.
+{name}: Thanks!
+
+*mission ends*
