@@ -1,0 +1,31 @@
+*mission triggered randomly after a low-end car has been taken into the warehouse*
+
+*mechanic walks up to player, wherever they are*
+Mechanic: Hey {name}! We have someone trying to break in! Follow me...
+{name}: Let's get them!
+
+*they arrive back outside the warehouse*
+{name}: Oi! {raider name}! You didn't have the right to own that vehicle!
+{raider name}: It was mine!
+
+*one way to get rid of raiders is to punch them, another is to run is to drive into them*
+*they dont die, just get shocked*
+Mechanic: Get him {name}!
+
+if raider name breaks into the warehouse:
+	{raider name}: That vehicle's mine!
+	{name}: Stop!
+	*raider name will try to drive out*
+	
+if raider name is stopped:
+	{name}: Not even close.
+	{raider}: This won't be the last time
+	
+	Mechanic: Well done, {raider} wasn't secret at all.
+	*mission over*
+	
+if raider name gets away:
+	{name}: We lost it!
+	Mechanic: Oh no! Better luck next time.
+	*mission over*
+	
