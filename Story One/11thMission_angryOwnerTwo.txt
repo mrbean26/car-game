@@ -1,0 +1,27 @@
+*mission triggered randomly when a low-end vehicle is in the warehouse*
+
+*mechanic approaches player by walking up to them, wherever they are*
+Mechanic: I think I heard footsteps outside the warehouse! Follow me!
+
+*they arrive at the warehouse, someone is trying to pick the lock or already got in*
+
+if picking lock:
+  	{name}: Move away!
+  	{raider}: Oh no!
+	*raider runs*
+
+	
+if in warehouse:
+	{name}: Move away!
+	
+	if in vehicle:
+		{raider}: I've already got it!
+		*raider drives off*
+		Mechanic: We lost them!
+		*mission over*
+	if not:
+		{raider}: Oh no! 
+		*raider runs*
+		
+Mechanic: Well they were scared. Very sneaky though.
+*mission over*
