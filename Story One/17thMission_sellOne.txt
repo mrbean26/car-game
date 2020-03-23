@@ -1,0 +1,20 @@
+*mission triggered randomly 1/2 when the player jumps in a low-end car in the warehouse*
+
+*mechanic walks over*
+Mechanic: Hey {name}! You looking to sell that? (y/n)
+
+y:
+	{name}: Yeah, I could use some cash!
+	carry on
+n:
+	{name}: Nope! Just want to drive this about...
+	*mechanic walks away, mission ends here*
+
+Mechanic: Great! You need to customize the vehicle a bit before selling to avoid the old owners of the vehicles.
+
+*run vehicle customization sub mission*
+
+{name}: Finished! The vehicle looks a lot better now.
+Mechanic: Looks cool! Your going to be delivering it to a house not too far from here.
+Mechanic: Look for the house with the one car driveway and drop it there, and we should get paid.
+	
