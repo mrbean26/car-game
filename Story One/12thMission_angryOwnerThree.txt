@@ -1,0 +1,39 @@
+*mission triggered randomly when a high-end vehicle / military vehicle is in the warehouse*	
+
+*mechanic runs quickly over to player wherever they are*
+Mechanic: {name}! {name}! We're under attack!
+{name}: Is someone kicking the door down again?
+Mechanic: Worse! They've got power this time. Follow me, quick!
+
+*they run to the warehouse, theres a tank & 2x turret pickups*
+{name}: Oh no! Move away!
+{Military Solider}: No chance! We want a vehicle!
+{Military Solider 2}: I'm arming the tank!
+
+*the second military solider jumps in the tank*
+Mechanic: Get him out {name}!
+
+if they have security:
+	{security guard}: We need to destroy the vehicles! Jump on a turret {name}!
+	{name}: Let's do it, you too!
+
+	*they jump on the turrets and shoot the tank*
+
+if not:
+	Mechanic: Jump on a turret!
+
+if tank shoots garage type door down:
+		*military people jump out of tank and get in a vehicle*
+	if tank is destroyed:
+		*military people get out and try to reclaim turrets*
+
+if all military people are "stunned":
+	Mechanic: Well done! You did it! We'll be keeping that vehicle for now...
+	*mission over, stunned people despawn once off screen*
+
+if military people drive off:
+	Mechanic: We lost them! That was a good vehicle too!
+	if they dont have security:
+		Mechanic: Perhaps looking into buying security for the warehouse when you can.
+		Mechanic: To buy security, find them walking around in the street when you have more than {security guard ammount} and they'll approach you.
+	*mission over*

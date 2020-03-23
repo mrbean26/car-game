@@ -5,7 +5,7 @@ Security Guard: Hey! {name}!
 Security Guard: I'm the local security guard. Your mechanic said I might want to see you.
 Security Guard: You currently have enough cash to employ me for your buisiness.
 {name}: What would you do?
-Security Guard: I can help you defend off angry past-customers. Can I join for {security guard cash ammount}? (y/n)
+Security Guard: I can help you defend off angry past-owners. Can I join for {security guard cash ammount}? (y/n)
 
 y:
 	{name}: Let's make it happen! Follow me!
@@ -20,7 +20,7 @@ n:
 
 *security guard enters warehouse*
 Mechanic: Welcome! Good choice {name}!
-Security Guard: In the future, I'll help defend the buisiness against angry customers.
+Security Guard: In the future, I'll help defend the buisiness against angry past-owners.
 {name}: Thanks!
 
 *mission ends*

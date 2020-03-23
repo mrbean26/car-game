@@ -1,0 +1,36 @@
+*mission triggered after going to mechanic after doing second high repo mission*
+
+Mechanic: {name}! {name}! We need to start this job quick! Can you do it? (y/n)
+
+y:
+	{name}: Yeah I'm on it! What's at hand?
+	carry on
+n:
+	{name}: Sorry! Your going to have to find someone else...
+	Mechanic: Come on {name}. Fine!
+	*stop talking to mechanic*
+
+Mechanic: Thank you so much! Here's what you need to do...
+Mechanic: There's a "{civilian 7 name}" causing havock in a military tank...
+Mechanic: Try your best to stay in good condition and tow them away.
+{name}: Thats a tall order.
+Mechanic: Try your best!
+
+*player goes near the tank*
+*the tank is shooting aimlessly*
+
+{name}: {civlilian 7 name}! Exit your vehicle!
+{civilian 7 name}: Not a chance, this is epic!
+{name}: I will tow you away!
+{civilian 7 name}: Good luck in that thing!
+
+*when player hooks on and starts towing*
+{civilian 7 name}: Stop that!
+{name}: How bad is this truck now?
+
+*when arrive back at warehouse*
+*civilian 7 jumps out and runs away*
+{civilian 7 name}: I won't make that mistake again!
+
+Mechanic: {name}! Congratulations, that would've been a tricky one.
+*mission over*

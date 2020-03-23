@@ -1,0 +1,45 @@
+*this mission is triggered after going to mechanic after completeing second high value repo*
+
+Mechanic: I've got more work, it's a bit different. Can you do it for me? (y/n)
+
+y:
+	{name}: Yeah I'm up for it. How's it different?
+	carry on
+n:
+	{name}: Sorry, I've got other things to do.
+	Mechanic: Never mind!
+	*you stop talking to mechanic*
+
+Mechanic: There's an owner of a car that's uninsured, they don't want it towed away but are offering it to whoever can beat them in a race.
+{name}: Won't be needing the tow truck then!
+Mechanic: That's right, all you need to do is win the race. Look for a red and blue classic car next to the owner.
+
+*once player leaves and finds the owner*
+
+{civilian 6 name}: Hi {name}! Here for the race?
+{name}: Thats right. I'm ready to collect my vehicle afterwards.
+{civilian 6 name}: Not a chance! I'm the best driver around. Jump in!
+
+*they race*
+
+if one crashes into another:
+	{person who gets crashed into}: Oi watch it!
+
+*race end*
+
+if player wins:
+	{civilian 6 name}: You one this time. I'm sure i'll get another chance.
+	{civilian 6 name}: Take the car.
+if civilian 6 wins:
+	{civilian 6 name}: Haha! Nice try!
+	{name}: I gave it my best shot. I'll have to walk back to the warehouse.
+
+*arrive back at warehouse*
+you win:
+	Mechanic: Your back! Well done on winning, that's a fine car you have there.
+	*mission over*
+you lose:
+	Mechanic: Your back! But where's the car?
+	{name}: I lost, sorry.
+	Mechanic: Ah never mind, {civilian 6 name}'s meant to be a good racer.
+	*mission over*

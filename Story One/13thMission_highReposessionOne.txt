@@ -1,0 +1,45 @@
+*this mission is triggered after going to mechanic after buying high value tow*
+
+Mechanic: I've got a new job, it's slightly trickier than before. Are you up for it? (y/n)
+
+y:
+	{name}: I like a challenge! 
+	carry on
+n:
+	{name}: Sorry, I'm not up to that right now.
+	Mechanic: Never mind!
+	*mission over*
+
+Mechanic: Super! Here are the details...
+Mechanic: We've got a "{civilian 5 name}" driving in a {rhune zaba decided name}.
+Mechanic: It's all insured, but yet it's so armoured that police can't stop him from driving recklessly.
+Mechanic: See if you can tow him away in your new truck.
+{name}: I'll try my best!
+
+*player arrives at the rhune zaba driving over 2 police cars who are trying to stop him*
+{name}: There they are!
+{police one name}: Hey {name}! The mechanic must've sent you. See if you can tow {civilian 5 name} away.
+
+if name hooks onto the rhune zaba:
+	{police two name}: Your on! Great! Tow it away.
+if name hooks onto police car:
+	{police two name}: Wrong car! I'll unclip it.
+	*police two unclips it*
+if rhune zaba "stuns" a policeman:
+	{policeman thats not stunned}: Get away before they get you {name}! Thanks for trying...
+	*mission over*
+if rhuna zaba destroys a police car:
+	{policeman one name}: Get away before they get your truck {name}! Thanks for trying...
+	*mission over*
+
+
+*when rhuna zaba is being town away*
+{civilian 5 name}: Nooo!
+*civilian 5 jumps out*
+
+*when back at warehouse*
+Mechanic: Your back! Was it tricky?
+{name}: It was a job that had to be done quickly.
+Mechanic: Good job!
+
+*mission over*
