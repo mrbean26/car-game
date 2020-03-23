@@ -1,0 +1,50 @@
+*mission triggered when you talk to mechanic after completing third high repo mission*
+
+Mechanic: Hey {name}! I've got a bit of a different one for you today. Can you do it? (y/n)
+
+y:
+	{name}: Yep! How different is this thing?
+	carry on
+n:
+	{name}: Sorry, I'm a bit tied up right now.
+	Mechanic: No worries, come back when your ready!
+	*stop talking to mechanic*
+	
+Mechanic: I've got some intel on a red pickup truck carrying illegal items.
+Mechanic: See if you can convince {civilian 8 name} to drop the items, otherwise you'll have to tow him back.
+{name}: I like a change. I'm on it!
+Mechanic: See you back here in a bit.
+
+*when player exits warehouse and finds the pickup*
+{name}: Excuse me, {civilian 8 name}. You need to pull over.
+
+if pull over is randomly chosen:
+	{civilian 8 name}: Sure! What's the problem?
+	*civilian 8 pulls over and jumps out*
+	{name}: You've got illegal items in your truck, I'm going to need to take it.
+	{civilian 8}: Oh no! I had no idea, feel free.
+	{name}: Have a good day!
+	*name tows away the truck*
+	
+if drive away is randomly chosen:
+	{civilian 8 name}: Sorry no! I'm on a job!
+	{name}: I will tow you away!
+	{civilian 8 name}: You just try!
+	
+	*civilian 8 speeds up*
+	if name clips on:
+		{name}: Got you!
+	if civilian 8 drives off:
+		{civilian 8 name}: Nice try!
+		*mission over*
+
+
+*when arriving back at warehouse*
+Mechanic: Your back! How did it go?
+if jumped out:
+	{name}: They were quite civil actually.
+else:
+	{name}: They tried to drive away but I got them!
+	
+Mechanic: Good job!
+*mission over*
