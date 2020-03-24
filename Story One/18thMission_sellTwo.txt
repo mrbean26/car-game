@@ -1,0 +1,17 @@
+*mission triggered randomly 1/2 when jumping in a low-end vehicle in the warehoue*
+
+*mechanic walks over*
+Mechanic: Hi {name}! Do you want to sell that one? (y/n)
+
+y:
+  {name}: Sure!
+  carry on
+n:
+  {name}: Just driving for now!
+  Mechanic: No problem!
+  *mission over, mechanic walks away*
+  
+Mechanic: Nice! These are the details on the buyer I've lined up...
+Mechanic: We've got someone waiting for the car on a path a little while from here.
+Mechanic: They should be ready with the cash once you arrive.
+{name}: Great!
