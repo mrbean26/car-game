@@ -18,3 +18,8 @@ Mechanic: Great! You need to customize the vehicle a bit before selling to avoid
 Mechanic: Looks cool! Your going to be delivering it to a house not too far from here.
 Mechanic: Look for the house with the one car driveway and drop it there, and we should get paid.
 	
+*when near the house*
+{name}: There it is!
+
+*once driven into driveway, award cash*
+*mission over*
