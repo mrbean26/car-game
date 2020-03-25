@@ -1,0 +1,26 @@
+*mission triggered randomly 1/2 when player jumps in high end vehicle in warehouse*
+
+*mechanic walks over*
+Mechanic: Nice car! Want to sell it? (y/n)
+
+y:
+  {name}: Of course, this must be worth loads!
+	carry on
+n:
+	{name}: No thanks, I'm going to drive this for a bit.
+	*mechanic walks away and mission over*
+	
+Mechanic: Sure is. I've lined up a higher end buyer for you.
+Mechanic: You're going to need to drop it off in the driveway of a mansion.
+{name}: Great! I'm off.
+Mechanic: Good luck!
+
+*when near mansion*
+{name}: That must be it! Such a cool house!
+
+*when into driveway*
+{civilian 5 name}: {name}! Nice car! I've brought the money!
+{name}: Great! Take the car!
+{civilian 5 name}: Thanks!
+
+*you jump out, cash gets rewarded and mission over*
