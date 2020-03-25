@@ -41,7 +41,7 @@ public class Collider extends Components {
         }
 
         // data for when the collider has no renderer
-		minData = new Vec4(minInfoForNoRenderer, -1.0f);
+	minData = new Vec4(minInfoForNoRenderer, 1.0f);
         maxData = new Vec4(maxInfoForNoRenderer, 1.0f);
     }
 
