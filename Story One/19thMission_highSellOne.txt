@@ -10,7 +10,12 @@ n:
 	{name}: No thanks, I'm going to drive this for a bit.
 	*mechanic walks away and mission over*
 	
-Mechanic: Sure is. I've lined up a higher end buyer for you.
+Mechanic: Sure is. Make it a bit better before you sell it.
+
+*after customization mission*
+
+{name}: That's better.
+Mechanic: I've lined up a higher end buyer for you.
 Mechanic: You're going to need to drop it off in the driveway of a mansion.
 {name}: Great! I'm off.
 Mechanic: Good luck!

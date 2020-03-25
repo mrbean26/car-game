@@ -1,0 +1,29 @@
+*mission triggered randomly 1/2 when player jumps in a high end car in warehouse*
+
+*mechanic walks over*
+Mechanic: Must of been difficult to get that one! Want to sell if for a good ammount? (y/n)
+
+y:
+	{name}: Yeah this must be worth a ton! Let's do it!
+	carry on
+n:
+	{name}: This is far too good to sell! Leave me for now.
+	Mechanic: Ok!
+	*mechanic walks away and mission end*
+
+Mechanic: Great!  Make it slightly different before you drop it off.
+
+*after customization*
+Mechanic: Nice!
+Mechanic: There's a buyer ready in his vehicle collection van just a drive away.
+{name}: Ok! I'll try to find them.
+
+*once near civilian 6s vehicle collection van*
+{civilian 6 name}: Hi! Just drive it into the back if you can.
+{name}: Sure!
+
+*once delivered*
+{civilian 6 name}: Great!
+
+*cash rewarded and mission over*
+

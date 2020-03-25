@@ -11,7 +11,13 @@ n:
   Mechanic: No problem!
   *mission over, mechanic walks away*
   
-Mechanic: Nice! These are the details on the buyer I've lined up...
+Mechanic: Nice! 
+Mechanic: You'll need to change it a bit before selling it.
+
+*after vehicle customization*
+
+Mechanic: Awesome!
+Mechanic: These are the details on the buyer I've lined up...
 Mechanic: We've got someone waiting for the car on a path a little while from here.
 Mechanic: They should be ready with the cash once you arrive.
 {name}: Great!
