@@ -15,3 +15,11 @@ Mechanic: Nice! These are the details on the buyer I've lined up...
 Mechanic: We've got someone waiting for the car on a path a little while from here.
 Mechanic: They should be ready with the cash once you arrive.
 {name}: Great!
+
+*once driving near civilian one*
+{civilian one name}: Hey! {name}!
+{name}: Oh hi {civilian one name}: Are you here for the car?
+{civilian one name}: That's right. Take this money and i'll take the car!
+{name}: Great!
+
+*mission over*
