@@ -16,6 +16,11 @@ public class Bean {
         return true;
     }
 
+    public static boolean removeBean(String name){
+        surfaceView.currentScene.allBeans.remove(name);
+        return true;
+    }
+
     public static Bean getBean(String name){
         Bean result = surfaceView.currentScene.allBeans.get(name);
         if(result == null){

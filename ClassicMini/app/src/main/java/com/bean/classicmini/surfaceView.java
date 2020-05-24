@@ -60,14 +60,6 @@ public class surfaceView extends GLSurfaceView implements GLSurfaceView.Renderer
 
         startTime = System.nanoTime() / 1000000000.0f;
         GLES20.glEnable(GLES20.GL_DEPTH_TEST);
-
-        String url = "https://pastebin.com/api/api_post.php";
-        HashMap<String, String> a = new HashMap<>();
-        a.put("api_dev_key", "db8bca2c177aa989270f1d2c931ae94f");
-        a.put("api_option", "paste");
-        a.put("api_paste_code", "hello");
-
-        ClassicMiniOutput.output(ClassicMiniNetworking.runPostRequest(url, a));
     }
 
     public void onDrawFrame(GL10 unused) {
