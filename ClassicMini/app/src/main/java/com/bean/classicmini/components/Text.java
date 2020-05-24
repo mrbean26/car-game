@@ -5,6 +5,7 @@ import android.opengl.GLES20;
 import com.bean.classicmini.R;
 import com.bean.classicmini.utilities.ClassicMiniMaterial;
 import com.bean.classicmini.utilities.ClassicMiniMath;
+import com.bean.classicmini.utilities.ClassicMiniOutput;
 import com.bean.classicmini.utilities.ClassicMiniShaders;
 import com.bean.components.Components;
 
@@ -70,7 +71,7 @@ public class Text extends Components {
         getBeansComponent(Transform.class).scale.x = xTempScale;
 
         GLES20.glUseProgram(imageShader);
-        ClassicMiniShaders.setMatrix4(currentMatrix, "model", imageShader);
+        ClassicMiniShaders.setMatrix4(currentMatrix, "orthoModel", imageShader);
         ClassicMiniShaders.setInt(0, "sampler", imageShader);
         ClassicMiniShaders.setVector4(colour, "colour", imageShader);
         ClassicMiniShaders.setVector4(backgroundColour, "backgroundColour", imageShader);

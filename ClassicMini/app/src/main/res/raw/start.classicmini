@@ -3,16 +3,10 @@ component toby com.bean.classicmini.components.Camera
 field toby com.bean.classicmini.components.Transform position vec3 0.0,0.0,-60.0
 field toby com.bean.classicmini.components.Transform rotation vec3 0.0,0.0,0.0
 
-Bean martin
-component martin com.bean.classicmini.components.Button
-component martin com.bean.classicmini.components.Image
-field martin com.bean.classicmini.components.Button onClickClass beansComponent martin com.bean.classicmini.components.Transform
-field martin com.bean.classicmini.components.Transform position vec3 0.0,1.0,0.0
-field martin com.bean.classicmini.components.Transform scale vec3 0.25,0.25,0.25
-
 Bean bigman
-component bigman com.bean.classicmini.components.Button
-component bigman com.bean.classicmini.components.Image
-field bigman com.bean.classicmini.components.Button onClickClass beansComponent bigman com.bean.classicmini.components.Transform
-field bigman com.bean.classicmini.components.Transform position vec3 0.0,-1.0,0.0
-field bigman com.bean.classicmini.components.Transform scale vec3 0.25,0.25,0.25
+field bigman com.bean.classicmini.components.Transform scale vec3 0.25,0.25,1.0
+//component bigman com.bean.classicmini.components.Text
+
+component bigman com.bean.classicmini.components.KeyboardInput
+field bigman com.bean.classicmini.components.KeyboardInput realTextScale bool true
+

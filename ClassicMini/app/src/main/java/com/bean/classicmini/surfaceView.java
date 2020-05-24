@@ -3,10 +3,16 @@ package com.bean.classicmini;
 import android.content.Context;
 import android.opengl.GLES20;
 import android.opengl.GLSurfaceView;
+import android.view.KeyEvent;
 import android.view.MotionEvent;
 
 import com.bean.classicmini.components.Camera;
 import com.bean.classicmini.utilities.ClassicMiniAudio;
+import com.bean.classicmini.utilities.ClassicMiniNetworking;
+import com.bean.classicmini.utilities.ClassicMiniOutput;
+
+import java.util.HashMap;
+import java.util.LinkedHashMap;
 
 import javax.microedition.khronos.egl.EGLConfig;
 import javax.microedition.khronos.opengles.GL10;
@@ -19,6 +25,8 @@ public class surfaceView extends GLSurfaceView implements GLSurfaceView.Renderer
     public static float startTime, currentTime, deltaTime;
     public static int framePerSecond;
     public static int framesThrough = 0;
+
+    public static LinkedHashMap<Integer, KeyEvent> keyPresses = new LinkedHashMap<>();
 
     public surfaceView(Context ctx){
         super(ctx);
@@ -52,6 +60,14 @@ public class surfaceView extends GLSurfaceView implements GLSurfaceView.Renderer
 
         startTime = System.nanoTime() / 1000000000.0f;
         GLES20.glEnable(GLES20.GL_DEPTH_TEST);
+
+        String url = "https://pastebin.com/api/api_post.php";
+        HashMap<String, String> a = new HashMap<>();
+        a.put("api_dev_key", "db8bca2c177aa989270f1d2c931ae94f");
+        a.put("api_option", "paste");
+        a.put("api_paste_code", "hello");
+
+        ClassicMiniOutput.output(ClassicMiniNetworking.runPostRequest(url, a));
     }
 
     public void onDrawFrame(GL10 unused) {

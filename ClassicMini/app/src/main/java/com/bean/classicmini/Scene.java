@@ -70,8 +70,6 @@ public class Scene implements Runnable {
     public Scene(int resourceId){
         usedResourceId = resourceId;
         loadedScene = false;
-
-        run();
     }
 
     public void loadScene(int resourceId){

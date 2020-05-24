@@ -138,7 +138,12 @@ public class ClassicMiniMaterial {
         textMaterialInfo.yTextMultiplier = bounds.height() / 512f;
         textPaint.setTextScaleX(512f / bounds.width());
 
-        Bitmap texture = Bitmap.createBitmap(512, bounds.height(), Bitmap.Config.ARGB_8888);
+        int height = bounds.height();
+        if(height == 0){
+            height = 512;
+        }
+
+        Bitmap texture = Bitmap.createBitmap(512, height, Bitmap.Config.ARGB_8888);
         Canvas canvas = new Canvas(texture);
         texture.eraseColor(0);
 
